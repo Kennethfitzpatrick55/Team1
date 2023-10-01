@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MeleeWeapon : MonoBehaviour
 {
+    //Script for melee weapons
     [Header("----- Components -----")]
     [SerializeField] Rigidbody rb;
 

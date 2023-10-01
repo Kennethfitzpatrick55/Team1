@@ -82,7 +82,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   agent: {fileID: 7297275094313744363}
-  model: {fileID: 0}
+  model: {fileID: 6665743106819707165}
   HP: 15
   turnSpeed: 3
   weapon: {fileID: 0}

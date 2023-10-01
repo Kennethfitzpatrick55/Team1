@@ -17,15 +17,14 @@ public class GameManager : MonoBehaviour
     float timeScaleOrig;
     int enemyCount;
 
-    // Start is called before the first frame update
+    //Only uncomment code once implemented
     void Awake()
     {
         instance = this;
         timeScaleOrig = Time.timeScale;
-        player = GameObject.FindWithTag("Player");
-        playerSpawn = GameObject.FindWithTag("Player Spawn");
-
-        enemySpawn = GameObject.FindWithTag("Enemy Spawn");
+        //player = GameObject.FindWithTag("Player");
+        //playerSpawn = GameObject.FindWithTag("Player Spawn");
+        //enemySpawn = GameObject.FindWithTag("Enemy Spawn");
     }
 
     // Update is called once per frame

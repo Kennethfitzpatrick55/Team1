@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
         //enemySpawn = GameObject.FindWithTag("Enemy Spawn");
     }
 
-    // Update is called once per frame
+    
     void Update()
     {
         

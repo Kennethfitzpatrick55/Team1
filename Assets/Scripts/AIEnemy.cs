@@ -15,6 +15,7 @@ public class AIEnemy : MonoBehaviour, IDamage
     [SerializeField] int turnSpeed;
 
     [Header("----- Attack Stats -----")]
+    //Less specific for implementation of ranged and melee
     [SerializeField] GameObject weapon;
     [SerializeField] Transform weaponPos;
     [SerializeField] float attackDelay;
@@ -56,9 +57,11 @@ public class AIEnemy : MonoBehaviour, IDamage
     public void TakeDamage(int amount)
     {
         HP -= amount;
+        StartCoroutine(FlashDamage());
         if(HP <= 0)
         {
             GameManager.instance.UpdateEnemyCount(-1);
+            //Set time for future death animations
             Destroy(gameObject, deathAnimTime);
         }
     }

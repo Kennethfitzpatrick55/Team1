@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
+    //Script for ranged projectiles
     [Header("----- Components -----")]
     [SerializeField] Rigidbody rb;
 
@@ -12,7 +13,6 @@ public class Projectile : MonoBehaviour
     [SerializeField] float speed;
     [SerializeField] int lifeTime;
 
-    // Start is called before the first frame update
     void Start()
     {
         rb.velocity = transform.forward * speed;

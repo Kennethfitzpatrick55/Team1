@@ -7,49 +7,64 @@ public class PlayerController : MonoBehaviour
 {
     [Header("-----Components-----")]
     //This is the Charecter Controller
-    [SerializeField] Rigidbody CC;
+    [SerializeField] Rigidbody RB;
 
     [Header("-----Player States-----")]
     [Header("-----Movement-----")]
     [Range(1, 10)][SerializeField] float PlayerSpeed;
+
     //[Range(8, 30)][SerializeField] float JumpHeight;
     //[Range(1, 40)][SerializeField] int JumpMax;
-    [Header("Ground Check")]
-    [SerializeField] float playerHeight;
-    [SerializeField] LayerMask Ground;
-    [SerializeField] float Drag;
+    //[Header("Ground Check")]
+    //[SerializeField] float playerHeight;
+    //[SerializeField] LayerMask Ground;
+    //[SerializeField] float Drag;
     //[Range(-10, -40)][SerializeField] private float Gravity;
     //[Range(1, 10)][SerializeField] private float SprintMod;
 
     //private 
     //private Vector3 PlayerVelocity;
-    private Vector3 Move;
+
     //Int
-    private int JumpedTimes;
+    //private int JumpedTimes;
     //int HPOrig;
     //Bool
-    private bool PlayerGrounded;
+    //private bool PlayerGrounded;
+    Vector3 MoveDirection;
+    float HorizontalInput;
+    float VerticalInput;
     public Transform orentation;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        CC = GetComponent<Rigidbody>();
-        CC.freezeRotation = true;
+        RB = GetComponent<Rigidbody>();
+        RB.freezeRotation = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-       
+
+        MyInput();
         Movement();
-        
 
 
     }
+    
+    void MyInput()
+    {
+        HorizontalInput = Input.GetAxis("Horizontal");
+        VerticalInput = Input.GetAxis("Vertical");
+          
+    }
     void Movement()
     {
+
+
+       MoveDirection = orentation.forward * VerticalInput + orentation.right * HorizontalInput;
+       RB.AddForce(MoveDirection.normalized * PlayerSpeed);
         // addtinal movement 
         //Sprint();
 
@@ -67,18 +82,19 @@ public class PlayerController : MonoBehaviour
         // this took some time But i think im undertstandign how to get the movement
         // lets get control of the speed  
         // then will focuse on the jump 
-        Move = (Input.GetAxisRaw("Horizontal") * transform.right) + (Input.GetAxisRaw("Vertical") * transform.forward);
-        CC.AddForce(orentation.forward = Move.normalized * PlayerSpeed );
+        //Move = (Input.GetAxisRaw("Horizontal") * transform.right) + (Input.GetAxisRaw("Vertical") * transform.forward);
+        //RB.AddForce(orentation.forward = Move.normalized * PlayerSpeed );
 
-        PlayerGrounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * Ground);
-        if(PlayerGrounded)
-        {
-            CC.drag = Drag;
-        }
-        else
-        {
-            CC.drag = 0;
-        }
+        //PlayerGrounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * Ground);
+        //if(PlayerGrounded)
+        //{
+        //    RB.drag = Drag;
+        //}
+        //else
+        //{
+        //    RB.drag = 0;
+        //}
+
         //if (Input.GetButtonDown("Jump") && JumpedTimes <= JumpMax)
         //{
         //    PlayerVelocity.y = JumpHeight;

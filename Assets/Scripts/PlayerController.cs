@@ -154,7 +154,7 @@ public class PlayerController : MonoBehaviour
     [Range(8, 30)][SerializeField] private float jumpHeight;
     [Range(-10, 40)][SerializeField] private float gravityMod;
     [Range(-10, -40)][SerializeField] private float gravityValue;
-
+    [Range(1, 10)][SerializeField] private int DistanceWall;
     [Header("----Gun states----")]
     [SerializeField] float shootRate;
     [SerializeField] int shootDamage;
@@ -168,8 +168,11 @@ public class PlayerController : MonoBehaviour
     bool isSprinting;
     bool isShooting;
     int HPOrig;
+    int Layer_Mask;
     private void Start()
     {
+
+         Layer_Mask = LayerMask.GetMask("Wall");
         //HPOrig = Hp;
         //spawnPlayer();
 
@@ -195,6 +198,7 @@ public class PlayerController : MonoBehaviour
     {
         //Additnail movemtn called here 
         Sprint();
+        WallRun();
 
         //checks to make sure player is grounded
 
@@ -218,7 +222,6 @@ public class PlayerController : MonoBehaviour
         //will take a button input thats press down 
         if (Input.GetButtonDown("Jump") && jumpedtimes <= jumpMax)
         {
-            GetComponent<Rigidbody>().AddForce(transform.up * jumpHeight);
             //will assighn are y to some height 
             playerVelocity.y = jumpHeight;
             //and increment jump
@@ -248,28 +251,42 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // void WallRun ()
-    //{
-    //    isWall = true;
-    //    RaycastHit hit;
+    void WallRun()
+    {
+       RaycastHit hit;
+        Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.left * DistanceWall));
+        Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.right * DistanceWall));
 
-    //    if (Physics.Raycast)
-    //    {
-    //        //change gravity
-    //        gravityMod = gravityValue;
-    //        //increase speed 
-    //        playerSpeed *= sprintMod;
-    //        //tilt camera 
-    //    }
-    //    else if (hit.gameObject.tag != ("Wall"))
-    //    {
-    //        //put gravity back to normal 
-    //        gravityValue -=gravityValue;
-    //        //reduce speed 
-    //        playerSpeed /= sprintMod;
-    //        //remove camera tilt 
-    //    }
-    //}
+        if (Physics.Raycast(transform.position,transform.TransformDirection(Vector3.right),out hit,DistanceWall,Layer_Mask))
+        {
+
+            
+
+            if (hit.collider.tag == "Wall")
+            { 
+                //change gravity
+                gravityMod = gravityValue;
+                //increase speed 
+                playerSpeed *= sprintMod;
+                //tilt camera 
+            }
+        }
+        else if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.left), out hit, DistanceWall,Layer_Mask))
+        {
+          
+
+            if (hit.collider.tag == "Wall")
+            {
+                //change gravity
+                gravityMod = gravityValue;
+                //increase speed 
+                playerSpeed *= sprintMod;
+                //tilt camera 
+            }
+
+        }
+        
+    }
     // to excute a function in intervals
 
 

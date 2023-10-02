@@ -856,7 +856,7 @@ GameObject:
   - component: {fileID: 1268440704}
   - component: {fileID: 1268440703}
   - component: {fileID: 1268440710}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -990,15 +990,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8de0a91dfb120114fa9b80ad39ec01c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controller: {fileID: 0}
-  RB: {fileID: 0}
+  controller: {fileID: 1268440710}
   Hp: 0
-  playerSpeed: 0
-  sprintMod: 0
-  jumpMax: 0
-  jumpHeight: 0
-  gravityMod: 0
-  gravityValue: 0
+  playerSpeed: 3.53
+  sprintMod: 1.47
+  jumpMax: 2
+  jumpHeight: 17.2
+  gravityMod: 15.9
+  gravityValue: -10
+  DistanceWall: 5
   shootRate: 0
   shootDamage: 0
   shootDist: 0

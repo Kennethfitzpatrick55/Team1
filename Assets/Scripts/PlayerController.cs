@@ -202,7 +202,7 @@ public class PlayerController : MonoBehaviour
        /* WallRun()*/;
 
         //checks to make sure player is grounded
-
+        groundedPlayer = controller.isGrounded;
         if (groundedPlayer && playerVelocity.y < 0)
         {
             //sets the players up and down velocity to 0 

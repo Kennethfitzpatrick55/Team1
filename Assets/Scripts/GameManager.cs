@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     public GameObject player;
     public GameObject playerSpawn;
     public Image playerHPBar;
+    public Image playerStamina;
 
     [Header("----- Enemy -----")]
     public GameObject enemySpawn;

@@ -155,6 +155,7 @@ public class PlayerController : MonoBehaviour
     [Range(-10, 40)][SerializeField] private float gravityMod;
     [Range(-10, -40)][SerializeField] private float gravityValue;
     [Range(1, 10)][SerializeField] private int DistanceWall;
+    [SerializeField] private float WallT;
     [Header("----Gun states----")]
     [SerializeField] float shootRate;
     [SerializeField] int shootDamage;
@@ -198,7 +199,7 @@ public class PlayerController : MonoBehaviour
     {
         //Additnail movemtn called here 
         Sprint();
-        WallRun();
+       /* WallRun()*/;
 
         //checks to make sure player is grounded
 
@@ -251,42 +252,51 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void WallRun()
-    {
-       RaycastHit hit;
-        Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.left * DistanceWall));
-        Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.right * DistanceWall));
+    //IEnumerator WallTime()
+    //{
+    //    yield return new WaitForSeconds(WallT);
+    //    gravityValue -= gravityMod;
+    //    playerSpeed /= sprintMod;
 
-        if (Physics.Raycast(transform.position,transform.TransformDirection(Vector3.right),out hit,DistanceWall,Layer_Mask))
-        {
+    //}
 
-            
+    //void WallRun()
+    //{
+    //    RaycastHit hit;
+    //    Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.left * DistanceWall));
+    //    Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.right * DistanceWall));
+    //    //if player is by wall do something 
+    //    if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.right), out hit, DistanceWall, Layer_Mask))
+    //    {
+    //        //check if ur right wall 
+    //        if (hit.collider.tag == "Wall")
+    //        {
+    //            //change gravity
+    //            gravityMod += gravityValue;
+    //            //increase speed 
+    //            playerSpeed *= sprintMod;
+    //            //tilt camera 
+    //            StartCoroutine(WallTime());
+    //        }
+    //    }
+    //    else if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.left), out hit, DistanceWall, Layer_Mask))
+    //    {
 
-            if (hit.collider.tag == "Wall")
-            { 
-                //change gravity
-                gravityMod = gravityValue;
-                //increase speed 
-                playerSpeed *= sprintMod;
-                //tilt camera 
-            }
-        }
-        else if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.left), out hit, DistanceWall,Layer_Mask))
-        {
-          
+    //        //check if ur left wall 
+    //        if (hit.collider.tag == "Wall")
+    //        {
+                
+    //            //change gravity
+    //            gravityMod += gravityValue;
+    //            //increase speed 
+    //            playerSpeed *= sprintMod;
+    //            //tilt camera 
+    //            StartCoroutine(WallTime());
+    //        }
 
-            if (hit.collider.tag == "Wall")
-            {
-                //change gravity
-                gravityMod = gravityValue;
-                //increase speed 
-                playerSpeed *= sprintMod;
-                //tilt camera 
-            }
+    //    }
 
-        }
-        
-    }
+    //}
     // to excute a function in intervals
 
 

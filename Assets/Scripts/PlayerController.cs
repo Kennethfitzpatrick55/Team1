@@ -2,6 +2,7 @@ using OpenCover.Framework.Model;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design.Serialization;
+using System.Runtime.CompilerServices;
 using UnityEditor;
 using UnityEngine;
 
@@ -155,6 +156,8 @@ public class PlayerController : MonoBehaviour
     [Range(-10, 40)][SerializeField] private float gravityMod;
     [Range(-10, -40)][SerializeField] private float gravityValue;
     [Range(1, 10)][SerializeField] private int DistanceWall;
+    [Range(1, 10)][SerializeField] private Vector3 Crouch;
+    [Range(1, 10)][SerializeField] private Vector3 playerScale;
     [SerializeField] private float WallT;
     [Header("----Gun states----")]
     [SerializeField] float shootRate;
@@ -170,13 +173,15 @@ public class PlayerController : MonoBehaviour
     bool isShooting;
     int HPOrig;
     int Layer_Mask;
+    bool Crouching;
     private void Start()
     {
 
          Layer_Mask = LayerMask.GetMask("Wall");
         //HPOrig = Hp;
         //spawnPlayer();
-
+        playerScale=transform.localScale;
+        Crouch =new Vector3(transform.localScale.x,transform.localScale.y/2,transform.localScale.z);
         //RB = GetComponent<Rigidbody>();
         //RB.freezeRotation = true;
     }
@@ -200,7 +205,7 @@ public class PlayerController : MonoBehaviour
         //Additnail movemtn called here 
         Sprint();
        /* WallRun()*/;
-
+        Crouched();
         //checks to make sure player is grounded
         groundedPlayer = controller.isGrounded;
         if (groundedPlayer && playerVelocity.y < 0)
@@ -252,56 +257,73 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    //IEnumerator WallTime()
-    //{
-    //    yield return new WaitForSeconds(WallT);
-    //    gravityValue -= gravityMod;
-    //    playerSpeed /= sprintMod;
+    void Crouched()
+    {
 
-    //}
+        if (groundedPlayer && Input.GetButtonDown("Crouch") && Crouching ==false)
+        {
+            Crouching = true;
+            transform.localScale = Crouch;
+            playerSpeed /= sprintMod;
+        }
+        else if (groundedPlayer && Input.GetButtonDown("Crouch")&& Crouching== true )
+        {
+            Crouching = false;
+            transform.localScale = playerScale;
+            playerSpeed += sprintMod;
+        }
+    }
 
-    //void WallRun()
-    //{
-    //    RaycastHit hit;
-    //    Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.left * DistanceWall));
-    //    Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.right * DistanceWall));
-    //    //if player is by wall do something 
-    //    if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.right), out hit, DistanceWall, Layer_Mask))
-    //    {
-    //        //check if ur right wall 
-    //        if (hit.collider.tag == "Wall")
-    //        {
-    //            //change gravity
-    //            gravityMod += gravityValue;
-    //            //increase speed 
-    //            playerSpeed *= sprintMod;
-    //            //tilt camera 
-    //            StartCoroutine(WallTime());
-    //        }
-    //    }
-    //    else if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.left), out hit, DistanceWall, Layer_Mask))
-    //    {
+        //IEnumerator WallTime()
+        //{
+        //    yield return new WaitForSeconds(WallT);
+        //    gravityValue -= gravityMod;
+        //    playerSpeed /= sprintMod;
 
-    //        //check if ur left wall 
-    //        if (hit.collider.tag == "Wall")
-    //        {
-                
-    //            //change gravity
-    //            gravityMod += gravityValue;
-    //            //increase speed 
-    //            playerSpeed *= sprintMod;
-    //            //tilt camera 
-    //            StartCoroutine(WallTime());
-    //        }
+        //}
 
-    //    }
+        //void WallRun()
+        //{
+        //    RaycastHit hit;
+        //    Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.left * DistanceWall));
+        //    Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.right * DistanceWall));
+        //    //if player is by wall do something 
+        //    if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.right), out hit, DistanceWall, Layer_Mask))
+        //    {
+        //        //check if ur right wall 
+        //        if (hit.collider.tag == "Wall")
+        //        {
+        //            //change gravity
+        //            gravityMod += gravityValue;
+        //            //increase speed 
+        //            playerSpeed *= sprintMod;
+        //            //tilt camera 
+        //            StartCoroutine(WallTime());
+        //        }
+        //    }
+        //    else if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.left), out hit, DistanceWall, Layer_Mask))
+        //    {
 
-    //}
-    // to excute a function in intervals
+        //        //check if ur left wall 
+        //        if (hit.collider.tag == "Wall")
+        //        {
+
+        //            //change gravity
+        //            gravityMod += gravityValue;
+        //            //increase speed 
+        //            playerSpeed *= sprintMod;
+        //            //tilt camera 
+        //            StartCoroutine(WallTime());
+        //        }
+
+        //    }
+
+        //}
+        // to excute a function in intervals
 
 
 
-    //IEnumerator Shoot()
+    //    IEnumerator Shoot()
     //{
     //    isShooting = true;
 

@@ -248,28 +248,28 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-     void WallRun ()
-    {
-        isWall = true;
-        RaycastHit hit;
+    // void WallRun ()
+    //{
+    //    isWall = true;
+    //    RaycastHit hit;
 
-        if (Physics.Raycast)
-        {
-            //change gravity
-            gravityMod = gravityValue;
-            //increase speed 
-            playerSpeed *= sprintMod;
-            //tilt camera 
-        }
-        else if (hit.gameObject.tag != ("Wall"))
-        {
-            //put gravity back to normal 
-            gravityValue -=gravityValue;
-            //reduce speed 
-            playerSpeed /= sprintMod;
-            //remove camera tilt 
-        }
-    }
+    //    if (Physics.Raycast)
+    //    {
+    //        //change gravity
+    //        gravityMod = gravityValue;
+    //        //increase speed 
+    //        playerSpeed *= sprintMod;
+    //        //tilt camera 
+    //    }
+    //    else if (hit.gameObject.tag != ("Wall"))
+    //    {
+    //        //put gravity back to normal 
+    //        gravityValue -=gravityValue;
+    //        //reduce speed 
+    //        playerSpeed /= sprintMod;
+    //        //remove camera tilt 
+    //    }
+    //}
     // to excute a function in intervals
 
 

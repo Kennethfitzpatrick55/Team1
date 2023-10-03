@@ -15,6 +15,7 @@ public class MeleeWeapon : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //Weapon destroyed after a certain amount of time
         Destroy(gameObject, lifeTime);
     }
 
@@ -25,13 +26,21 @@ public class MeleeWeapon : MonoBehaviour
         {
             return;
         }
+
         //Check for damageable object
         IDamage damageable = other.GetComponent<IDamage>();
         if (damageable != null)
         {
             damageable.TakeDamage(damage);
         }
-        //Weapon "dies" regardless of what it hit
+
+        //Weapon destroyed regardless of what it hit
         Destroy(gameObject);
+    }
+
+    //Gets range of weapon based on how far it extends
+    float GetRange()
+    {
+        return gameObject.transform.localScale.z;
     }
 }

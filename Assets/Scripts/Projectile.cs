@@ -17,7 +17,7 @@ public class Projectile : MonoBehaviour
     {
         //Sets velocity of projectile
         rb.velocity = transform.forward * speed;
-        //Projectile "dies" after specified time to reduce total resource load
+        //Projectile destroyed after specified time to reduce total resource load
         Destroy(gameObject, lifeTime);
     }
 
@@ -34,7 +34,7 @@ public class Projectile : MonoBehaviour
         {
             damageable.TakeDamage(damage);
         }
-        //Projectile "dies" regardless of what it hits
+        //Projectile destroyed regardless of what it hits
         Destroy(gameObject);
     }
 

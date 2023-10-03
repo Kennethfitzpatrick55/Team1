@@ -160,6 +160,7 @@ public class PlayerController : MonoBehaviour
     [Range(1, 10)][SerializeField] private Vector3 Crouch;
     [Range(1, 10)][SerializeField] private Vector3 playerScale;
     [SerializeField] private float WallT;
+
     [Header("----Gun states----")]
     [SerializeField] float shootRate;
     [SerializeField] int shootDamage;

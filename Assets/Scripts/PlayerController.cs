@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design.Serialization;
 using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
@@ -177,7 +178,8 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
 
-         Layer_Mask = LayerMask.GetMask("Wall");
+        Layer_Mask = LayerMask.GetMask("Wall")+ LayerMask.GetMask("Ground");
+
         //HPOrig = Hp;
         //spawnPlayer();
         playerScale=transform.localScale;
@@ -206,21 +208,31 @@ public class PlayerController : MonoBehaviour
         Sprint();
        /* WallRun()*/;
         Crouched();
+
         //checks to make sure player is grounded
-        groundedPlayer = controller.isGrounded;
-        if (groundedPlayer && playerVelocity.y < 0)
+        RaycastHit GroundCheck;
+        Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.down * 1.1f));
+
+        if (Physics.Raycast(transform.position,transform.TransformDirection(Vector3.down),out GroundCheck,1.1f, Layer_Mask))
         {
+            groundedPlayer = true;
             //sets the players up and down velocity to 0 
             playerVelocity.y = 0f;
             //rests jump to 0 once player lands
             jumpedtimes = 0;
         }
+        else
+        {
+            groundedPlayer=false;
+        }
+
 
 
         //vector 2 that recives are players input and moves it to that  postion 
         move = (Input.GetAxis("Horizontal") * transform.right) +
              (Input.GetAxis("Vertical") * transform.forward);
 
+        
         //syncs are times across computers for performaces 
         controller.Move(move * Time.deltaTime * playerSpeed);
 
@@ -262,6 +274,7 @@ public class PlayerController : MonoBehaviour
 
         if (groundedPlayer && Input.GetButtonDown("Crouch") && Crouching ==false)
         {
+           
             Crouching = true;
             transform.localScale = Crouch;
             playerSpeed /= sprintMod;

@@ -20,16 +20,18 @@ public class MeleeWeapon : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        //Ignores triggers
         if (other.isTrigger)
         {
             return;
         }
-
+        //Check for damageable object
         IDamage damageable = other.GetComponent<IDamage>();
         if (damageable != null)
         {
             damageable.TakeDamage(damage);
         }
+        //Weapon "dies" regardless of what it hit
         Destroy(gameObject);
     }
 }

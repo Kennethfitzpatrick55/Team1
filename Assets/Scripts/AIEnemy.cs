@@ -143,10 +143,10 @@ public class AIEnemy : MonoBehaviour, IDamage
     void RespawnReset()
     {
         //Checks if player respawned, then resets the playerInRange variable
-        if(GameManager.instance.player.GetComponent<PlayerController>().DidRespawn())
-        {
-            playerInRange = false;
-        }
+        //if(GameManager.instance.player.GetComponent<PlayerController>().DidRespawn())
+        //{
+        //    playerInRange = false;
+        //}
     }
 
     //Finds if player is within attack range so enemies are not always attacking

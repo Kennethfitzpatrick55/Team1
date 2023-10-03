@@ -6,6 +6,8 @@ using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.XR;
 
 public class PlayerController : MonoBehaviour
 {
@@ -149,7 +151,8 @@ public class PlayerController : MonoBehaviour
  
 
     [Header("----Player States----")]
-    [Range(1, 10)][SerializeField] int Hp;
+    [Range(1, 10)][SerializeField] float Hp;
+    [Range(0, 100)][SerializeField] float hpRegen;
     [Range(1, 10)][SerializeField] private float playerSpeed;
     [Range(1, 3)][SerializeField] private float sprintMod;
     [Range(1, 3)][SerializeField] int jumpMax;
@@ -158,8 +161,16 @@ public class PlayerController : MonoBehaviour
     [Range(-10, -40)][SerializeField] private float gravityValue;
     [Range(1, 10)][SerializeField] private int DistanceWall;
     [Range(1, 10)][SerializeField] private Vector3 Crouch;
-    [Range(1, 10)][SerializeField] private Vector3 playerScale;
+    [Range(1, 10)][SerializeField] private Vector3 playerScale; 
+    [Range(1.0f, 100.0f)][SerializeField] float stamina;
+    [Range(1, 20)][SerializeField] float jumpCost;
+    [Range(0.0f, 100f)][SerializeField] float staminaDrain;
+    [Range(0.0f, 100f)][SerializeField] float staminaRegen;
+    [Range(1, 100)][SerializeField] float staminaSprintMinimum;
+    [Range(1, 100)][SerializeField] float staminaJumpMinimum;
+    [Range(1, 10)][SerializeField] float timeUntilRegen;
     [SerializeField] private float WallT;
+
     [Header("----Gun states----")]
     [SerializeField] float shootRate;
     [SerializeField] int shootDamage;
@@ -170,19 +181,25 @@ public class PlayerController : MonoBehaviour
     private bool groundedPlayer;
     private Vector3 move;
     private int jumpedtimes;
+    float staminaOrig;
     bool isSprinting;
+    float regenElapsed;
+    float hpRegenElapsed;
+    bool doStaminaRegen;
+    bool doHelthRegen;
     bool isShooting;
-    int HPOrig;
+    float HPOrig;
     int Layer_Mask;
     bool Crouching;
     private void Start()
     {
-
-        Layer_Mask = LayerMask.GetMask("Wall")+ LayerMask.GetMask("Ground");
-
+        regenElapsed = 0;
+        doStaminaRegen = false;
+        Layer_Mask = LayerMask.GetMask("Wall") + LayerMask.GetMask("Ground");
         //HPOrig = Hp;
+        staminaOrig = stamina;
         //spawnPlayer();
-        playerScale=transform.localScale;
+        playerScale =transform.localScale;
         Crouch =new Vector3(transform.localScale.x,transform.localScale.y/2,transform.localScale.z);
         //RB = GetComponent<Rigidbody>();
         //RB.freezeRotation = true;
@@ -199,14 +216,16 @@ public class PlayerController : MonoBehaviour
         //}
 
         movement();
-
+        CountRegenElapsedInSeconds();
     }
     //  controls the players movement 
     void movement()
     {
         //Additnail movemtn called here 
         Sprint();
-       /* WallRun()*/;
+        updatePlayerStamRegen();
+        /* WallRun()*/
+        ;
         Crouched();
 
         //checks to make sure player is grounded
@@ -238,36 +257,71 @@ public class PlayerController : MonoBehaviour
 
 
         //will take a button input thats press down 
-        if (Input.GetButtonDown("Jump") && jumpedtimes <= jumpMax)
+        if (Input.GetButtonDown("Jump") && jumpedtimes <= jumpMax && staminaJumpMinimum < stamina)
         {
             //will assighn are y to some height 
             playerVelocity.y = jumpHeight;
             //and increment jump
             jumpedtimes++;
+            regenElapsed = 0.0f;
         }
 
         playerVelocity.y += gravityValue * Time.deltaTime;
         controller.Move(playerVelocity * Time.deltaTime);
+        updatePlayerUi();
 
     }
     
+    void CountRegenElapsedInSeconds()
+    {
+        if(regenElapsed < timeUntilRegen)
+        {
+            regenElapsed += Time.deltaTime;
+            //Debug.Log("Counting... " + regenElapsed.ToString());
+            doStaminaRegen = false;
+        }
+        else
+        {
+           // Debug.Log("Done let's regen");
+            doStaminaRegen = true;
+        }
+        if (hpRegenElapsed < timeUntilRegen)
+        {
+            hpRegenElapsed += Time.deltaTime;
+            //Debug.Log("Counting... " + regenElapsed.ToString());
+            doHelthRegen = false;
+        }
+        else
+        {
+            // Debug.Log("Done let's regen");
+            doHelthRegen = true;
+        }
+    }
+
+
+
     // addtinal method  for are walk 
     // will incremnet the player speed as
     //as long as they hold the button;
     void Sprint()
     {
-        //get an input
-        if (Input.GetButtonDown("Sprint"))
-        {
-            //if true  increment the player speed by some number 
-            playerSpeed *= sprintMod;
-        }
-        else if (Input.GetButtonUp("Sprint"))
-        {
-            //if false Decrement the player speed 
-            playerSpeed /= sprintMod;
-        }
-    }
+        
+            if (Input.GetButtonDown("Sprint") && (stamina >= staminaSprintMinimum))
+            {
+                //if true  increment the player speed by some number 
+                playerSpeed *= sprintMod;
+                isSprinting = true;
+                regenElapsed = 0.0f;
+            }
+            else if (Input.GetButtonUp("Sprint"))
+            {
+                //if false Decrement the player speed 
+                playerSpeed /= sprintMod;
+                isSprinting = false;
+                regenElapsed = 0.0f;
+            }
+        
+}
 
     void Crouched()
     {
@@ -286,53 +340,112 @@ public class PlayerController : MonoBehaviour
             playerSpeed += sprintMod;
         }
     }
+    void updatePlayerUi()
+    {
+        //GameManager.instance.playerHPBar.fillAmount = (float)Hp / HPOrig;
+        if (isSprinting)
+        {
+            //if true  increment the player speed by some number 
+            stamina -= (staminaDrain * Time.deltaTime);
+            if (stamina < 1)
+            {
+                stamina = 1;
+            }
+            GameManager.instance.playerStaminaBar.fillAmount = ((float)stamina / (float)staminaOrig);
+        }
+        else if (Input.GetButtonDown("Jump") && staminaJumpMinimum < stamina)
+        {
+            //if false Decrement the player speed 
+            stamina -= jumpCost;
+            if (stamina < 1)
+            {
+                stamina = 1;
+            }
+            GameManager.instance.playerStaminaBar.fillAmount = (stamina) / (float)staminaOrig;
+        }
 
-        //IEnumerator WallTime()
-        //{
-        //    yield return new WaitForSeconds(WallT);
-        //    gravityValue -= gravityMod;
-        //    playerSpeed /= sprintMod;
+        if(GameManager.instance.playerStaminaBar.fillAmount == 1.0f)
+        {
+            //GameManager.instance.playerStaminaBar.enabled = false;
+            GameManager.instance.playerStaminaBar.transform.parent.gameObject.SetActive(false);
+        }
+        else
+        {
+            GameManager.instance.playerStaminaBar.transform.parent.gameObject.SetActive(true);
+        }
 
-        //}
+        GameManager.instance.playerHPBar.fillAmount = (float)Hp / (float)HPOrig;
 
-        //void WallRun()
-        //{
-        //    RaycastHit hit;
-        //    Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.left * DistanceWall));
-        //    Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.right * DistanceWall));
-        //    //if player is by wall do something 
-        //    if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.right), out hit, DistanceWall, Layer_Mask))
-        //    {
-        //        //check if ur right wall 
-        //        if (hit.collider.tag == "Wall")
-        //        {
-        //            //change gravity
-        //            gravityMod += gravityValue;
-        //            //increase speed 
-        //            playerSpeed *= sprintMod;
-        //            //tilt camera 
-        //            StartCoroutine(WallTime());
-        //        }
-        //    }
-        //    else if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.left), out hit, DistanceWall, Layer_Mask))
-        //    {
 
-        //        //check if ur left wall 
-        //        if (hit.collider.tag == "Wall")
-        //        {
+        if(GameManager.instance.playerHPBar.fillAmount < (HPOrig/2))
+        {
+            Hp += hpRegen * Time.deltaTime;
+            if(Hp > (HPOrig/2))
+            {
+                Hp = (HPOrig/2);
+            }
+        }
+        
+    }
 
-        //            //change gravity
-        //            gravityMod += gravityValue;
-        //            //increase speed 
-        //            playerSpeed *= sprintMod;
-        //            //tilt camera 
-        //            StartCoroutine(WallTime());
-        //        }
+    private void updatePlayerStamRegen()
+    {
+        if (!isSprinting && doStaminaRegen)
+        {
+            stamina += (staminaRegen * Time.deltaTime);
+            if(stamina > 100)
+            {
+                stamina = 100;
+            }
+            GameManager.instance.playerStaminaBar.fillAmount = (stamina / staminaOrig);
+        }
+    }
+    //IEnumerator WallTime()
+    //{
+    //    yield return new WaitForSeconds(WallT);
+    //    gravityValue -= gravityMod;
+    //    playerSpeed /= sprintMod;
 
-        //    }
+    //}
 
-        //}
-        // to excute a function in intervals
+    //void WallRun()
+    //{
+    //    RaycastHit hit;
+    //    Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.left * DistanceWall));
+    //    Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.right * DistanceWall));
+    //    //if player is by wall do something 
+    //    if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.right), out hit, DistanceWall, Layer_Mask))
+    //    {
+    //        //check if ur right wall 
+    //        if (hit.collider.tag == "Wall")
+    //        {
+    //            //change gravity
+    //            gravityMod += gravityValue;
+    //            //increase speed 
+    //            playerSpeed *= sprintMod;
+    //            //tilt camera 
+    //            StartCoroutine(WallTime());
+    //        }
+    //    }
+    //    else if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.left), out hit, DistanceWall, Layer_Mask))
+    //    {
+
+    //        //check if ur left wall 
+    //        if (hit.collider.tag == "Wall")
+    //        {
+
+    //            //change gravity
+    //            gravityMod += gravityValue;
+    //            //increase speed 
+    //            playerSpeed *= sprintMod;
+    //            //tilt camera 
+    //            StartCoroutine(WallTime());
+    //        }
+
+    //    }
+
+    //}
+    // to excute a function in intervals
 
 
 

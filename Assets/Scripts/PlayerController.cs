@@ -151,7 +151,8 @@ public class PlayerController : MonoBehaviour
  
 
     [Header("----Player States----")]
-    [Range(1, 10)][SerializeField] int Hp;
+    [Range(1, 10)][SerializeField] float Hp;
+    [Range(0, 100)][SerializeField] float hpRegen;
     [Range(1, 10)][SerializeField] private float playerSpeed;
     [Range(1, 3)][SerializeField] private float sprintMod;
     [Range(1, 3)][SerializeField] int jumpMax;
@@ -183,9 +184,11 @@ public class PlayerController : MonoBehaviour
     float staminaOrig;
     bool isSprinting;
     float regenElapsed;
+    float hpRegenElapsed;
     bool doStaminaRegen;
+    bool doHelthRegen;
     bool isShooting;
-    int HPOrig;
+    float HPOrig;
     int Layer_Mask;
     bool Crouching;
     private void Start()
@@ -282,7 +285,20 @@ public class PlayerController : MonoBehaviour
            // Debug.Log("Done let's regen");
             doStaminaRegen = true;
         }
+        if (hpRegenElapsed < timeUntilRegen)
+        {
+            hpRegenElapsed += Time.deltaTime;
+            //Debug.Log("Counting... " + regenElapsed.ToString());
+            doHelthRegen = false;
+        }
+        else
+        {
+            // Debug.Log("Done let's regen");
+            doHelthRegen = true;
+        }
     }
+
+
 
     // addtinal method  for are walk 
     // will incremnet the player speed as
@@ -356,6 +372,18 @@ public class PlayerController : MonoBehaviour
         else
         {
             GameManager.instance.playerStaminaBar.transform.parent.gameObject.SetActive(true);
+        }
+
+        GameManager.instance.playerHPBar.fillAmount = (float)Hp / (float)HPOrig;
+
+
+        if(GameManager.instance.playerHPBar.fillAmount < (HPOrig/2))
+        {
+            Hp += hpRegen * Time.deltaTime;
+            if(Hp > (HPOrig/2))
+            {
+                Hp = (HPOrig/2);
+            }
         }
         
     }

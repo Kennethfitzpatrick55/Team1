@@ -39,7 +39,7 @@ public class MeleeWeapon : MonoBehaviour
     }
 
     //Gets range of weapon based on how far it extends
-    float GetRange()
+    public float GetRange()
     {
         return gameObject.transform.localScale.z;
     }

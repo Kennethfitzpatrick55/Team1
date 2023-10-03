@@ -19,6 +19,7 @@ public class AIEnemy : MonoBehaviour, IDamage
     [SerializeField] GameObject weapon;
     [SerializeField] Transform weaponPos;
     [SerializeField] float attackDelay;
+    float range;
 
     bool isAttacking;
     bool playerInRange;
@@ -30,6 +31,14 @@ public class AIEnemy : MonoBehaviour, IDamage
     void Start()
     {
         colorOrig = model.material.color;
+        if(weapon.CompareTag("Melee"))
+        {
+            range = weapon.transform.localScale.y;
+        }
+        else if(weapon.CompareTag("Projectile"))
+        {
+            range = weapon.GetComponent<Projectile>().GetRange();
+        }
         GameManager.instance.UpdateEnemyCount(1);
     }
 
@@ -38,7 +47,7 @@ public class AIEnemy : MonoBehaviour, IDamage
     {
         if(playerInRange)
         {
-            playerDir = GameManager.instance.transform.position - transform.position;
+            playerDir = GameManager.instance.player.transform.position - transform.position;
             
             if(agent.remainingDistance < agent.stoppingDistance)
             {
@@ -47,7 +56,7 @@ public class AIEnemy : MonoBehaviour, IDamage
 
             agent.SetDestination(GameManager.instance.player.transform.position);
             
-            if(!isAttacking)
+            if(!isAttacking && InAttackRange())
             {
                 StartCoroutine(Attack());
             }
@@ -101,5 +110,16 @@ public class AIEnemy : MonoBehaviour, IDamage
         {
             playerInRange = false;
         }
+    }
+
+    //Finds if player is within attack range so enemies are not always attacking
+    bool InAttackRange()
+    {
+        bool inRange = false;
+        if(Vector3.Distance(GameManager.instance.player.transform.position, transform.position) <= range)
+        {
+            inRange = true;
+        }
+        return inRange;
     }
 }

@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.XR;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour,IDamage
 {
     //please ignore this 
     /*
@@ -148,7 +148,7 @@ public class PlayerController : MonoBehaviour
     // orgization of materials in inspector 
     [Header("----Components----")]
     [SerializeField] CharacterController controller;
- 
+
 
     [Header("----Player States----")]
     [Range(1, 10)][SerializeField] float Hp;
@@ -161,7 +161,7 @@ public class PlayerController : MonoBehaviour
     [Range(-10, -40)][SerializeField] private float gravityValue;
     [Range(1, 10)][SerializeField] private int DistanceWall;
     [Range(1, 10)][SerializeField] private Vector3 Crouch;
-    [Range(1, 10)][SerializeField] private Vector3 playerScale; 
+    [Range(1, 10)][SerializeField] private Vector3 playerScale;
     [Range(1.0f, 100.0f)][SerializeField] float stamina;
     [Range(1, 20)][SerializeField] float jumpCost;
     [Range(0.0f, 100f)][SerializeField] float staminaDrain;
@@ -193,14 +193,15 @@ public class PlayerController : MonoBehaviour
     bool Crouching;
     private void Start()
     {
+
         regenElapsed = 0;
         doStaminaRegen = false;
         Layer_Mask = LayerMask.GetMask("Wall") + LayerMask.GetMask("Ground");
-        //HPOrig = Hp;
+        HPOrig = Hp;
         staminaOrig = stamina;
         //spawnPlayer();
-        playerScale =transform.localScale;
-        Crouch =new Vector3(transform.localScale.x,transform.localScale.y/2,transform.localScale.z);
+        playerScale = transform.localScale;
+        Crouch = new Vector3(transform.localScale.x, transform.localScale.y / 2, transform.localScale.z);
         //RB = GetComponent<Rigidbody>();
         //RB.freezeRotation = true;
     }
@@ -208,12 +209,12 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        //Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * shootDist);
+        Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * shootDist);
 
-        //if (Input.GetButtonDown("Shoot") && !isShooting)
-        //{
-        //    StartCoroutine(Shoot());
-        //}
+        if (Input.GetButtonDown("Shoot") && !isShooting)
+        {
+            StartCoroutine(Shoot());
+        }
 
         movement();
         CountRegenElapsedInSeconds();
@@ -223,16 +224,14 @@ public class PlayerController : MonoBehaviour
     {
         //Additnail movemtn called here 
         Sprint();
-        updatePlayerStamRegen();
-        /* WallRun()*/
-        ;
+        WallRun();
         Crouched();
-
+        updatePlayerStamRegen();
         //checks to make sure player is grounded
         RaycastHit GroundCheck;
         Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.down * 1.1f));
 
-        if (Physics.Raycast(transform.position,transform.TransformDirection(Vector3.down),out GroundCheck,1.1f, Layer_Mask))
+        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), out GroundCheck, 1.1f, Layer_Mask))
         {
             groundedPlayer = true;
             //sets the players up and down velocity to 0 
@@ -242,23 +241,25 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            groundedPlayer=false;
+            groundedPlayer = false;
         }
-
-
 
         //vector 2 that recives are players input and moves it to that  postion 
         move = (Input.GetAxis("Horizontal") * transform.right) +
              (Input.GetAxis("Vertical") * transform.forward);
 
-        
         //syncs are times across computers for performaces 
         controller.Move(move * Time.deltaTime * playerSpeed);
 
-
         //will take a button input thats press down 
         if (Input.GetButtonDown("Jump") && jumpedtimes <= jumpMax && staminaJumpMinimum < stamina)
-        {
+        {  
+            if (Crouching==true) 
+            {
+                Crouching = false;
+                transform.localScale = playerScale;
+                playerSpeed *= sprintMod;
+            }
             //will assighn are y to some height 
             playerVelocity.y = jumpHeight;
             //and increment jump
@@ -269,12 +270,11 @@ public class PlayerController : MonoBehaviour
         playerVelocity.y += gravityValue * Time.deltaTime;
         controller.Move(playerVelocity * Time.deltaTime);
         updatePlayerUi();
-
     }
-    
+
     void CountRegenElapsedInSeconds()
     {
-        if(regenElapsed < timeUntilRegen)
+        if (regenElapsed < timeUntilRegen)
         {
             regenElapsed += Time.deltaTime;
             //Debug.Log("Counting... " + regenElapsed.ToString());
@@ -282,7 +282,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-           // Debug.Log("Done let's regen");
+            // Debug.Log("Done let's regen");
             doStaminaRegen = true;
         }
         if (hpRegenElapsed < timeUntilRegen)
@@ -298,46 +298,49 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-
-
     // addtinal method  for are walk 
     // will incremnet the player speed as
     //as long as they hold the button;
     void Sprint()
     {
-        
-            if (Input.GetButtonDown("Sprint") && (stamina >= staminaSprintMinimum))
-            {
-                //if true  increment the player speed by some number 
-                playerSpeed *= sprintMod;
-                isSprinting = true;
-                regenElapsed = 0.0f;
-            }
-            else if (Input.GetButtonUp("Sprint"))
-            {
-                //if false Decrement the player speed 
-                playerSpeed /= sprintMod;
-                isSprinting = false;
-                regenElapsed = 0.0f;
-            }
-        
-}
+        if (Input.GetButtonDown("Sprint") && (stamina >= staminaSprintMinimum))
+        {
+            //if true  increment the player speed by some number 
+            playerSpeed *= sprintMod;
+            isSprinting = true;
+            regenElapsed = 0.0f;
+        }
+        else if (Input.GetButtonUp("Sprint"))
+        {
+            //if false Decrement the player speed 
+            playerSpeed /= sprintMod;
+            isSprinting = false;
+            regenElapsed = 0.0f;
+        }
+    }
 
     void Crouched()
     {
-
-        if (groundedPlayer && Input.GetButtonDown("Crouch") && Crouching ==false)
+        if (groundedPlayer && Input.GetButtonDown("Crouch") && Crouching == false)
         {
-           
-            Crouching = true;
-            transform.localScale = Crouch;
-            playerSpeed /= sprintMod;
+            if (isSprinting && Input.GetButtonDown("Crouch"))
+            {
+                Crouching = true;
+                transform.localScale = Crouch;
+                playerSpeed /= 2;
+            }
+            else
+            {
+                Crouching = true;
+                transform.localScale = Crouch;
+                playerSpeed /= sprintMod;
+            }
         }
-        else if (groundedPlayer && Input.GetButtonDown("Crouch")&& Crouching== true )
+        else if (groundedPlayer && Input.GetButtonDown("Crouch") && Crouching == true)
         {
             Crouching = false;
             transform.localScale = playerScale;
-            playerSpeed += sprintMod;
+            playerSpeed *= sprintMod;
         }
     }
     void updatePlayerUi()
@@ -364,7 +367,7 @@ public class PlayerController : MonoBehaviour
             GameManager.instance.playerStaminaBar.fillAmount = (stamina) / (float)staminaOrig;
         }
 
-        if(GameManager.instance.playerStaminaBar.fillAmount == 1.0f)
+        if (GameManager.instance.playerStaminaBar.fillAmount == 1.0f)
         {
             //GameManager.instance.playerStaminaBar.enabled = false;
             GameManager.instance.playerStaminaBar.transform.parent.gameObject.SetActive(false);
@@ -376,16 +379,14 @@ public class PlayerController : MonoBehaviour
 
         GameManager.instance.playerHPBar.fillAmount = (float)Hp / (float)HPOrig;
 
-
-        if(GameManager.instance.playerHPBar.fillAmount < (HPOrig/2))
+        if (GameManager.instance.playerHPBar.fillAmount < (HPOrig / 2))
         {
             Hp += hpRegen * Time.deltaTime;
-            if(Hp > (HPOrig/2))
+            if (Hp > (HPOrig / 2))
             {
-                Hp = (HPOrig/2);
+                Hp = (HPOrig / 2);
             }
         }
-        
     }
 
     private void updatePlayerStamRegen()
@@ -393,108 +394,103 @@ public class PlayerController : MonoBehaviour
         if (!isSprinting && doStaminaRegen)
         {
             stamina += (staminaRegen * Time.deltaTime);
-            if(stamina > 100)
+            if (stamina > 100)
             {
                 stamina = 100;
             }
             GameManager.instance.playerStaminaBar.fillAmount = (stamina / staminaOrig);
         }
     }
-    //IEnumerator WallTime()
-    //{
-    //    yield return new WaitForSeconds(WallT);
-    //    gravityValue -= gravityMod;
-    //    playerSpeed /= sprintMod;
+    IEnumerator WallTime()
+    {
+        yield return new WaitForSeconds(WallT);
+        gravityValue -= gravityMod;
+        playerSpeed /= sprintMod;
+    }
 
-    //}
+    void WallRun()
+    {
+        RaycastHit hit;
+        Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.left * DistanceWall));
+        Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.right * DistanceWall));
+        //if player is by wall do something 
+        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.right), out hit, DistanceWall, Layer_Mask))
+        {
+            //check if ur right wall 
+            if (hit.collider.tag == "Wall")
+            {
+                //change gravity
+                gravityMod += gravityValue;
+                //increase speed 
+                playerSpeed *= sprintMod;
+                //tilt camera 
+                StartCoroutine(WallTime());
+            }
+        }
+        else if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.left), out hit, DistanceWall, Layer_Mask))
+        {
 
-    //void WallRun()
-    //{
-    //    RaycastHit hit;
-    //    Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.left * DistanceWall));
-    //    Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.right * DistanceWall));
-    //    //if player is by wall do something 
-    //    if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.right), out hit, DistanceWall, Layer_Mask))
-    //    {
-    //        //check if ur right wall 
-    //        if (hit.collider.tag == "Wall")
-    //        {
-    //            //change gravity
-    //            gravityMod += gravityValue;
-    //            //increase speed 
-    //            playerSpeed *= sprintMod;
-    //            //tilt camera 
-    //            StartCoroutine(WallTime());
-    //        }
-    //    }
-    //    else if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.left), out hit, DistanceWall, Layer_Mask))
-    //    {
+            //check if ur left wall 
+            if (hit.collider.tag == "Wall")
+            {
 
-    //        //check if ur left wall 
-    //        if (hit.collider.tag == "Wall")
-    //        {
+                //change gravity
+                gravityMod += gravityValue;
+                //increase speed 
+                playerSpeed *= sprintMod;
+                //tilt camera 
+                StartCoroutine(WallTime());
+            }
 
-    //            //change gravity
-    //            gravityMod += gravityValue;
-    //            //increase speed 
-    //            playerSpeed *= sprintMod;
-    //            //tilt camera 
-    //            StartCoroutine(WallTime());
-    //        }
+        }
+        // to excute a function in intervals
+    }
 
-    //    }
+    IEnumerator Shoot()
+    {
+        isShooting = true;
 
-    //}
-    // to excute a function in intervals
+        RaycastHit hit;
 
+        if (Physics.Raycast(Camera.main.ViewportPointToRay(new Vector2(0.5f, 0.5f)), out hit, shootDist))
+        {
+            //Does he object have acess to IDamage
+            IDamage damagable = hit.collider.GetComponent<IDamage>();
+            // if that object is damagebel then damge it  
+            if (damagable != null)
+            {
+                //damagable.takeDamage(shootDamage);
+            }
+            //Instantiate(cube, hit.point,cube.transform.rotation);
+        }
+        // once fired pause 
+        yield return new WaitForSeconds(shootRate);
+        //stop shooting 
+        isShooting = false;
+    }
 
+    public void TakeDamage(int amount)
+    {
+        Hp -= amount;
+        //UpdatePlayerUI();
+        if (Hp <= 0)
+        {
+            //gameManger.instance.youLose();
+        }
+    }
+    public void SpawnPlayer()
+    {
+        Hp = HPOrig;
+        //UpdatePlayerUI();
+        controller.enabled = false;
+        //transform.position = gameManger.instance.playerSpawnPos.transform.position;
+        controller.enabled = true;
+    }
 
-    //    IEnumerator Shoot()
-    //{
-    //    isShooting = true;
-
-    //    RaycastHit hit;
-
-    //    if (Physics.Raycast(Camera.main.ViewportPointToRay(new Vector2(0.5f, 0.5f)), out hit, shootDist))
-    //    {
-    //        //Does he object have acess to IDamage
-    //        IDamage damagable = hit.collider.GetComponent<IDamage>();
-    //        // if that object is damagebel then damge it  
-    //        if (damagable != null)
-    //        {
-    //            damagable.takeDamage(shootDamage);
-    //        }
-    //        //Instantiate(cube, hit.point,cube.transform.rotation);
-    //    }
-    //    // once fired pause 
-    //    yield return new WaitForSeconds(shootRate);
-    //    //stop shooting 
-    //    isShooting = false;
-    //}
-
-    //public void takeDamage(int amount)
-    //{
-    //    Hp -= amount;
-    //    UpdatePlayerUI();
-    //    if (Hp <= 0)
-    //    {
-    //        gameManger.instance.youLose();
-    //    }
-    //}
-    //public void spawnPlayer()
-    //{
-    //    Hp = HPOrig;
-    //    UpdatePlayerUI();
-    //    controller.enabled = false;
-    //    transform.position = gameManger.instance.playerSpawnPos.transform.position;
-    //    controller.enabled = true;
-    //}
-
-    //void UpdatePlayerUI()
-    //{
-    //    gameManger.instance.playerHpBar.fillAmount = (float)Hp / HPOrig;
-    //}
-
+    void UpdatePlayerUI()
+    {
+        //gameManger.instance.playerHpBar.fillAmount = (float)Hp / HPOrig;
+    }
 
 
 }

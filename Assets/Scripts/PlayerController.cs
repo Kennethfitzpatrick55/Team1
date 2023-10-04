@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.XR;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IDamage
 {
     //please ignore this 
     /*
@@ -225,7 +225,6 @@ public class PlayerController : MonoBehaviour
         Sprint();
         updatePlayerStamRegen();
         /* WallRun()*/
-        ;
         Crouched();
 
         //checks to make sure player is grounded
@@ -472,15 +471,15 @@ public class PlayerController : MonoBehaviour
     //    isShooting = false;
     //}
 
-    //public void takeDamage(int amount)
-    //{
-    //    Hp -= amount;
-    //    UpdatePlayerUI();
-    //    if (Hp <= 0)
-    //    {
-    //        gameManger.instance.youLose();
-    //    }
-    //}
+    public void TakeDamage(int amount)
+    {
+        Hp -= amount;
+        //UpdatePlayerUI();
+        if (Hp <= 0)
+        {
+            //gameManger.instance.youLose();
+        }
+    }
     //public void spawnPlayer()
     //{
     //    Hp = HPOrig;

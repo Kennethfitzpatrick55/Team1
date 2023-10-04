@@ -316,7 +316,7 @@ public class PlayerController : MonoBehaviour, IDamage
             if (isSprinting && Input.GetButtonDown("Crouch"))
             {
 
-                Slide();
+                StartCoroutine(Slide());
             }
 
             //if true  increment the player speed by some number 
@@ -334,11 +334,12 @@ public class PlayerController : MonoBehaviour, IDamage
     }
     IEnumerator Slide()
     {
+        playerSpeed = 10;
         yield return new WaitForSeconds(slideT);
-        gravityValue += gravityMod;
         playerSpeed /= sprintMod;
         Crouching = true;
         transform.localScale = Crouch;
+
     }
     void Crouched()
     {

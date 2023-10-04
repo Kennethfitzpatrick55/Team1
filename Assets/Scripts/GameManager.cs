@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
     {
         instance = this;
         timeScaleOrig = Time.timeScale;
-        //player = GameObject.FindWithTag("Player");
+        player = GameObject.FindWithTag("Player");
         //playerSpawn = GameObject.FindWithTag("Player Spawn");
         //enemySpawn = GameObject.FindWithTag("Enemy Spawn");
     }

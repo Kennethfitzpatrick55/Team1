@@ -30,7 +30,9 @@ public class Projectile : MonoBehaviour
         }
         //Check for damageable object
         IDamage damageable = other.GetComponent<IDamage>();
-        if(damageable != null )
+
+        //Checks to be certain that damageable object is player (for now)
+        if (damageable != null && other.CompareTag("Player"))
         {
             damageable.TakeDamage(damage);
         }

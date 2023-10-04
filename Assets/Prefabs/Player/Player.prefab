@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 1653064986366378708}
   m_Layer: 3
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -52,6 +52,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controller: {fileID: 1653064986366378708}
   Hp: 0
+  hpRegen: 0
   playerSpeed: 3.53
   sprintMod: 1.47
   jumpMax: 2
@@ -59,6 +60,15 @@ MonoBehaviour:
   gravityMod: 15.9
   gravityValue: -10
   DistanceWall: 5
+  Crouch: {x: 0, y: 0, z: 0}
+  playerScale: {x: 0, y: 0, z: 0}
+  stamina: 0
+  jumpCost: 0
+  staminaDrain: 0
+  staminaRegen: 0
+  staminaSprintMinimum: 0
+  staminaJumpMinimum: 0
+  timeUntilRegen: 0
   WallT: 0
   shootRate: 0
   shootDamage: 0

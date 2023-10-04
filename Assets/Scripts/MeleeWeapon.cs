@@ -10,15 +10,26 @@ public class MeleeWeapon : MonoBehaviour
 
     [Header("----- Stats -----")]
     [SerializeField] int damage;
-    [SerializeField] int lifeTime;
 
     // Start is called before the first frame update
     void Start()
     {
-        //Weapon destroyed after a certain amount of time
-        Destroy(gameObject, lifeTime);
+
     }
 
+    //Rotates downward swing
+    public void Animate()
+    {
+        gameObject.transform.Rotate(0, 15.0f, 0, Space.Self);
+    }
+
+    //Resets animation on weapon
+    public void ResetAnim()
+    {
+        gameObject.transform.rotation = Quaternion.identity;
+    }
+
+    //Detects collision with another body
     private void OnTriggerEnter(Collider other)
     {
         //Ignores triggers
@@ -29,18 +40,11 @@ public class MeleeWeapon : MonoBehaviour
 
         //Check for damageable object
         IDamage damageable = other.GetComponent<IDamage>();
-        if (damageable != null)
+
+        //Checks to be certain that damageable object is player (for now)
+        if (damageable != null && other.CompareTag("Player"))
         {
             damageable.TakeDamage(damage);
         }
-
-        //Weapon destroyed regardless of what it hit
-        Destroy(gameObject);
-    }
-
-    //Gets range of weapon based on how far it extends
-    public float GetRange()
-    {
-        return gameObject.transform.localScale.z;
     }
 }

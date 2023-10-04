@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 2538264634917770152}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.75}
+  m_LocalPosition: {x: 0, y: 0, z: 1.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -40,7 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 578976337435388448}
-  - component: {fileID: 9007500040611951640}
+  - component: {fileID: 2626095093550008892}
   - component: {fileID: 7297275094313744363}
   - component: {fileID: 6167732423560813673}
   - component: {fileID: 6665743106819707165}
@@ -69,7 +69,7 @@ Transform:
   - {fileID: 5168303357036427041}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &9007500040611951640
+--- !u!114 &2626095093550008892
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -78,7 +78,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5606921646916246009}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47f40231f5abdf941814facb29d32843, type: 3}
+  m_Script: {fileID: 11500000, guid: 07084466a75593448827f507764b988b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   agent: {fileID: 7297275094313744363}

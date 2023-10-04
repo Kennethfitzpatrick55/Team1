@@ -56,6 +56,7 @@ public class GameManager : MonoBehaviour
         enemyCount += amount;
     }
 
+    // Pauses the game
     public void pausedState()
     {
         isPaused = !isPaused;
@@ -64,6 +65,7 @@ public class GameManager : MonoBehaviour
         Cursor.visible = true;
     }
 
+    //Resumes the game
     public void unpausedState()
     {
         isPaused = !isPaused;

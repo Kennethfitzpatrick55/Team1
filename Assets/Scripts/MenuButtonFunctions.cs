@@ -7,17 +7,20 @@ public class MenuButtonFunctions : MonoBehaviour
 {
     public void resume()
     {
+        //sets current menu to inactive and returns to play
         GameManager.instance.unpausedState();
     }
 
     public void restart()
     {
+        //restarts game by reloading the active scene
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         GameManager.instance.unpausedState();
     }
 
     public void quit()
     {
+        //closes out the game
         Application.Quit();
     }
 

@@ -345,9 +345,6 @@ public class PlayerController : MonoBehaviour, IDamage
     {
         if (groundedPlayer && Input.GetButtonDown("Crouch") && Crouching == false)
         {
-           
-           
-            
                 Crouching = true;
                 transform.localScale = Crouch;
                 playerSpeed /= sprintMod;

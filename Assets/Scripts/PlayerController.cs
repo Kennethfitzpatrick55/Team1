@@ -9,11 +9,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.XR;
 
-<<<<<<< HEAD
+
 public class PlayerController : MonoBehaviour, IDamage
-=======
-public class PlayerController : MonoBehaviour,IDamage
->>>>>>> 29869a418dd682ad4347e25dbfc3372e3c9dcf04
 {
     //please ignore this 
     /*
@@ -229,12 +226,12 @@ public class PlayerController : MonoBehaviour,IDamage
     {
         //Additnail movemtn called here 
         Sprint();
-<<<<<<< HEAD
+
         updatePlayerStamRegen();
         /* WallRun()*/
-=======
+
         WallRun();
->>>>>>> 29869a418dd682ad4347e25dbfc3372e3c9dcf04
+
         Crouched();
         updatePlayerStamRegen();
         //checks to make sure player is grounded
@@ -506,7 +503,7 @@ public class PlayerController : MonoBehaviour,IDamage
         controller.enabled = true;
     }
 
-<<<<<<< HEAD
+
     //    IEnumerator Shoot()
     //{
     //    isShooting = true;
@@ -530,15 +527,6 @@ public class PlayerController : MonoBehaviour,IDamage
     //    isShooting = false;
     //}
 
-    public void TakeDamage(int amount)
-    {
-        Hp -= amount;
-        //UpdatePlayerUI();
-        if (Hp <= 0)
-        {
-            //gameManger.instance.youLose();
-        }
-    }
     //public void spawnPlayer()
     //{
     //    Hp = HPOrig;
@@ -553,12 +541,12 @@ public class PlayerController : MonoBehaviour,IDamage
     //    gameManger.instance.playerHpBar.fillAmount = (float)Hp / HPOrig;
     //}
 
-=======
+
     void UpdatePlayerUI()
     {
         //gameManger.instance.playerHpBar.fillAmount = (float)Hp / HPOrig;
     }
->>>>>>> 29869a418dd682ad4347e25dbfc3372e3c9dcf04
+
 
 
 }

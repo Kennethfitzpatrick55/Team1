@@ -170,6 +170,7 @@ public class PlayerController : MonoBehaviour,IDamage
     [Range(1, 100)][SerializeField] float staminaJumpMinimum;
     [Range(1, 10)][SerializeField] float timeUntilRegen;
     [SerializeField] private float WallT;
+    [SerializeField] private float slideT;
 
     [Header("----Gun states----")]
     [SerializeField] float shootRate;
@@ -305,6 +306,13 @@ public class PlayerController : MonoBehaviour,IDamage
     {
         if (Input.GetButtonDown("Sprint") && (stamina >= staminaSprintMinimum))
         {
+
+            if (isSprinting && Input.GetButtonDown("Crouch"))
+            {
+
+                Slide();
+            }
+
             //if true  increment the player speed by some number 
             playerSpeed *= sprintMod;
             isSprinting = true;
@@ -318,23 +326,25 @@ public class PlayerController : MonoBehaviour,IDamage
             regenElapsed = 0.0f;
         }
     }
-
+    IEnumerator Slide()
+    {
+        yield return new WaitForSeconds(slideT);
+        gravityValue += gravityMod;
+        playerSpeed /= sprintMod;
+        Crouching = true;
+        transform.localScale = Crouch;
+    }
     void Crouched()
     {
         if (groundedPlayer && Input.GetButtonDown("Crouch") && Crouching == false)
         {
-            if (isSprinting && Input.GetButtonDown("Crouch"))
-            {
-                Crouching = true;
-                transform.localScale = Crouch;
-                playerSpeed /= 2;
-            }
-            else
-            {
+           
+           
+            
                 Crouching = true;
                 transform.localScale = Crouch;
                 playerSpeed /= sprintMod;
-            }
+            
         }
         else if (groundedPlayer && Input.GetButtonDown("Crouch") && Crouching == true)
         {

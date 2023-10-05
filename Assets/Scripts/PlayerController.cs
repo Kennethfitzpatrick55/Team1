@@ -79,15 +79,19 @@ public class PlayerController : MonoBehaviour, IDamage
 
     void Update()
     {
-        Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * shootDist);
-
-        if (Input.GetButtonDown("Shoot") && !isShooting)
+       
+        //if its not paused do this 
+        if (!GameManager.instance.isPaused)
         {
-            StartCoroutine(Shoot());
-        }
+            if (Input.GetButtonDown("Shoot") && !isShooting)
+            {
+                StartCoroutine(Shoot());
+            }
 
-        movement();
-        CountRegenElapsedInSeconds();
+            movement();
+
+            CountRegenElapsedInSeconds(); 
+        }
     }
     //  controls the players movement 
     void movement()
@@ -212,17 +216,22 @@ public class PlayerController : MonoBehaviour, IDamage
     //}
     void Crouched()
     {
+        //check if grouded check button if false
         if (groundedPlayer && Input.GetButtonDown("Crouch") && Crouching == false)
         {
                 Crouching = true;
+            //change local y
                 transform.localScale = Crouch;
+            //decrement speed
                 playerSpeed /= sprintMod;
-            
-        }
+
+        }//check if grouded check button if true
         else if (groundedPlayer && Input.GetButtonDown("Crouch") && Crouching == true)
         {
             Crouching = false;
+            //set height back to normal 
             transform.localScale = playerScale;
+            //give player back speed 
             playerSpeed *= sprintMod;
         }
     }
@@ -237,6 +246,7 @@ public class PlayerController : MonoBehaviour, IDamage
             {
                 stamina = 1;
             }
+            //take stamin away when running 
             GameManager.instance.playerStaminaBar.fillAmount = ((float)stamina / (float)staminaOrig);
         }
         else if (Input.GetButtonDown("Jump") && staminaJumpMinimum < stamina)
@@ -346,7 +356,7 @@ public class PlayerController : MonoBehaviour, IDamage
         Hp = HPOrig;
         UpdatePlayerUI();
         controller.enabled = false;
-        //transform.position = GameManager.instance.playerSpawnPos.transform.position;
+        transform.position = GameManager.instance.playerSpawn.transform.position;
         controller.enabled = true;
     }
 
@@ -385,7 +395,7 @@ public class PlayerController : MonoBehaviour, IDamage
 
     void UpdatePlayerUI()
     {
-        //GameManager.instance.playerHpBar.fillAmount = (float)Hp / HPOrig;
+        GameManager.instance.playerHPBar.fillAmount = (float)Hp / HPOrig;
     }
 
 

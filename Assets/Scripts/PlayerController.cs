@@ -36,7 +36,8 @@ public class PlayerController : MonoBehaviour, IDamage
     [Range(0.0f, 100f)][SerializeField] float staminaRegen;
     [Range(1, 100)][SerializeField] float staminaSprintMinimum;
     [Range(1, 100)][SerializeField] float staminaJumpMinimum;
-    [Range(1, 10)][SerializeField] float timeUntilRegen;
+    [Range(1, 10)][SerializeField] float timeUntilRegenHp;
+    [Range(1, 10)][SerializeField] float timeUntilRegenStamina;
     [SerializeField] private float WallT;
     [SerializeField] private float slideT;
 
@@ -148,7 +149,7 @@ public class PlayerController : MonoBehaviour, IDamage
 
     void CountRegenElapsedInSeconds()
     {
-        if (regenElapsed < timeUntilRegen)
+        if (regenElapsed < timeUntilRegenStamina)
         {
             regenElapsed += Time.deltaTime;
             //Debug.Log("Counting... " + regenElapsed.ToString());
@@ -159,7 +160,7 @@ public class PlayerController : MonoBehaviour, IDamage
             // Debug.Log("Done let's regen");
             doStaminaRegen = true;
         }
-        if (hpRegenElapsed < timeUntilRegen)
+        if (hpRegenElapsed < timeUntilRegenHp)
         {
             hpRegenElapsed += Time.deltaTime;
             //Debug.Log("Counting... " + regenElapsed.ToString());
@@ -261,12 +262,13 @@ public class PlayerController : MonoBehaviour, IDamage
 
         GameManager.instance.playerHPBar.fillAmount = (float)Hp / (float)HPOrig;
 
-        if (GameManager.instance.playerHPBar.fillAmount < (HPOrig / 2))
+        if (GameManager.instance.playerHPBar.fillAmount < (0.5f) && doHelthRegen)
         {
             Hp += hpRegen * Time.deltaTime;
             if (Hp > (HPOrig / 2))
             {
                 Hp = (HPOrig / 2);
+                doHelthRegen = false;
             }
         }
     }
@@ -332,10 +334,11 @@ public class PlayerController : MonoBehaviour, IDamage
     public void TakeDamage(int amount)
     {
         Hp -= amount;
+        hpRegenElapsed = 0;
         UpdatePlayerUI();
         if (Hp <= 0)
         {
-            //GameManager.instance.youLose();
+            GameManager.instance.youLose();
         }
     }
     public void SpawnPlayer()

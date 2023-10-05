@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using UnityEditor.ProBuilder;
+//using UnityEditor.ProBuilder;
 
 public class GameManager : MonoBehaviour
 {
@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour
         instance = this;
         timeScaleOrig = Time.timeScale;
         player = GameObject.FindWithTag("Player");
-        //playerSpawn = GameObject.FindWithTag("Player Spawn");
+        playerSpawn = GameObject.FindWithTag("Respawn");
         //enemySpawn = GameObject.FindWithTag("Enemy Spawn");
     }
 

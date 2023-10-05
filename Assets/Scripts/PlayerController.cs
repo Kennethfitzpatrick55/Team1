@@ -1,4 +1,4 @@
-using OpenCover.Framework.Model;
+//using OpenCover.Framework.Model;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design.Serialization;
@@ -7,6 +7,7 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 using UnityEngine.XR;
 
 
@@ -137,7 +138,8 @@ public class PlayerController : MonoBehaviour, IDamage
             if (Crouching==true) 
             {
                 Crouching = false;
-                transform.localScale = playerScale;
+
+
                 playerSpeed *= sprintMod;
             }
             //will assighn are y to some height 
@@ -222,7 +224,8 @@ public class PlayerController : MonoBehaviour, IDamage
         {
                 Crouching = true;
             //change local y
-                transform.localScale = Crouch;
+                //transform.localScale = Crouch;
+                controller.height = 1;
             //decrement speed
                 playerSpeed /= sprintMod;
 
@@ -231,7 +234,7 @@ public class PlayerController : MonoBehaviour, IDamage
         {
             Crouching = false;
             //set height back to normal 
-            transform.localScale = playerScale;
+            controller.height = 2;
             //give player back speed 
             playerSpeed *= sprintMod;
         }
@@ -268,7 +271,7 @@ public class PlayerController : MonoBehaviour, IDamage
 
         if (GameManager.instance.playerStaminaBar.fillAmount == 1.0f)
         {
-            //GameManager.instance.playerStaminaBar.enabled = false;
+            GameManager.instance.playerStaminaBar.enabled = false;
             GameManager.instance.playerStaminaBar.transform.parent.gameObject.SetActive(false);
         }
         else

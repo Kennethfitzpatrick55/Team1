@@ -63,6 +63,8 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0;
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
+        playerHPBar.gameObject.SetActive(false);
+        playerStaminaBar.gameObject.SetActive(false);
     }
 
     //Resumes the game
@@ -75,6 +77,8 @@ public class GameManager : MonoBehaviour
 
         activeMenu.SetActive(false);
         activeMenu = null;
+        playerHPBar.gameObject.SetActive(true);
+        playerStaminaBar.gameObject.SetActive(true);
     }
 
     public void youLose()

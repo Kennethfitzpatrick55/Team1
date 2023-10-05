@@ -80,6 +80,10 @@ public class AIEnemyPhantom : MonoBehaviour, IDamage
     {
         HP -= amount;
 
+        //Have enemy respond to taking damage from player
+        transform.position = Vector3.MoveTowards(transform.position, GameManager.instance.player.transform.position, Time.deltaTime * speed);
+        FaceTarget();
+
         //Visual queue for damage taken
         StartCoroutine(FlashDamage());
 

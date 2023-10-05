@@ -101,6 +101,7 @@ public class AIEnemyRanged : MonoBehaviour, IDamage
 
         //Have enemy respond to taking damage from player
         agent.SetDestination(GameManager.instance.player.transform.position);
+        FaceTarget();
 
         //Visual queue for damage taken
         StartCoroutine(FlashDamage());

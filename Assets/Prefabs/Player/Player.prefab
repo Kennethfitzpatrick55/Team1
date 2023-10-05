@@ -51,25 +51,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 1653064986366378708}
-  Hp: 0
-  hpRegen: 0
-  playerSpeed: 3.53
-  sprintMod: 1.47
+  Hp: 10
+  hpRegen: 1
+  playerSpeed: 5
+  sprintMod: 1.5
   jumpMax: 2
-  jumpHeight: 17.2
-  gravityMod: 15.9
-  gravityValue: -10
-  DistanceWall: 5
+  jumpHeight: 20
+  gravityMod: 20
+  gravityValue: -20
+  DistanceWall: 2
   Crouch: {x: 0, y: 0, z: 0}
   playerScale: {x: 0, y: 0, z: 0}
-  stamina: 0
-  jumpCost: 0
-  staminaDrain: 0
-  staminaRegen: 0
-  staminaSprintMinimum: 0
-  staminaJumpMinimum: 0
-  timeUntilRegen: 0
+  stamina: 100
+  jumpCost: 10
+  staminaDrain: 5
+  staminaRegen: 10
+  staminaSprintMinimum: 25
+  staminaJumpMinimum: 15
+  timeUntilRegenHp: 2
+  timeUntilRegenStamina: 0
   WallT: 0
+  slideT: 0
   shootRate: 0
   shootDamage: 0
   shootDist: 0

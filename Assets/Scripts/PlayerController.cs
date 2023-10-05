@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour, IDamage
 
     [Header("----Player States----")]
     [Range(1, 10)][SerializeField] float Hp;
-    [Range(0, 100)][SerializeField] float hpRegen;
+    [Range(1, 100)][SerializeField] float hpRegen;
     [Range(1, 10)][SerializeField] private float playerSpeed;
     [Range(1, 3)][SerializeField] private float sprintMod;
     [Range(1, 3)][SerializeField] int jumpMax;

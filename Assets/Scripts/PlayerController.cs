@@ -335,7 +335,7 @@ public class PlayerController : MonoBehaviour, IDamage
         UpdatePlayerUI();
         if (Hp <= 0)
         {
-            GameManager.instance.youLose();
+            //GameManager.instance.youLose();
         }
     }
     public void SpawnPlayer()
@@ -343,7 +343,7 @@ public class PlayerController : MonoBehaviour, IDamage
         Hp = HPOrig;
         UpdatePlayerUI();
         controller.enabled = false;
-        transform.position = GameManager.instance.playerSpawnPos.transform.position;
+        //transform.position = GameManager.instance.playerSpawnPos.transform.position;
         controller.enabled = true;
     }
 
@@ -376,13 +376,13 @@ public class PlayerController : MonoBehaviour, IDamage
         Hp = HPOrig;
         UpdatePlayerUI();
         controller.enabled = false;
-        transform.position = GameManager.instance.playerSpawnPos.transform.position;
+        //transform.position = GameManager.instance.playerSpawnPos.transform.position;
         controller.enabled = true;
     }
 
     void UpdatePlayerUI()
     {
-        GameManager.instance.playerHpBar.fillAmount = (float)Hp / HPOrig;
+        //GameManager.instance.playerHpBar.fillAmount = (float)Hp / HPOrig;
     }
 
 

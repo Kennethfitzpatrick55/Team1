@@ -53,7 +53,7 @@ MonoBehaviour:
   HP: 10
   speed: 2
   turnSpeed: 2
-  viewAngle: 45
+  viewAngle: 180
   stoppingDist: 1.25
 --- !u!33 &922087342586135635
 MeshFilter:
@@ -147,7 +147,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 15
+  m_Radius: 20
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4823762624418265477
 GameObject:

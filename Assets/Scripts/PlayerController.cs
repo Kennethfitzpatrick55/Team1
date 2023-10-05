@@ -12,140 +12,7 @@ using UnityEngine.XR;
 
 public class PlayerController : MonoBehaviour, IDamage
 {
-    //please ignore this 
-    /*
-     //[Header("-----Components-----")]
-     ////This is the Charecter Controller
-     //[SerializeField] Rigidbody RB;
-
-     //[Header("-----Player States-----")]
-     //[Header("-----Movement-----")]
-     //[Range(1, 10)][SerializeField] float PlayerSpeed;
-
-     ////[Range(8, 30)][SerializeField] float JumpHeight;
-     ////[Range(1, 40)][SerializeField] int JumpMax;
-     ////[Header("Ground Check")]
-     ////[SerializeField] float playerHeight;
-     ////[SerializeField] LayerMask Ground;
-     ////[SerializeField] float Drag;
-     ////[Range(-10, -40)][SerializeField] private float Gravity;
-     ////[Range(1, 10)][SerializeField] private float SprintMod;
-
-     ////private 
-     ////private Vector3 PlayerVelocity;
-
-     ////Int
-     ////private int JumpedTimes;
-     ////int HPOrig;
-     ////Bool
-     ////private bool PlayerGrounded;
-     //Vector3 MoveDirection;
-     //float HorizontalInput;
-     //float VerticalInput;
-     //public Transform orentation;
-
-
-     //// Start is called before the first frame update
-     //void Start()
-     //{
-     //    RB = GetComponent<Rigidbody>();
-     //    RB.freezeRotation = true;
-     //}
-
-     //// Update is called once per frame
-     //void Update()
-     //{
-
-     //    MyInput();
-     //    Movement();
-
-
-     //}
-
-     //void MyInput()
-     //{
-     //    HorizontalInput = Input.GetAxis("Horizontal");
-     //    VerticalInput = Input.GetAxis("Vertical");
-
-     //}
-     //void Movement()
-     //{
-
-
-     //   MoveDirection = orentation.forward * VerticalInput + orentation.right * HorizontalInput;
-     //   RB.AddForce(MoveDirection.normalized * PlayerSpeed);
-     //    // addtinal movement 
-     //    //Sprint();
-
-     //    //Jump is next so lets check if the player is grouded first 
-     //    //PlayerGrounded = CC.isGrounded;
-     //    //if (PlayerGrounded && PlayerVelocity.y < 0)
-     //    //{
-     //    //    //set the player  Velocity to 0 
-     //    //    PlayerVelocity.y = 0f;
-     //    //    //reset jump 
-     //    //    JumpedTimes = 0;
-     //    //}
-
-     //    //Get Input 
-     //    // this took some time But i think im undertstandign how to get the movement
-     //    // lets get control of the speed  
-     //    // then will focuse on the jump 
-     //    //Move = (Input.GetAxisRaw("Horizontal") * transform.right) + (Input.GetAxisRaw("Vertical") * transform.forward);
-     //    //RB.AddForce(orentation.forward = Move.normalized * PlayerSpeed );
-
-     //    //PlayerGrounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * Ground);
-     //    //if(PlayerGrounded)
-     //    //{
-     //    //    RB.drag = Drag;
-     //    //}
-     //    //else
-     //    //{
-     //    //    RB.drag = 0;
-     //    //}
-
-     //    //if (Input.GetButtonDown("Jump") && JumpedTimes <= JumpMax)
-     //    //{
-     //    //    PlayerVelocity.y = JumpHeight;
-     //    //    //Increment Jump
-     //    //    JumpedTimes++;
-     //    //}
-
-     //    //PlayerVelocity.y += Gravity * Time.deltaTime;
-     //    //CC.Move(PlayerVelocity * Time.deltaTime);
-
-     //}
-     //void Sprint ()
-     //{
-     //    //get Input
-     //    //if(Input.GetButtonDown("Sprint"))
-     //    //{ 
-     //    //    //If true Increment Speed
-     //    //    PlayerSpeed *= SprintMod;
-     //    //}
-     //    //else if(Input.GetButtonUp("Sprint"))
-     //    //{ 
-     //    //    // If false Decrement speed
-     //    //    PlayerSpeed /= SprintMod;
-     //    //}
-     //}
-
-     //void Crouch()
-     //{
-
-
-     //}
-
-     //void Slide()
-     //{
-
-     //}
-
-     //void WallRun()
-     //{
-
-     //}
-     */
+  
     // orgization of materials in inspector 
     [Header("----Components----")]
     [SerializeField] CharacterController controller;
@@ -193,6 +60,7 @@ public class PlayerController : MonoBehaviour, IDamage
     float HPOrig;
     int Layer_Mask;
     bool Crouching;
+    private Vector3 slide;
     private void Start()
     {
 
@@ -201,11 +69,10 @@ public class PlayerController : MonoBehaviour, IDamage
         Layer_Mask = LayerMask.GetMask("Wall") + LayerMask.GetMask("Ground");
         HPOrig = Hp;
         staminaOrig = stamina;
-        //spawnPlayer();
+        spawnPlayer();
         playerScale = transform.localScale;
         Crouch = new Vector3(transform.localScale.x, transform.localScale.y / 2, transform.localScale.z);
-        //RB = GetComponent<Rigidbody>();
-        //RB.freezeRotation = true;
+       
     }
 
 
@@ -313,11 +180,11 @@ public class PlayerController : MonoBehaviour, IDamage
         if (Input.GetButtonDown("Sprint") && (stamina >= staminaSprintMinimum))
         {
 
-            if (isSprinting && Input.GetButtonDown("Crouch"))
-            {
+            //if (isSprinting && Input.GetButtonDown("Crouch"))
+            //{
 
-                StartCoroutine(Slide());
-            }
+            //    StartCoroutine(Slide());
+            //}
 
             //if true  increment the player speed by some number 
             playerSpeed *= sprintMod;
@@ -332,15 +199,16 @@ public class PlayerController : MonoBehaviour, IDamage
             regenElapsed = 0.0f;
         }
     }
-    IEnumerator Slide()
-    {
-        playerSpeed = 10;
-        yield return new WaitForSeconds(slideT);
-        playerSpeed /= sprintMod;
-        Crouching = true;
-        transform.localScale = Crouch;
+    //IEnumerator Slide()
+    //{
+    //    playerSpeed = 10;
+    //    yield return new WaitForSeconds(slideT);
+    //    playerSpeed /= sprintMod;
+    //    Crouching = true; 
+    //    transform.localScale = Crouch;
+      
 
-    }
+    //}
     void Crouched()
     {
         if (groundedPlayer && Input.GetButtonDown("Crouch") && Crouching == false)
@@ -460,6 +328,26 @@ public class PlayerController : MonoBehaviour, IDamage
         // to excute a function in intervals
     }
 
+
+    public void TakeDamage(int amount)
+    {
+        Hp -= amount;
+        UpdatePlayerUI();
+        if (Hp <= 0)
+        {
+            GameManager.instance.youLose();
+        }
+    }
+    public void SpawnPlayer()
+    {
+        Hp = HPOrig;
+        UpdatePlayerUI();
+        controller.enabled = false;
+        transform.position = GameManager.instance.playerSpawnPos.transform.position;
+        controller.enabled = true;
+    }
+
+
     IEnumerator Shoot()
     {
         isShooting = true;
@@ -473,7 +361,7 @@ public class PlayerController : MonoBehaviour, IDamage
             // if that object is damagebel then damge it  
             if (damagable != null)
             {
-                //damagable.takeDamage(shootDamage);
+                damagable.TakeDamage(shootDamage);
             }
             //Instantiate(cube, hit.point,cube.transform.rotation);
         }
@@ -483,67 +371,22 @@ public class PlayerController : MonoBehaviour, IDamage
         isShooting = false;
     }
 
-    public void TakeDamage(int amount)
-    {
-        Hp -= amount;
-        //UpdatePlayerUI();
-        if (Hp <= 0)
-        {
-            //gameManger.instance.youLose();
-        }
-    }
-    public void SpawnPlayer()
+    public void spawnPlayer()
     {
         Hp = HPOrig;
-        //UpdatePlayerUI();
+        UpdatePlayerUI();
         controller.enabled = false;
-        //transform.position = gameManger.instance.playerSpawnPos.transform.position;
+        transform.position = GameManager.instance.playerSpawnPos.transform.position;
         controller.enabled = true;
     }
 
-
-    //    IEnumerator Shoot()
-    //{
-    //    isShooting = true;
-
-    //    RaycastHit hit;
-
-    //    if (Physics.Raycast(Camera.main.ViewportPointToRay(new Vector2(0.5f, 0.5f)), out hit, shootDist))
-    //    {
-    //        //Does he object have acess to IDamage
-    //        IDamage damagable = hit.collider.GetComponent<IDamage>();
-    //        // if that object is damagebel then damge it  
-    //        if (damagable != null)
-    //        {
-    //            damagable.takeDamage(shootDamage);
-    //        }
-    //        //Instantiate(cube, hit.point,cube.transform.rotation);
-    //    }
-    //    // once fired pause 
-    //    yield return new WaitForSeconds(shootRate);
-    //    //stop shooting 
-    //    isShooting = false;
-    //}
-
-    //public void spawnPlayer()
-    //{
-    //    Hp = HPOrig;
-    //    UpdatePlayerUI();
-    //    controller.enabled = false;
-    //    transform.position = gameManger.instance.playerSpawnPos.transform.position;
-    //    controller.enabled = true;
-    //}
-
-    //void UpdatePlayerUI()
-    //{
-    //    gameManger.instance.playerHpBar.fillAmount = (float)Hp / HPOrig;
-    //}
-
-
     void UpdatePlayerUI()
     {
-        //gameManger.instance.playerHpBar.fillAmount = (float)Hp / HPOrig;
+        GameManager.instance.playerHpBar.fillAmount = (float)Hp / HPOrig;
     }
+
+
+   
 
 
 

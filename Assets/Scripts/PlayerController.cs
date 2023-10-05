@@ -95,11 +95,11 @@ public class PlayerController : MonoBehaviour, IDamage
         Sprint();
 
         updatePlayerStamRegen();
-        /* WallRun()*/
 
         WallRun();
 
         Crouched();
+
         updatePlayerStamRegen();
         //checks to make sure player is grounded
         RaycastHit GroundCheck;
@@ -363,7 +363,7 @@ public class PlayerController : MonoBehaviour, IDamage
             {
                 damagable.TakeDamage(shootDamage);
             }
-            //Instantiate(cube, hit.point,cube.transform.rotation);
+            Instantiate(cube, hit.point, cube.transform.rotation);
         }
         // once fired pause 
         yield return new WaitForSeconds(shootRate);
@@ -386,7 +386,7 @@ public class PlayerController : MonoBehaviour, IDamage
     }
 
 
-   
+
 
 
 

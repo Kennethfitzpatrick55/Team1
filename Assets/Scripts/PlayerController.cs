@@ -38,8 +38,8 @@ public class PlayerController : MonoBehaviour, IDamage
     [Range(1, 100)][SerializeField] float staminaJumpMinimum;
     [Range(1, 10)][SerializeField] float timeUntilRegenHp;
     [Range(1, 10)][SerializeField] float timeUntilRegenStamina;
-    [SerializeField] private float WallT;
-    [SerializeField] private float slideT;
+    [Range(1,10)] [SerializeField] private float WallT;
+    //[SerializeField] private float slideT;
 
     [Header("----Gun states----")]
     [SerializeField] float shootRate;

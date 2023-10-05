@@ -5514,8 +5514,12 @@ PrefabInstance:
       value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 368406922328078340, guid: 49e460495a8fad041933322edaa1ac72, type: 3}
+      propertyPath: hpRegen
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 368406922328078340, guid: 49e460495a8fad041933322edaa1ac72, type: 3}
       propertyPath: staminaDrain
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7012421411596961371, guid: 49e460495a8fad041933322edaa1ac72, type: 3}
       propertyPath: m_LocalPosition.x

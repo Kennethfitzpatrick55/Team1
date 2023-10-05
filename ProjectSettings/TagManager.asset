@@ -7,6 +7,7 @@ TagManager:
   - Goal
   - Melee
   - Projectile
+  - Wall
   layers:
   - Default
   - TransparentFX

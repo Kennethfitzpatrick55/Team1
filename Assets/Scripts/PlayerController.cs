@@ -32,8 +32,8 @@ public class PlayerController : MonoBehaviour, IDamage
     [Range(1, 10)][SerializeField] private Vector3 playerScale;
     [Range(1.0f, 100.0f)][SerializeField] float stamina;
     [Range(1, 20)][SerializeField] float jumpCost;
-    [Range(0.0f, 100f)][SerializeField] float staminaDrain;
-    [Range(0.0f, 100f)][SerializeField] float staminaRegen;
+    [Range(1.0f, 100f)][SerializeField] float staminaDrain;
+    [Range(1.0f, 100f)][SerializeField] float staminaRegen;
     [Range(1, 100)][SerializeField] float staminaSprintMinimum;
     [Range(1, 100)][SerializeField] float staminaJumpMinimum;
     [Range(1, 10)][SerializeField] float timeUntilRegenHp;

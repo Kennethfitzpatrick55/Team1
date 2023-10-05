@@ -159,7 +159,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: -2683809757041222826}
   damage: 3
-  lifeTime: 1
+  attackDelay: 2
 --- !u!33 &5698601739380153172
 MeshFilter:
   m_ObjectHideFlags: 0

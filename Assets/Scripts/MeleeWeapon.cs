@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MeleeWeapon : MonoBehaviour
@@ -10,6 +11,8 @@ public class MeleeWeapon : MonoBehaviour
 
     [Header("----- Stats -----")]
     [SerializeField] int damage;
+    [SerializeField] int attackDelay;
+    bool isAttacking;
 
     // Start is called before the first frame update
     void Start()
@@ -37,6 +40,20 @@ public class MeleeWeapon : MonoBehaviour
         {
             return;
         }
+        
+        //Check if attack is on cooldown
+        if (!isAttacking)
+        {
+            
+            //Puts delay between triggers of outgoing damage
+            StartCoroutine(Attack(other));
+        }
+    }
+
+    //Sets cooldown for melee damage being applied
+    IEnumerator Attack(Collider other)
+    {
+        isAttacking = true;
 
         //Check for damageable object
         IDamage damageable = other.GetComponent<IDamage>();
@@ -46,5 +63,20 @@ public class MeleeWeapon : MonoBehaviour
         {
             damageable.TakeDamage(damage);
         }
+
+        //Disable collider to reset collision check
+        GetComponent<CapsuleCollider>().enabled = false;
+
+        yield return new WaitForSeconds(3);
+
+        //Re-enable collider to allow for further collision checks
+        GetComponent<CapsuleCollider>().enabled = true;
+
+        isAttacking = false;
+    }
+
+    public float GetAttackDelay()
+    {
+        return attackDelay;
     }
 }

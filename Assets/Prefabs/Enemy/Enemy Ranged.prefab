@@ -54,9 +54,11 @@ MonoBehaviour:
   model: {fileID: 3044724851499431207}
   HP: 7
   turnSpeed: 3
-  weapon: {fileID: 0}
+  viewAngle: 60
+  weapon: {fileID: 4190653085988065459, guid: 83294bf5a0456b543a5051690590242e, type: 3}
   weaponPos: {fileID: 209170799003764098}
   attackDelay: 1
+  attackAngle: 25
 --- !u!195 &2753047793595683698
 NavMeshAgent:
   m_ObjectHideFlags: 0

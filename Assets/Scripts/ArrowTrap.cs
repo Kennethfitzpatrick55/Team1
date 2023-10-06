@@ -5,7 +5,7 @@ using UnityEngine;
 public class ArrowTrap : MonoBehaviour
 {
     public GameObject arrowPrefab;
-    //private Coroutine arrowDeactivationCoroutine;
+    private Coroutine arrowDeactivationCoroutine;
     private void OnTriggerEnter(Collider other)
     {
         if(other.CompareTag("Player"))
@@ -24,11 +24,11 @@ public class ArrowTrap : MonoBehaviour
             //spawn arrow
             arrowPrefab.SetActive(true);
             
-            //arrowDeactivationCoroutine = StartCoroutine(DeactivateArrow(6f));
+            arrowDeactivationCoroutine = StartCoroutine(DeactivateArrow(6f));
         }
     }
 
-    /*private IEnumerator DeactivateArrow(float delay)
+    private IEnumerator DeactivateArrow(float delay)
     {
         yield return new WaitForSeconds(delay);
         //deactivate arrow
@@ -36,6 +36,8 @@ public class ArrowTrap : MonoBehaviour
         {
             arrowPrefab.SetActive(false);
         }
-    }*/
+    }
+
+    
 
 }

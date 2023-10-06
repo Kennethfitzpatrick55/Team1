@@ -46,7 +46,7 @@ public class PlayerController : MonoBehaviour, IDamage
     [SerializeField] float shootRate;
     [SerializeField] int shootDamage;
     [SerializeField] int shootDist;
-    [SerializeField] GameObject cube;
+    
     // private variabels 
     private Vector3 playerVelocity;
     private bool groundedPlayer;
@@ -271,7 +271,7 @@ public class PlayerController : MonoBehaviour, IDamage
 
         if (GameManager.instance.playerStaminaBar.fillAmount == 1.0f)
         {
-            GameManager.instance.playerStaminaBar.enabled = false;
+            //GameManager.instance.playerStaminaBar.enabled = false;
             GameManager.instance.playerStaminaBar.transform.parent.gameObject.SetActive(false);
         }
         else

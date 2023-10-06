@@ -1078,6 +1078,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2626095093550008892, guid: d5bc76c49df2bbe49a44169dd8e3a977, type: 3}
+      propertyPath: weapon
+      value: 
+      objectReference: {fileID: 2123356547}
     - target: {fileID: 5606921646916246009, guid: d5bc76c49df2bbe49a44169dd8e3a977, type: 3}
       propertyPath: m_Name
       value: Enemy Melee
@@ -1374,6 +1378,11 @@ Transform:
 GameObject:
   m_CorrespondingSourceObject: {fileID: 34362289372371928, guid: 49e460495a8fad041933322edaa1ac72, type: 3}
   m_PrefabInstance: {fileID: 6388720986738944804}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2123356547 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3823774958997227787, guid: d5bc76c49df2bbe49a44169dd8e3a977, type: 3}
+  m_PrefabInstance: {fileID: 1241777422}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6388720986738944804
 PrefabInstance:

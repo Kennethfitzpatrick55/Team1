@@ -29,8 +29,8 @@ public class PlayerController : MonoBehaviour, IDamage
     [Range(-10, 40)][SerializeField] private float gravityMod;
     [Range(-10, -40)][SerializeField] private float gravityValue;
     [Range(1, 10)][SerializeField] private float DistanceWall;
-    [Range(1, 10)][SerializeField] private Vector3 Crouch;
-    [Range(1, 10)][SerializeField] private Vector3 playerScale;
+                  [SerializeField] private Vector3 Crouch;
+                  [SerializeField] private Vector3 playerScale;
     [Range(1.0f, 100.0f)][SerializeField] float stamina;
     [Range(1, 20)][SerializeField] float jumpCost;
     [Range(1.0f, 100f)][SerializeField] float staminaDrain;

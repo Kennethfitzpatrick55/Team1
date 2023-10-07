@@ -25,13 +25,13 @@ public class Crawler : Maze
     {  
         bool done = false;//keeps track of if we finished 
 
-        int x = Random.Range(0, width); //starting postioon of x
+        int x = Random.Range(0, width-1); //starting postioon of x
 
-        int z = 0;//starting postion of 
+        int z = 1;//starting postion of 
    
         while (!done)
         {
-            map[x, z] = 1; //starting postion 
+            map[x, z] = 0; //starting postion 
 
             if (Random.Range(0, 100) < 50) // moving acrose the map 
             {
@@ -45,7 +45,7 @@ public class Crawler : Maze
             // bit minupulation 
             // whats happenf here on x and z  out side the bottom of maze 
             // 0 index out of range 
-            done |= (x < 0 || x >= width || z < 0 || z >= depth);
+            done |= (x < 1 || x >= width-1 || z < 1 || z >= depth-1);
         }
     }
 
@@ -56,7 +56,7 @@ public class Crawler : Maze
         
         int x = 1;//starting postioon of x
                               
-        int z = Random.Range(0, depth);//starting postioon of z  
+        int z = Random.Range(0, depth-1);//starting postioon of z  
 
         while (!done)
         {
@@ -74,9 +74,9 @@ public class Crawler : Maze
             }
 
             // bit minupulation 
-            // whats happenf here on x and z  out side the bottom of maze 
+            // whats happen here on x and z  out side the bottom of maze 
             // 0 index out of range 
-            done |= (x < 0 || x >= width || z < 0 || z >= depth);
+            done |= (x < 1 || x >= width - 1 || z < 1 || z >= depth - 1);
         }
     }
 }

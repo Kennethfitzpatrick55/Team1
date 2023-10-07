@@ -24,7 +24,7 @@ public class Maze : MonoBehaviour
     /*
     ...................................................................
     .                                                                 .
-    .                         ----(Note)----                          .
+    .                     ----(Note)----                              .
     .      ----reading this please dont move my notes)----            .
     .  chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj            .
     . /https://www.cs.cmu.edu/~112/notes/student-tp-guides/Mazes.pdf  . 
@@ -51,21 +51,21 @@ public class Maze : MonoBehaviour
     .                         |__|__|__|__|                           .
     .                         |__|__|__|__|                           .
     .                         |__|__|__|__|                           .
-    .                         |__|__|__|__|_____(x)     
-    
-    
-                   How to check Vertical
-                        (x,z+1) (z-1)                                  
-                              Up 
-                              _|_ 
-      (x-1,z )(x+1,z)left<---|_0_|---->Right (x+1,z)(x-1,z)
-                              |  |_0_| ___
-                              |       |_0_| ___
-                        (x,z-1)(z,z+1)     |_0_| 
-    
-    
-    
-    .
+    .                         |__|__|__|__|_____(x)                   .
+    .                                                                 .
+    .                                                                 .
+    .               How to check Vertical                             .
+    .                    (x,z+1) (z-1)                                .  
+    .                          Up                                     . 
+    .                          _|_                                    .  
+    .  (x-1,z )(x+1,z)left<---|_0_|---->Right (x+1,z)(x-1,z)          .  
+    .                          |  |_0_| ___                           .
+    .                          |       |_0_| ___                      . 
+    .                    (x,z-1)(z,z+1)     |_0_|                     .
+    .                                                                 .
+    .                                                                 . 
+    .                                                                 . 
+    .                                                                 .
     .                                                                 .
     .       ( I want to modfiy this  control the postion ?)           .                 
     .     I need to store the postion of objects;                     .
@@ -201,7 +201,7 @@ public class Maze : MonoBehaviour
         if (x <= 0 || x >= width - 1 || z <= 0 || z >= depth - 1) ; return 5;// value to check if by edge of map 
         if (map[x - 1, z - 1] == 0) count++;//over one down one -(left) 
         if (map[x + 1, z + 1] == 0) count++;//over one down one -(right)
-        if (map[x - 1, z + 1] == 0) count++;//over one  up one  -(up)        
+        if (map[x - 1, z + 1] == 0) count++;//over one  up one  - (up)        
         if (map[x + 1, z - 1] == 0) count++;//over one down oen -(down)    
                                                      
         return count;                                 

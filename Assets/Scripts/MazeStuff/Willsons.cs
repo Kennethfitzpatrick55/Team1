@@ -82,7 +82,7 @@ public class Willsons : Maze
 
         int loop = 0;
         bool vaildPath = false;
-        while(currentx > 0 && currentx < width-1 && currentz >0 && currentz < depth -1 && loop < 5000 && !vaildPath) 
+        while(currentx > 0 && currentx < width-1 && currentz >0 && currentz < depth -1 && loop < 100 && !vaildPath) 
         {
 
 

@@ -186,7 +186,7 @@ public class Maze : MonoBehaviour
       public int  CountSquareNeighbours(int x, int z)
       {    
         int count = 0;
-        if (x <= 0 || x >= width -1 || z <= 0 || z >= depth -1); return 5;// value to check if by edge of map 
+        if (x <= 0 || x >= width -1 || z <= 0 || z >= depth -1) return 5;// value to check if by edge of map 
         if (map[x - 1, z] == 0) count++;//left 
         if (map[x + 1, z] == 0) count++;//right
         if (map[x ,z + 1] == 0) count++;//up 
@@ -198,11 +198,11 @@ public class Maze : MonoBehaviour
     public int CountDiagonalNeighbours(int x,int z) 
     {
         int count = 0;
-        if (x <= 0 || x >= width - 1 || z <= 0 || z >= depth - 1) ; return 5;// value to check if by edge of map 
-        if (map[x - 1, z - 1] == 0) count++;//over one down one -(left) 
-        if (map[x + 1, z + 1] == 0) count++;//over one down one -(right)
-        if (map[x - 1, z + 1] == 0) count++;//over one  up one  - (up)        
-        if (map[x + 1, z - 1] == 0) count++;//over one down oen -(down)    
+        if (x <= 0 || x >= width - 1 || z <= 0 || z >= depth - 1) return 5; // value to check if by edge of map 
+        if (map[x - 1, z - 1] == 0) count++; //over one down one -(left) 
+        if (map[x + 1, z + 1] == 0) count++; //over one down one -(right)
+        if (map[x - 1, z + 1] == 0) count++; //over one  up one  - (up)        
+        if (map[x + 1, z - 1] == 0) count++; //over one down oen -(down)    
                                                      
         return count;                                 
     }

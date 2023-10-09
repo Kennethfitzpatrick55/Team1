@@ -23,9 +23,9 @@ public class Willsons : Maze
         //for (int i = 0;i < 10;i++) 
         while(GetAvailbeilCells() > 1)
         {
-
+            RandomWalk();
         }
-        RandomWalk();
+       
     }
 
     int CountSquareMazeNeighbours(int x, int z)
@@ -41,9 +41,9 @@ public class Willsons : Maze
         int count = 0;
         for (int d = 0; d < directions.Count; d++)
         {
-            int newx = x + directions[d].x;
-            int newz = z + directions[d].z;
-            if (map[newx, newz] == 2)
+            int nextx = x + directions[d].x;
+            int nextz = z + directions[d].z;
+            if (map[nextx, nextz] == 2)
             {
                 count++;
             }
@@ -58,15 +58,18 @@ public class Willsons : Maze
         for (int z = 1; z < depth - 1; z++) 
         {
               for (int x = 1; x < width - 1; x++)
-            {
+              {
+
                 if(CountSquareMazeNeighbours(x,z)==0) 
                 {
                    notUsed.Add(new MapLocation(x,z));
                 }
-            }
+              }
+            
         }
         return notUsed.Count;
     }
+        
 
     void RandomWalk()
     {
@@ -82,7 +85,7 @@ public class Willsons : Maze
 
         int loop = 0;
         bool vaildPath = false;
-        while(currentx > 0 && currentx < width-1 && currentz >0 && currentz < depth -1 && loop < 100 && !vaildPath) 
+        while(currentx > 0 && currentx < width - 1 && currentz > 0 && currentz < depth -1 && loop < 5000 && !vaildPath) 
         {
 
 
@@ -98,8 +101,9 @@ public class Willsons : Maze
                 currentx = nextx;
                 currentz = nextz;
 
+            
                 inwalk.Add(new MapLocation(currentx, currentz));
-            }
+           }
             vaildPath = CountSquareMazeNeighbours(currentx, currentz) == 1;
 
             loop++;
@@ -114,7 +118,7 @@ public class Willsons : Maze
 
             foreach(MapLocation m in inwalk)
             {
-                map[m.x,m.z] = 2;
+                map[m.x, m.z] = 2;
             }
             inwalk.Clear();
         }

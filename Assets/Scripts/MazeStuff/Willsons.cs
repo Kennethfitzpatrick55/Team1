@@ -108,25 +108,20 @@ public class Willsons : Maze
             vaildPath = CountSquareMazeNeighbours(currentx, currentz) == 1;
 
             loop++;
-            if(loop > 500)
-            {
-                Debug.Log(" to much man Random walk");
-                break;
-            }
-        }  
+        }
 
-        if(vaildPath) 
+        if (vaildPath)
         {
-            map[currentx,currentz] = 0;
+            map[currentx, currentz] = 0;
             Debug.Log("PathFound");
 
-            foreach(MapLocation m in inwalk)
+            foreach (MapLocation m in inwalk)
             {
                 map[m.x, m.z] = 2;
             }
             inwalk.Clear();
         }
-        else 
+        else
         {
             Debug.Log("Path not found");
             foreach (MapLocation m in inwalk)
@@ -135,6 +130,7 @@ public class Willsons : Maze
             }
             inwalk.Clear();
         }
-            
+
+
     }
 }

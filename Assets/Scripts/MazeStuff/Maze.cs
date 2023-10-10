@@ -109,7 +109,7 @@ public class Maze : MonoBehaviour
       public byte[,] map;  // postion of wall or passageway 
     public int scale = 6;
 
-    public GameObject cube;
+    public GameObject wall;
 
     // Start is called before the first frame update
     void Start()

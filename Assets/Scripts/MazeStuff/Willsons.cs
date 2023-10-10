@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Willsons : Maze
@@ -18,12 +19,13 @@ public class Willsons : Maze
         // create a starting cell postion at random 
         int x = Random.Range(2, width - 1);
         int z = Random.Range(2, depth - 1);
-
+        int avaibelcell = GetAvailbeilCells();
         map[x, z] = 2;
         //for (int i = 0;i < 10;i++) 
-        while(GetAvailbeilCells() > 1)
-        {
+        while(avaibelcell > 1)
+        { 
             RandomWalk();
+            avaibelcell = GetAvailbeilCells();
         }
        
     }
@@ -82,14 +84,14 @@ public class Willsons : Maze
         currentz = notUsed[rstartIndex].z;
         inwalk.Add(new MapLocation(currentx, currentz));
 
-
         int loop = 0;
         bool vaildPath = false;
-        while(currentx > 0 && currentx < width - 1 && currentz > 0 && currentz < depth -1 && loop < 5000 && !vaildPath) 
+        while(currentx > 0 && currentx < width - 1 && currentz > 0 && currentz < depth -1 && loop < 500  && !vaildPath) 
         {
-
-
+            
             map[currentx, currentz] = 0;
+            if (CountSquareMazeNeighbours(currentx, currentz) > 1)
+                break;
 
             int randomdirection = Random.Range(0, directions.Count);
             int nextx = currentx + directions[randomdirection].x;
@@ -97,18 +99,19 @@ public class Willsons : Maze
 
            if(CountSquareNeighbours(nextx, nextz)< 2)
            {
-
                 currentx = nextx;
                 currentz = nextz;
-
-            
                 inwalk.Add(new MapLocation(currentx, currentz));
            }
+
             vaildPath = CountSquareMazeNeighbours(currentx, currentz) == 1;
 
             loop++;
-
-
+            if(loop > 500)
+            {
+                Debug.Log(" to much man Random walk");
+                break;
+            }
         }  
 
         if(vaildPath) 
@@ -122,7 +125,7 @@ public class Willsons : Maze
             }
             inwalk.Clear();
         }
-        else
+        else if(!vaildPath)
         {
             foreach (MapLocation m in inwalk)
             {
@@ -130,6 +133,8 @@ public class Willsons : Maze
             }
             inwalk.Clear();
         }
+        
+        //if()
             
     }
 }

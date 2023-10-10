@@ -117,7 +117,6 @@ public class Maze : MonoBehaviour
         InitialisMap();
         Generate();
         DrawMap();    
-        
 
     }
     void InitialisMap()

@@ -96,7 +96,8 @@ public class Willsons : Maze
             int randomdirection = Random.Range(0, directions.Count);
             int nextx = currentx + directions[randomdirection].x;
             int nextz = currentz + directions[randomdirection].z;
-
+            //looking for less then two n to or three neighbors 
+            //
            if(CountSquareNeighbours(nextx, nextz)< 2)
            {
                 currentx = nextx;
@@ -125,16 +126,15 @@ public class Willsons : Maze
             }
             inwalk.Clear();
         }
-        else if(!vaildPath)
+        else 
         {
+            Debug.Log("Path not found");
             foreach (MapLocation m in inwalk)
             {
                 map[m.x, m.z] = 1;
             }
             inwalk.Clear();
         }
-        
-        //if()
             
     }
 }

@@ -29,35 +29,36 @@ public class RecursiveDepthFirstSearch : Maze
         Generate();
     }
 
-    public void Generate()
+    public override void Generate()
     {
         //Set starting point
         visited.Add(new MapNodeDFS(width, depth));
         //As neighbors are found, set passage to that neighbor
         Navigate(visited[visited.Count - 1]);
-
+        //Create map based off of Navigate
+        for(int i = 0; i < visited.Count; i++)
+        {
+            SetWalls(visited[i]);
+        }
     }
 
+    //Loops through neighbors of passed in node, recursively grabbing each one
     public void Navigate(MapNodeDFS curr)
     {
         for(int i  = 0; i < dir.Count; i++)
         {
+            //Check neighbor in selected direction
             MapNodeDFS next = new MapNodeDFS(curr.x + dir[i].x, curr.z + dir[i].z);
 
-            //Bounds check x coord
-            if(next.x < 0 || next.z > width)
+            //Bounds check x and z coords
+            if(next.x < 0 || next.x > width || next.z < 0 || next.z > depth)
             {
-                break;
-            }
-            //Bounds check z coord
-            else if(next.x < 0 || next.z > depth)
-            {
-                break;
+                continue;
             }
             //Check if node has been visited already
             else if(visited.Contains(next))
             {
-                break;
+                continue;
             }
             else
             {
@@ -85,10 +86,11 @@ public class RecursiveDepthFirstSearch : Maze
                     curr.down = false;
                     next.up = false;
                 }
+                //Since valid passage, add to visited list
                 visited.Add(next);
+                //Recursion
                 Navigate(next);
             }
-
         }
     }
 
@@ -97,25 +99,25 @@ public class RecursiveDepthFirstSearch : Maze
     {
         float tileX = curr.x * scale;
         float tileZ = curr.z * scale;
-        //Upper wall
-        if (curr.up)
-        {
-            Instantiate(wall, new Vector3(tileX + 5, 0, tileZ), Quaternion.identity);
-        }
         //Lower wall
         if (curr.down)
         {
-            Instantiate(wall, new Vector3(tileX + 5, 0, tileZ + 9.5f), Quaternion.identity);
+            Instantiate(wall, new Vector3(tileX + 5, 3, tileZ), Quaternion.Euler(0, 90, 0));
+        }
+        //Upper wall
+        if (curr.up)
+        {
+            Instantiate(wall, new Vector3(tileX + 5, 3, tileZ + 9.5f), Quaternion.Euler(0, 90, 0));
         }
         //Left wall
         if (curr.left)
         {
-            Instantiate(wall, new Vector3(tileX, 0, tileZ + 5), Quaternion.Euler(0, 90, 0));
+            Instantiate(wall, new Vector3(tileX, 3, tileZ + 5), Quaternion.identity);
         }
         //Right wall
         if (curr.right)
         {
-            Instantiate(wall, new Vector3(tileX + 9.5f, 0, tileZ + 5), Quaternion.Euler(0, 90, 0));
+            Instantiate(wall, new Vector3(tileX + 9.5f, 3, tileZ + 5), Quaternion.identity);
         }
     }
 }

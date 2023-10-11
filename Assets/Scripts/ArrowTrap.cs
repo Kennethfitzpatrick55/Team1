@@ -5,13 +5,22 @@ using UnityEngine;
 public class ArrowTrap : MonoBehaviour
 {
     public GameObject arrowPrefab;
-    private Coroutine arrowDeactivationCoroutine;
+    public Transform spawnPoint;
+    private float arrowSpeed = 10f;
     private void OnTriggerEnter(Collider other)
     {
         if(other.CompareTag("Player"))
         {
-            Debug.Log("Incoming!");
-            SpawnArrow();
+            //Debug.Log("Incoming!");
+            GameObject arrow = Instantiate(arrowPrefab, spawnPoint.position, spawnPoint.rotation);
+
+            Rigidbody arrowRigidboy = arrow.GetComponent<Rigidbody>();
+
+            if(arrowRigidboy != null ) 
+            {
+                arrowRigidboy.velocity = arrow.transform.right * -1 * arrowSpeed;
+            }
+            Destroy(arrow, 3f);
         }
     }
 
@@ -24,10 +33,10 @@ public class ArrowTrap : MonoBehaviour
             //spawn arrow
             arrowPrefab.SetActive(true);
             
-            arrowDeactivationCoroutine = StartCoroutine(DeactivateArrow(6f));
+            
         }
     }
-
+    
     private IEnumerator DeactivateArrow(float delay)
     {
         yield return new WaitForSeconds(delay);
@@ -39,5 +48,5 @@ public class ArrowTrap : MonoBehaviour
     }
 
     
-
+    
 }

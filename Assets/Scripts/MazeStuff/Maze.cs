@@ -12,11 +12,13 @@ public class MapLocation
     //storage 
     public int x;
     public int z;
+    public string name;
     //constructer 
-    public MapLocation(int _x, int _z)
+    public MapLocation(int _x, int _z, string _name = null)
     {
         x = _x;
         z = _z;
+        name = _name;
     }
 }
 public class Maze : MonoBehaviour

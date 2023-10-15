@@ -6,8 +6,8 @@ using static UnityEngine.ParticleSystem;
 
 public class RecursiveDepthFirstSearch : Maze
 {
-    //Wall positions
-    //[SerializeField] GameObject corner;
+    //Corner object for filling tiles
+    [SerializeField] GameObject corner;
 
     //List of map tiles visited for recursion
     List<MapNodeDFS> visited = new List<MapNodeDFS>();
@@ -98,6 +98,8 @@ public class RecursiveDepthFirstSearch : Maze
         }
         //Create map tile based off of node structure
         SetWalls(curr);
+        //Randomize if enemy spawns in this tile
+        //Randomize if passage is crawl space
     }
 
     //Takes in coordinates and sets walls for that tile
@@ -109,31 +111,34 @@ public class RecursiveDepthFirstSearch : Maze
         float tileZ = curr.z * scale;
 
         //Create corner pieces to fill gaps in maze tiles
-        //corner.transform.localScale = new Vector3(scale / 10, corner.transform.localScale.y, scale / 10);
-
+        corner.transform.localScale = new Vector3(scale / 10, corner.transform.localScale.y, scale / 10);
+        Instantiate(corner, new Vector3(tileX + (scale * .05f), corner.transform.localScale.y / 2, tileZ + (scale * .05f)), Quaternion.identity);
+        Instantiate(corner, new Vector3(tileX + (scale * .95f), corner.transform.localScale.y / 2, tileZ + (scale * .05f)), Quaternion.identity);
+        Instantiate(corner, new Vector3(tileX + (scale * .05f), corner.transform.localScale.y / 2, tileZ + (scale * .95f)), Quaternion.identity);
+        Instantiate(corner, new Vector3(tileX + (scale * .95f), corner.transform.localScale.y / 2, tileZ + (scale * .95f)), Quaternion.identity);
 
         //Lower wall
         if (curr.down)
         {
-            GameObject wallS = Instantiate(wall, new Vector3(tileX + (scale / 2), wall.transform.localScale.y / 2, tileZ + 0.5f), Quaternion.Euler(0, 90, 0));
+            GameObject wallS = Instantiate(wall, new Vector3(tileX + (scale / 2), wall.transform.localScale.y / 2, tileZ + (scale * .05f)), Quaternion.Euler(0, 90, 0));
             wallS.transform.localScale = wallLength;
         }
         //Upper wall
         if (curr.up)
         {
-            GameObject wallN = Instantiate(wall, new Vector3(tileX + (scale / 2), wall.transform.localScale.y / 2, tileZ + 9.5f), Quaternion.Euler(0, 90, 0));
+            GameObject wallN = Instantiate(wall, new Vector3(tileX + (scale / 2), wall.transform.localScale.y / 2, tileZ + (scale * .95f)), Quaternion.Euler(0, 90, 0));
             wallN.transform.localScale = wallLength;
         }
         //Left wall
         if (curr.left)
         {
-            GameObject wallW = Instantiate(wall, new Vector3(tileX + 0.5f, wall.transform.localScale.y / 2, tileZ + (scale / 2)), Quaternion.identity);
+            GameObject wallW = Instantiate(wall, new Vector3(tileX + (scale * .05f), wall.transform.localScale.y / 2, tileZ + (scale / 2)), Quaternion.identity);
             wallW.transform.localScale = wallLength;
         }
         //Right wall
         if (curr.right)
         {
-            GameObject wallE = Instantiate(wall, new Vector3(tileX + 9.5f, wall.transform.localScale.y / 2, tileZ + (scale / 2)), Quaternion.identity);
+            GameObject wallE = Instantiate(wall, new Vector3(tileX + (scale * .95f), wall.transform.localScale.y / 2, tileZ + (scale / 2)), Quaternion.identity);
             wallE.transform.localScale = wallLength;
         }
     }

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2339815084857857471}
   - component: {fileID: 302178282234110217}
   - component: {fileID: 1653064986366378708}
-  m_Layer: 3
+  m_Layer: 7
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -71,11 +71,9 @@ MonoBehaviour:
   timeUntilRegenHp: 2
   timeUntilRegenStamina: 0
   WallT: 0
-  slideT: 0
   shootRate: 0
   shootDamage: 0
   shootDist: 0
-  cube: {fileID: 0}
 --- !u!33 &3607773146104892616
 MeshFilter:
   m_ObjectHideFlags: 0

@@ -12,18 +12,6 @@ public class RecursiveDepthFirstSearch : Maze
     //List of map tiles visited for recursion
     List<MapNodeDFS> visited = new List<MapNodeDFS>();
 
-    static List<MapLocation> dir = new List<MapLocation>()
-    {
-        //Right direction
-        new MapLocation(1,0, "Right"),
-        //Up direction
-        new MapLocation(0,1, "Up"),
-        //Left direction
-        new MapLocation(-1,0, "Left"),
-        //Down direction
-        new MapLocation(0,-1, "Down")
-    };
-
     public void Start()
     {
         Generate();
@@ -40,7 +28,19 @@ public class RecursiveDepthFirstSearch : Maze
     //Loops through neighbors of passed in node, recursively grabbing each one
     public void Navigate(MapNodeDFS curr)
     {
-        for(int i  = 0; i < dir.Count; i++)
+        List<MapLocation> dir = new List<MapLocation>()
+        {
+            //Right direction
+            new MapLocation(1,0, "Right"),
+            //Up direction
+            new MapLocation(0,1, "Up"),
+            //Left direction
+            new MapLocation(-1,0, "Left"),
+            //Down direction
+            new MapLocation(0,-1, "Down")
+        };
+
+        for (int i  = 0; i < dir.Count; i++)
         {
             //Shuffle currently selected direction
             if (i != dir.Count - 1)

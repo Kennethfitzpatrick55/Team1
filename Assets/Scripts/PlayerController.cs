@@ -48,7 +48,7 @@ public class PlayerController : MonoBehaviour, IDamage
     [SerializeField] int shootDist;
     
     // private variabels 
-    private Vector3 playerVelocity;
+    public Vector3 playerVelocity;
     private bool groundedPlayer;
     private Vector3 move;
     private int jumpedtimes;
@@ -64,9 +64,10 @@ public class PlayerController : MonoBehaviour, IDamage
     bool Crouching;
     bool wallRunning;
     private Vector3 slide;
+    WallRun wallRun;
     private void Start()
     {
-
+        wallRun = GetComponent<WallRun>();
         regenElapsed = 0;
         doStaminaRegen = false;
         Layer_Mask = LayerMask.GetMask("Wall") + LayerMask.GetMask("Ground");
@@ -103,7 +104,7 @@ public class PlayerController : MonoBehaviour, IDamage
 
         updatePlayerStamRegen();
 
-        WallRun();
+        //WallRun();
 
         Crouched();
 
@@ -123,6 +124,13 @@ public class PlayerController : MonoBehaviour, IDamage
         else
         {
             groundedPlayer = false;
+        }
+
+        //Resets ground velocities for when not wall running (bug fix)
+        if(!wallRun.IsWallRunning())
+        {
+            playerVelocity.x = 0f;
+            playerVelocity.z = 0f;
         }
 
         //vector 2 that recives are players input and moves it to that  postion 
@@ -317,36 +325,36 @@ public class PlayerController : MonoBehaviour, IDamage
         playerSpeed /= sprintMod;
     }
 
-    void WallRun()
-    {
-        RaycastHit hit;
-        Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.left * DistanceWall));
-        Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.right * DistanceWall));
-        //if player is by wall do something 
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.right), out hit, DistanceWall, Layer_Mask))
-        {
-            //check if ur right wall 
-            if (hit.collider.tag == "Wall" && !wallRunning)
-            {
+    //void WallRun()
+    //{
+    //    RaycastHit hit;
+    //    Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.left * DistanceWall));
+    //    Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.right * DistanceWall));
+    //    //if player is by wall do something 
+    //    if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.right), out hit, DistanceWall, Layer_Mask))
+    //    {
+    //        //check if ur right wall 
+    //        if (hit.collider.tag == "Wall" && !wallRunning)
+    //        {
                 
                 
                 
-                StartCoroutine(WallTime());
-            }
-        }
-        else if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.left), out hit, DistanceWall, Layer_Mask))
-        {
+    //            StartCoroutine(WallTime());
+    //        }
+    //    }
+    //    else if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.left), out hit, DistanceWall, Layer_Mask))
+    //    {
 
-            //check if ur left wall 
-            if (hit.collider.tag == "Wall" && !wallRunning)
-            {
+    //        //check if ur left wall 
+    //        if (hit.collider.tag == "Wall" && !wallRunning)
+    //        {
                
-                StartCoroutine(WallTime());
-            }
+    //            StartCoroutine(WallTime());
+    //        }
 
-        }
-        // to excute a function in intervals
-    }
+    //    }
+    //    // to excute a function in intervals
+    //}
 
 
     public void TakeDamage(int amount)
@@ -393,9 +401,15 @@ public class PlayerController : MonoBehaviour, IDamage
         controller.enabled = true;
     }
 
-   
+    public bool GetGrounded()
+    {
+        return groundedPlayer;
+    }
 
-
+    public bool IsSprinting()
+    {
+        return isSprinting;
+    }
 
 
 

@@ -42,7 +42,9 @@ public class PlayerController : MonoBehaviour, IDamage
     [Range(1,10)] [SerializeField] private float WallT;
     //[SerializeField] private float slideT;
 
-    [Header("----Gun states----")]
+    [Header("----Weapon states----")]
+    [SerializeField] List<WeaponStats> weaponlist = new List<WeaponStats>();
+    [SerializeField] GameObject gunmodel;
     [SerializeField] float shootRate;
     [SerializeField] int shootDamage;
     [SerializeField] int shootDist;
@@ -63,6 +65,7 @@ public class PlayerController : MonoBehaviour, IDamage
     int Layer_Mask;
     bool Crouching;
     bool wallRunning;
+    int selectedweapon;
     private Vector3 slide;
     WallRun wallRun;
     private void Start()
@@ -312,18 +315,18 @@ public class PlayerController : MonoBehaviour, IDamage
             GameManager.instance.playerStaminaBar.fillAmount = (stamina / staminaOrig);
         }
     }
-    IEnumerator WallTime()
-    {
-        //tilt camera 
-        wallRunning = true;
-        gravityValue += gravityMod;
-        playerSpeed *= sprintMod;
-        yield return new WaitForSeconds(WallT);
-        //tilt back
-        wallRunning = false;
-        gravityValue -= gravityMod;
-        playerSpeed /= sprintMod;
-    }
+    //IEnumerator WallTime()
+    //{
+    //    //tilt camera 
+    //    wallRunning = true;
+    //    gravityValue += gravityMod;
+    //    playerSpeed *= sprintMod;
+    //    yield return new WaitForSeconds(WallT);
+    //    //tilt back
+    //    wallRunning = false;
+    //    gravityValue -= gravityMod;
+    //    playerSpeed /= sprintMod;
+    //}
 
     //void WallRun()
     //{
@@ -391,6 +394,50 @@ public class PlayerController : MonoBehaviour, IDamage
         //stop shooting 
         isShooting = false;
     }
+    public void setWeaponStates(WeaponStats weapon)
+    {
+        weaponlist.Add(weapon);
+        //states
+        shootDamage = weapon.shootDamage;
+        shootDist = weapon.shootDist;
+        shootRate = weapon.shootRate;
+        //model
+        gunmodel.GetComponent<MeshFilter>().sharedMesh = weapon.model.GetComponent<MeshFilter>().sharedMesh;
+
+        gunmodel.GetComponent<MeshRenderer>().sharedMaterial = weapon.model.GetComponent<MeshRenderer>().sharedMaterial;
+        selectedweapon = weaponlist.Count - 1;
+        
+        //gameManger.instance.updateAmmoUI(gunList[selectedGun].ammmoCur, gunList[selectedGun].ammmoMax);
+    }
+
+    void selectGun()
+    {
+        if (Input.GetAxis("Mouse ScrollWheel") > 0 && selectedweapon < weaponlist.Count - 1)
+        {
+            selectedweapon++;
+            changeWeapon();
+        }
+        else if (Input.GetAxis("Mouse ScrollWheel") < 0 && selectedweapon > 0)
+        {
+            selectedweapon--;
+            changeWeapon();
+        }
+    }
+
+    void changeWeapon()
+    {
+        shootDamage = weaponlist[selectedweapon].shootDamage;
+        shootDist = weaponlist[selectedweapon].shootDist;
+        shootRate = weaponlist[selectedweapon].shootRate;
+        //model
+        gunmodel.GetComponent<MeshFilter>().sharedMesh = weaponlist[selectedweapon].model.GetComponent<MeshFilter>().sharedMesh;
+        gunmodel.GetComponent<MeshRenderer>().sharedMaterial = weaponlist[selectedweapon].model.GetComponent<MeshRenderer>().sharedMaterial;
+
+        //gameManger.instance.updateAmmoUI(weaponlist[selectedweapon].ammmoCur, weaponlist[selectedweapon].ammmoMax);
+
+        isShooting = false;
+    }
+
 
     public void spawnPlayer()
     {

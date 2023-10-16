@@ -94,4 +94,17 @@ public class GameManager : MonoBehaviour
         activeMenu = winMenu;
         pausedState();
     }
+
+    //public IEnumerator flash()
+    //{
+    //    //PlayerDamageFlashScreen.SetActive(true);
+    //    //yield return new WaitForSeconds(0.1f);
+    //    //PlayerDamageFlashScreen.SetActive(false);
+    //}
+
+    public void updateAmmoUI(int cur, int max)
+    {
+        //AmmoCurrent.text = cur.ToString("F0");
+        //AmmoMax.text = max.ToString("F0");
+    }
 }

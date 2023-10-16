@@ -2,23 +2,50 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WeaponPickUp : MonoBehaviour
+public class gunPickUp : MonoBehaviour
 {
-    [SerializeField] WeaponStats weapon;
+    [SerializeField] WeaponStats gun;
+    [SerializeField] GameObject button;
 
-    // Start is called before the first frame update
+
+    bool playerInTrigger;
     void Start()
     {
-        
+        gun.ammmoCur = gun.ammmoMax;
     }
 
-     private void OnTriggerEnter(Collider other)
+    private void Update()
     {
-        if(other.CompareTag("Player"))
+        if (Input.GetButtonDown("Interact") && playerInTrigger)
         {
-            //transfer gunstates to player
-            //gameManger.instance.playerScript.setGunStates(gun);
+            
+            GameManager.instance.playerScript.setWeaponStates(gun);
             Destroy(gameObject);
+
+        }
+    }
+
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            playerInTrigger = true;
+            if (button != null)
+                button.SetActive(true);
+        }
+    }
+
+
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            //transfwer gun stats to player 
+            playerInTrigger = false;
+            button.SetActive(false);
         }
     }
 }
+

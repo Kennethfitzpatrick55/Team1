@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     public GameObject playerSpawn;
     public Image playerHPBar;
     public Image playerStaminaBar;
+    public PlayerController playerScript;
 
     [Header("----- Enemy -----")]
     public GameObject enemySpawn;

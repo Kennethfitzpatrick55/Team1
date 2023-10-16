@@ -4,23 +4,34 @@ using UnityEngine;
 
 public class ArrowTrap : MonoBehaviour
 {
-    private GameObject arrowPrefab;
-    private Transform player;
-    float arrowSpeed = 2;
-
-    private bool isPressed = false;
-
+    public GameObject arrowPrefab;
+    public Transform spawnPoint;
+    private float arrowSpeed = 10f;
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("Player") && !isPressed)
+        if(other.CompareTag("Player"))
         {
+
             Debug.Log("Incoming!");
             SpawnArrow();
+
+            //Debug.Log("Incoming!");
+            GameObject arrow = Instantiate(arrowPrefab, spawnPoint.position, spawnPoint.rotation);
+
+            Rigidbody arrowRigidboy = arrow.GetComponent<Rigidbody>();
+
+            if(arrowRigidboy != null ) 
+            {
+                arrowRigidboy.velocity = arrow.transform.right * -1 * arrowSpeed;
+            }
+            Destroy(arrow, 3f);
+
         }
     }
 
     private void SpawnArrow()
     {
+
         Vector3 direction = (player.position - transform.position).normalized;
         GameObject arrow = Instantiate(arrowPrefab, transform.position + Vector3.up, Quaternion.identity);
         ArrowMovement arrowMovement = arrow.GetComponent<arrowMovement>();
@@ -28,4 +39,27 @@ public class ArrowTrap : MonoBehaviour
 
     
 
+        if(arrowPrefab != null)
+        {
+            
+            Instantiate(arrowPrefab, transform.position, Quaternion.identity);
+           
+            arrowPrefab.SetActive(true);
+            
+            
+        }
+    }
+    
+    private IEnumerator DeactivateArrow(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        
+        if(arrowPrefab != null && arrowPrefab.activeSelf)
+        {
+            arrowPrefab.SetActive(false);
+        }
+    }
+
+    
+    
 }

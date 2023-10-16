@@ -99,7 +99,7 @@ public class RecursiveDepthFirstSearch : Maze
         //Create map tile based off of node structure
         SetWalls(curr);
         //Randomize if enemy spawns in this tile
-        //Randomize if passage is crawl space
+        //Randomize if passage is crawl space???
     }
 
     //Takes in coordinates and sets walls for that tile

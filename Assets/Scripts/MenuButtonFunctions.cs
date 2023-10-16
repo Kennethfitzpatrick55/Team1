@@ -24,9 +24,8 @@ public class MenuButtonFunctions : MonoBehaviour
         Application.Quit();
     }
 
-    //public void respawnPlayer()
-    //{
-    //    GameManager.instance.unpausedState();
-    //    GameManager.instance.playerScript.spawnPlayer();
-    //}
+    public void goToMainMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
 }

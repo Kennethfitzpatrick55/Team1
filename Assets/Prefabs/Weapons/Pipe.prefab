@@ -121,7 +121,7 @@ GameObject:
   - component: {fileID: 7467092732466827343}
   - component: {fileID: 8998252099105273256}
   - component: {fileID: -2683809757041222826}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Pipe
   m_TagString: Melee
   m_Icon: {fileID: 0}
@@ -159,7 +159,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: -2683809757041222826}
   damage: 3
-  lifeTime: 1
+  attackDelay: 2
 --- !u!33 &5698601739380153172
 MeshFilter:
   m_ObjectHideFlags: 0

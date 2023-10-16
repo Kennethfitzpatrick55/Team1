@@ -1,4 +1,4 @@
-using OpenCover.Framework.Model;
+//using OpenCover.Framework.Model;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design.Serialization;
@@ -7,6 +7,7 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 using UnityEngine.XR;
 
 
@@ -20,33 +21,36 @@ public class PlayerController : MonoBehaviour, IDamage
 
     [Header("----Player States----")]
     [Range(1, 10)][SerializeField] float Hp;
-    [Range(0, 100)][SerializeField] float hpRegen;
+    [Range(1, 100)][SerializeField] float hpRegen;
     [Range(1, 10)][SerializeField] private float playerSpeed;
     [Range(1, 3)][SerializeField] private float sprintMod;
     [Range(1, 3)][SerializeField] int jumpMax;
     [Range(8, 30)][SerializeField] private float jumpHeight;
     [Range(-10, 40)][SerializeField] private float gravityMod;
     [Range(-10, -40)][SerializeField] private float gravityValue;
-    [Range(1, 10)][SerializeField] private int DistanceWall;
-    [Range(1, 10)][SerializeField] private Vector3 Crouch;
-    [Range(1, 10)][SerializeField] private Vector3 playerScale;
+    [Range(1, 10)][SerializeField] private float DistanceWall;
+                  [SerializeField] private Vector3 Crouch;
+                  [SerializeField] private Vector3 playerScale;
     [Range(1.0f, 100.0f)][SerializeField] float stamina;
     [Range(1, 20)][SerializeField] float jumpCost;
-    [Range(0.0f, 100f)][SerializeField] float staminaDrain;
-    [Range(0.0f, 100f)][SerializeField] float staminaRegen;
+    [Range(1.0f, 100f)][SerializeField] float staminaDrain;
+    [Range(1.0f, 100f)][SerializeField] float staminaRegen;
     [Range(1, 100)][SerializeField] float staminaSprintMinimum;
     [Range(1, 100)][SerializeField] float staminaJumpMinimum;
-    [Range(1, 10)][SerializeField] float timeUntilRegen;
-    [SerializeField] private float WallT;
-    [SerializeField] private float slideT;
+    [Range(1, 10)][SerializeField] float timeUntilRegenHp;
+    [Range(1, 10)][SerializeField] float timeUntilRegenStamina;
+    [Range(1,10)] [SerializeField] private float WallT;
+    //[SerializeField] private float slideT;
 
-    [Header("----Gun states----")]
+    [Header("----Weapon states----")]
+    [SerializeField] List<WeaponStats> weaponlist = new List<WeaponStats>();
+    [SerializeField] GameObject gunmodel;
     [SerializeField] float shootRate;
     [SerializeField] int shootDamage;
     [SerializeField] int shootDist;
-    [SerializeField] GameObject cube;
+    
     // private variabels 
-    private Vector3 playerVelocity;
+    public Vector3 playerVelocity;
     private bool groundedPlayer;
     private Vector3 move;
     private int jumpedtimes;
@@ -60,10 +64,13 @@ public class PlayerController : MonoBehaviour, IDamage
     float HPOrig;
     int Layer_Mask;
     bool Crouching;
+    bool wallRunning;
+    int selectedweapon;
     private Vector3 slide;
+    WallRun wallRun;
     private void Start()
     {
-
+        wallRun = GetComponent<WallRun>();
         regenElapsed = 0;
         doStaminaRegen = false;
         Layer_Mask = LayerMask.GetMask("Wall") + LayerMask.GetMask("Ground");
@@ -78,15 +85,19 @@ public class PlayerController : MonoBehaviour, IDamage
 
     void Update()
     {
-        Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * shootDist);
-
-        if (Input.GetButtonDown("Shoot") && !isShooting)
+       
+        //if its not paused do this 
+        if (!GameManager.instance.isPaused)
         {
-            StartCoroutine(Shoot());
-        }
+            if (Input.GetButtonDown("Shoot") && !isShooting)
+            {
+                StartCoroutine(Shoot());
+            }
 
-        movement();
-        CountRegenElapsedInSeconds();
+            movement();
+
+            CountRegenElapsedInSeconds(); 
+        }
     }
     //  controls the players movement 
     void movement()
@@ -96,7 +107,7 @@ public class PlayerController : MonoBehaviour, IDamage
 
         updatePlayerStamRegen();
 
-        WallRun();
+        //WallRun();
 
         Crouched();
 
@@ -118,6 +129,13 @@ public class PlayerController : MonoBehaviour, IDamage
             groundedPlayer = false;
         }
 
+        //Resets ground velocities for when not wall running (bug fix)
+        if(!wallRun.IsWallRunning())
+        {
+            playerVelocity.x = 0f;
+            playerVelocity.z = 0f;
+        }
+
         //vector 2 that recives are players input and moves it to that  postion 
         move = (Input.GetAxis("Horizontal") * transform.right) +
              (Input.GetAxis("Vertical") * transform.forward);
@@ -131,7 +149,8 @@ public class PlayerController : MonoBehaviour, IDamage
             if (Crouching==true) 
             {
                 Crouching = false;
-                transform.localScale = playerScale;
+
+
                 playerSpeed *= sprintMod;
             }
             //will assighn are y to some height 
@@ -148,7 +167,7 @@ public class PlayerController : MonoBehaviour, IDamage
 
     void CountRegenElapsedInSeconds()
     {
-        if (regenElapsed < timeUntilRegen)
+        if (regenElapsed < timeUntilRegenStamina)
         {
             regenElapsed += Time.deltaTime;
             //Debug.Log("Counting... " + regenElapsed.ToString());
@@ -159,7 +178,7 @@ public class PlayerController : MonoBehaviour, IDamage
             // Debug.Log("Done let's regen");
             doStaminaRegen = true;
         }
-        if (hpRegenElapsed < timeUntilRegen)
+        if (hpRegenElapsed < timeUntilRegenHp)
         {
             hpRegenElapsed += Time.deltaTime;
             //Debug.Log("Counting... " + regenElapsed.ToString());
@@ -177,7 +196,7 @@ public class PlayerController : MonoBehaviour, IDamage
     //as long as they hold the button;
     void Sprint()
     {
-        if (Input.GetButtonDown("Sprint") && (stamina >= staminaSprintMinimum))
+        if (Input.GetButtonDown("Sprint") && !isSprinting)
         {
 
             //if (isSprinting && Input.GetButtonDown("Crouch"))
@@ -191,7 +210,7 @@ public class PlayerController : MonoBehaviour, IDamage
             isSprinting = true;
             regenElapsed = 0.0f;
         }
-        else if (Input.GetButtonUp("Sprint"))
+        else if (Input.GetButtonUp("Sprint") && isSprinting)
         {
             //if false Decrement the player speed 
             playerSpeed /= sprintMod;
@@ -211,17 +230,23 @@ public class PlayerController : MonoBehaviour, IDamage
     //}
     void Crouched()
     {
+        //check if grouded check button if false
         if (groundedPlayer && Input.GetButtonDown("Crouch") && Crouching == false)
         {
                 Crouching = true;
-                transform.localScale = Crouch;
+            //change local y
+                //transform.localScale = Crouch;
+                controller.height = 1;
+            //decrement speed
                 playerSpeed /= sprintMod;
-            
-        }
+
+        }//check if grouded check button if true
         else if (groundedPlayer && Input.GetButtonDown("Crouch") && Crouching == true)
         {
             Crouching = false;
-            transform.localScale = playerScale;
+            //set height back to normal 
+            controller.height = 2;
+            //give player back speed 
             playerSpeed *= sprintMod;
         }
     }
@@ -232,10 +257,16 @@ public class PlayerController : MonoBehaviour, IDamage
         {
             //if true  increment the player speed by some number 
             stamina -= (staminaDrain * Time.deltaTime);
+            if(stamina < 25 )
+            { 
+                isSprinting=false;
+                playerSpeed/= sprintMod;
+            }
             if (stamina < 1)
             {
                 stamina = 1;
             }
+            //take stamin away when running 
             GameManager.instance.playerStaminaBar.fillAmount = ((float)stamina / (float)staminaOrig);
         }
         else if (Input.GetButtonDown("Jump") && staminaJumpMinimum < stamina)
@@ -261,12 +292,13 @@ public class PlayerController : MonoBehaviour, IDamage
 
         GameManager.instance.playerHPBar.fillAmount = (float)Hp / (float)HPOrig;
 
-        if (GameManager.instance.playerHPBar.fillAmount < (HPOrig / 2))
+        if (GameManager.instance.playerHPBar.fillAmount < (0.5f) && doHelthRegen)
         {
             Hp += hpRegen * Time.deltaTime;
             if (Hp > (HPOrig / 2))
             {
                 Hp = (HPOrig / 2);
+                doHelthRegen = false;
             }
         }
     }
@@ -283,70 +315,62 @@ public class PlayerController : MonoBehaviour, IDamage
             GameManager.instance.playerStaminaBar.fillAmount = (stamina / staminaOrig);
         }
     }
-    IEnumerator WallTime()
-    {
-        yield return new WaitForSeconds(WallT);
-        gravityValue -= gravityMod;
-        playerSpeed /= sprintMod;
-    }
+    //IEnumerator WallTime()
+    //{
+    //    //tilt camera 
+    //    wallRunning = true;
+    //    gravityValue += gravityMod;
+    //    playerSpeed *= sprintMod;
+    //    yield return new WaitForSeconds(WallT);
+    //    //tilt back
+    //    wallRunning = false;
+    //    gravityValue -= gravityMod;
+    //    playerSpeed /= sprintMod;
+    //}
 
-    void WallRun()
-    {
-        RaycastHit hit;
-        Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.left * DistanceWall));
-        Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.right * DistanceWall));
-        //if player is by wall do something 
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.right), out hit, DistanceWall, Layer_Mask))
-        {
-            //check if ur right wall 
-            if (hit.collider.tag == "Wall")
-            {
-                //change gravity
-                gravityMod += gravityValue;
-                //increase speed 
-                playerSpeed *= sprintMod;
-                //tilt camera 
-                StartCoroutine(WallTime());
-            }
-        }
-        else if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.left), out hit, DistanceWall, Layer_Mask))
-        {
+    //void WallRun()
+    //{
+    //    RaycastHit hit;
+    //    Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.left * DistanceWall));
+    //    Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.right * DistanceWall));
+    //    //if player is by wall do something 
+    //    if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.right), out hit, DistanceWall, Layer_Mask))
+    //    {
+    //        //check if ur right wall 
+    //        if (hit.collider.tag == "Wall" && !wallRunning)
+    //        {
+                
+                
+                
+    //            StartCoroutine(WallTime());
+    //        }
+    //    }
+    //    else if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.left), out hit, DistanceWall, Layer_Mask))
+    //    {
 
-            //check if ur left wall 
-            if (hit.collider.tag == "Wall")
-            {
+    //        //check if ur left wall 
+    //        if (hit.collider.tag == "Wall" && !wallRunning)
+    //        {
+               
+    //            StartCoroutine(WallTime());
+    //        }
 
-                //change gravity
-                gravityMod += gravityValue;
-                //increase speed 
-                playerSpeed *= sprintMod;
-                //tilt camera 
-                StartCoroutine(WallTime());
-            }
-
-        }
-        // to excute a function in intervals
-    }
+    //    }
+    //    // to excute a function in intervals
+    //}
 
 
     public void TakeDamage(int amount)
     {
         Hp -= amount;
-        UpdatePlayerUI();
+        hpRegenElapsed = 0;
+        updatePlayerUi();
         if (Hp <= 0)
         {
-            //GameManager.instance.youLose();
+            GameManager.instance.youLose();
         }
     }
-    public void SpawnPlayer()
-    {
-        Hp = HPOrig;
-        UpdatePlayerUI();
-        controller.enabled = false;
-        //transform.position = GameManager.instance.playerSpawnPos.transform.position;
-        controller.enabled = true;
-    }
-
+   
 
     IEnumerator Shoot()
     {
@@ -363,29 +387,76 @@ public class PlayerController : MonoBehaviour, IDamage
             {
                 damagable.TakeDamage(shootDamage);
             }
-            Instantiate(cube, hit.point, cube.transform.rotation);
+            
         }
         // once fired pause 
         yield return new WaitForSeconds(shootRate);
         //stop shooting 
         isShooting = false;
     }
+    public void setWeaponStates(WeaponStats weapon)
+    {
+        weaponlist.Add(weapon);
+        //states
+        shootDamage = weapon.shootDamage;
+        shootDist = weapon.shootDist;
+        shootRate = weapon.shootRate;
+        //model
+        gunmodel.GetComponent<MeshFilter>().sharedMesh = weapon.model.GetComponent<MeshFilter>().sharedMesh;
+
+        gunmodel.GetComponent<MeshRenderer>().sharedMaterial = weapon.model.GetComponent<MeshRenderer>().sharedMaterial;
+        selectedweapon = weaponlist.Count - 1;
+        
+        //gameManger.instance.updateAmmoUI(gunList[selectedGun].ammmoCur, gunList[selectedGun].ammmoMax);
+    }
+
+    void selectGun()
+    {
+        if (Input.GetAxis("Mouse ScrollWheel") > 0 && selectedweapon < weaponlist.Count - 1)
+        {
+            selectedweapon++;
+            changeWeapon();
+        }
+        else if (Input.GetAxis("Mouse ScrollWheel") < 0 && selectedweapon > 0)
+        {
+            selectedweapon--;
+            changeWeapon();
+        }
+    }
+
+    void changeWeapon()
+    {
+        shootDamage = weaponlist[selectedweapon].shootDamage;
+        shootDist = weaponlist[selectedweapon].shootDist;
+        shootRate = weaponlist[selectedweapon].shootRate;
+        //model
+        gunmodel.GetComponent<MeshFilter>().sharedMesh = weaponlist[selectedweapon].model.GetComponent<MeshFilter>().sharedMesh;
+        gunmodel.GetComponent<MeshRenderer>().sharedMaterial = weaponlist[selectedweapon].model.GetComponent<MeshRenderer>().sharedMaterial;
+
+        //gameManger.instance.updateAmmoUI(weaponlist[selectedweapon].ammmoCur, weaponlist[selectedweapon].ammmoMax);
+
+        isShooting = false;
+    }
+
 
     public void spawnPlayer()
     {
         Hp = HPOrig;
-        UpdatePlayerUI();
+        updatePlayerUi();
         controller.enabled = false;
-        //transform.position = GameManager.instance.playerSpawnPos.transform.position;
+        transform.position = GameManager.instance.playerSpawn.transform.position;
         controller.enabled = true;
     }
 
-    void UpdatePlayerUI()
+    public bool GetGrounded()
     {
-        //GameManager.instance.playerHpBar.fillAmount = (float)Hp / HPOrig;
+        return groundedPlayer;
     }
 
-
+    public bool IsSprinting()
+    {
+        return isSprinting;
+    }
 
 
 

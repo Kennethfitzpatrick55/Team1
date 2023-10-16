@@ -13,16 +13,18 @@ public class AIEnemyMelee : MonoBehaviour, IDamage
     [Header("----- Stats -----")]
     [Range(1, 25)] [SerializeField] int HP;
     [SerializeField] int turnSpeed;
+    [Range(1, 180)][SerializeField] int viewAngle;
 
     [Header("----- Attack Stats -----")]
     //Sets weapon to use
     [SerializeField] GameObject weapon;
     [SerializeField] Transform weaponPos;
-    [SerializeField] float attackDelay;
+    float attackDelay;
     float range;
 
     bool isAttacking;
     bool playerInRange;
+    float angleToPlayer;
     float deathAnimTime;
     Vector3 playerDir;
     Color colorOrig;
@@ -32,6 +34,9 @@ public class AIEnemyMelee : MonoBehaviour, IDamage
     {
         //FOR FUTURE USE, sets timer to destroy an enemy to allow for death animations to play
         deathAnimTime = 0;
+
+        //Grabs attack delay from weapon
+        attackDelay = weapon.GetComponent<MeleeWeapon>().GetAttackDelay();
 
         //Fetches original color to not mess up color/model after damage flash
         colorOrig = model.material.color;
@@ -50,39 +55,49 @@ public class AIEnemyMelee : MonoBehaviour, IDamage
         RespawnReset();
 
         //Tracks to the player if they are in range
-        if (playerInRange)
+        if (playerInRange && CanSeePlayer())
         {
-            playerDir = GameManager.instance.player.transform.position - transform.position;
             
-            //Turns towards player when not moving
-            if(agent.remainingDistance < agent.stoppingDistance)
-            {
-                FaceTarget();
-            }
-
-            agent.SetDestination(GameManager.instance.player.transform.position);
-
-            //Attacks if not attacking and in attacking range
-            if(!isAttacking && InAttackRange())
-            {
-                StartCoroutine(Attack());
-            }
-
-            //Animate weapon if attacking
-            //if (isAttacking)
-            //{
-            //    weapon.GetComponent<MeleeWeapon>().Animate();
-            //}
-            //else
-            //{
-            //    weapon.GetComponent<MeleeWeapon>().ResetAnim();
-            //}
         }
+    }
+
+    bool CanSeePlayer()
+    {
+        //Set default output for function
+        bool output = false;
+
+        playerDir = GameManager.instance.player.transform.position - transform.position;
+        angleToPlayer = Vector3.Angle(playerDir, transform.forward);
+
+        //Raycast to see if enemy can see player
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, playerDir, out hit))
+        {
+            //See if enemy can "see" player
+            if (hit.collider.CompareTag("Player") && angleToPlayer <= viewAngle)
+            {
+                //Turns towards player when not moving
+                if (agent.remainingDistance < agent.stoppingDistance)
+                {
+                    FaceTarget();
+                }
+
+                agent.SetDestination(GameManager.instance.player.transform.position);
+
+                //Return true if player is found properly
+                output = true;
+            }
+        }
+        return output;
     }
 
     public void TakeDamage(int amount)
     {
         HP -= amount;
+
+        //Have enemy respond to taking damage from player
+        agent.SetDestination(GameManager.instance.player.transform.position);
+        FaceTarget();
 
         //Visual queue for damage taken
         StartCoroutine(FlashDamage());
@@ -143,13 +158,13 @@ public class AIEnemyMelee : MonoBehaviour, IDamage
     void RespawnReset()
     {
         //Checks if player respawned, then resets the playerInRange variable
-        //if(GameManager.instance.player.GetComponent<PlayerController>().DidRespawn())
+        //if (GameManager.instance.player.GetComponent<PlayerController>().DidRespawn())
         //{
         //    playerInRange = false;
         //}
     }
 
-    //Finds if player is within attack range so enemies are not always attacking
+    //Finds if player is within attack range so enemies are not always attacking (for future animations)
     bool InAttackRange()
     {
         //Defaults to not in range
@@ -162,5 +177,10 @@ public class AIEnemyMelee : MonoBehaviour, IDamage
         }
 
         return inRange;
+    }
+
+    public float GetAttackDelay()
+    {
+        return attackDelay;
     }
 }

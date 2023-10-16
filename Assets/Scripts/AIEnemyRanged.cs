@@ -13,16 +13,19 @@ public class AIEnemyRanged : MonoBehaviour, IDamage
     [Header("----- Stats -----")]
     [Range(1, 25)] [SerializeField] int HP;
     [SerializeField] int turnSpeed;
+    [Range(1, 180)] [SerializeField] int viewAngle;
 
     [Header("----- Attack Stats -----")]
     //Weapon implementation
     [SerializeField] GameObject weapon;
     [SerializeField] Transform weaponPos;
     [SerializeField] float attackDelay;
+    [Range(1, 45)] [SerializeField] int attackAngle;
     float range;
 
     bool isAttacking;
     bool playerInRange;
+    float angleToPlayer;
     float deathAnimTime;
     Vector3 playerDir;
     Color colorOrig;
@@ -50,29 +53,55 @@ public class AIEnemyRanged : MonoBehaviour, IDamage
         RespawnReset();
 
         //Tracks to the player if they are in range
-        if(playerInRange)
+        if(playerInRange && CanSeePlayer())
         {
-            playerDir = GameManager.instance.player.transform.position - transform.position;
             
-            //Turns towards player when not moving
-            if(agent.remainingDistance < agent.stoppingDistance)
-            {
-                FaceTarget();
-            }
+        }
+    }
 
-            agent.SetDestination(GameManager.instance.player.transform.position);
+    bool CanSeePlayer()
+    {
+        //Set default output for function
+        bool output = false;
 
-            //Attacks if not attacking and in attacking range
-            if(!isAttacking && InAttackRange())
+        playerDir = GameManager.instance.player.transform.position - transform.position;
+        angleToPlayer = Vector3.Angle(playerDir, transform.forward);
+
+        //Raycast to see if enemy can see player
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, playerDir, out hit))
+        {
+            //See if enemy can "see" player
+            if (hit.collider.CompareTag("Player") && angleToPlayer <= viewAngle)
             {
-                StartCoroutine(Attack());
+                //Turns towards player when not moving
+                if (agent.remainingDistance < agent.stoppingDistance)
+                {
+                    FaceTarget();
+                }
+
+                agent.SetDestination(GameManager.instance.player.transform.position);
+
+                //Attacks if not attacking and in attacking range
+                if (!isAttacking && angleToPlayer <= attackAngle)
+                {
+                    StartCoroutine(Attack());
+                }
+
+                //Return true if player is found properly
+                output = true;
             }
         }
+        return output;
     }
 
     public void TakeDamage(int amount)
     {
         HP -= amount;
+
+        //Have enemy respond to taking damage from player
+        agent.SetDestination(GameManager.instance.player.transform.position);
+        FaceTarget();
 
         //Visual queue for damage taken
         StartCoroutine(FlashDamage());
@@ -137,24 +166,9 @@ public class AIEnemyRanged : MonoBehaviour, IDamage
     void RespawnReset()
     {
         //Checks if player respawned, then resets the playerInRange variable
-        //if(GameManager.instance.player.GetComponent<PlayerController>().DidRespawn())
+        //if (GameManager.instance.player.GetComponent<PlayerController>().DidRespawn())
         //{
         //    playerInRange = false;
         //}
-    }
-
-    //Finds if player is within attack range so enemies are not always attacking
-    bool InAttackRange()
-    {
-        //Defaults to not in range
-        bool inRange = false;
-
-        //If player is in range, sets to true
-        if (Vector3.Distance(GameManager.instance.player.transform.position, weaponPos.transform.position) <= range)
-        {
-            inRange = true;
-        }
-
-        return inRange;
     }
 }

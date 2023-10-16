@@ -21,6 +21,7 @@ public class MapLocation
         name = _name;
     }
 }
+
 public class Maze : MonoBehaviour
 {
     /*
@@ -121,6 +122,7 @@ public class Maze : MonoBehaviour
         DrawMap();    
 
     }
+
     void InitialisMap()
     {
 

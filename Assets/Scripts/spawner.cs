@@ -17,7 +17,7 @@ public class newBehaviorScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GameManager.instance.updateGameGoal(maxObjectsToSpawn);
+        //GameManager.instance.updateGameGoal(maxObjectsToSpawn);
     }
 
     // Update is called once per frame

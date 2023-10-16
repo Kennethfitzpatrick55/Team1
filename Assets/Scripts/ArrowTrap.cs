@@ -2,52 +2,52 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ArrowTrap : MonoBehaviour
-{
-    public class ArrowTrap : MonoBehaviour
-    {
-        public GameObject arrowPrefab;
-        public Transform spawnPoint;
-        private float arrowSpeed = 10f;
-        private void OnTriggerEnter(Collider other)
-        {
-            if (other.CompareTag("Player"))
-            {
-                //Debug.Log("Incoming!");
-                GameObject arrow = Instantiate(arrowPrefab, spawnPoint.position, spawnPoint.rotation);
+//public class ArrowTrap : MonoBehaviour
+//{
+//    public class ArrowTrap : MonoBehaviour
+//    {
+//        public GameObject arrowPrefab;
+//        public Transform spawnPoint;
+//        private float arrowSpeed = 10f;
+//        private void OnTriggerEnter(Collider other)
+//        {
+//            if (other.CompareTag("Player"))
+//            {
+//                //Debug.Log("Incoming!");
+//                GameObject arrow = Instantiate(arrowPrefab, spawnPoint.position, spawnPoint.rotation);
 
-                Rigidbody arrowRigidboy = arrow.GetComponent<Rigidbody>();
+//                Rigidbody arrowRigidboy = arrow.GetComponent<Rigidbody>();
 
-                if (arrowRigidboy != null)
-                {
-                    arrowRigidboy.velocity = arrow.transform.right * -1 * arrowSpeed;
-                }
-                Destroy(arrow, 3f);
-            }
-        }
+//                if (arrowRigidboy != null)
+//                {
+//                    arrowRigidboy.velocity = arrow.transform.right * -1 * arrowSpeed;
+//                }
+//                Destroy(arrow, 3f);
+//            }
+//        }
 
-        private void SpawnArrow()
-        {
-            if (arrowPrefab != null)
-            {
+//        private void SpawnArrow()
+//        {
+//            if (arrowPrefab != null)
+//            {
                 
-                Instantiate(arrowPrefab, transform.position, Quaternion.identity);
+//                Instantiate(arrowPrefab, transform.position, Quaternion.identity);
                 
-                arrowPrefab.SetActive(true);
+//                arrowPrefab.SetActive(true);
 
 
-            }
-        }
+//            }
+//        }
 
-        private IEnumerator DeactivateArrow(float delay)
-        {
-            yield return new WaitForSeconds(delay);
+//        private IEnumerator DeactivateArrow(float delay)
+//        {
+//            yield return new WaitForSeconds(delay);
             
-            if (arrowPrefab != null && arrowPrefab.activeSelf)
-            {
-                arrowPrefab.SetActive(false);
-            }
-        }
+//            if (arrowPrefab != null && arrowPrefab.activeSelf)
+//            {
+//                arrowPrefab.SetActive(false);
+//            }
+//        }
 
-    }
-}
+//    }
+//}

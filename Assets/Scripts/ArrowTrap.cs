@@ -30,9 +30,9 @@ public class ArrowTrap : MonoBehaviour
         {
             if (arrowPrefab != null)
             {
-                //create arrow
+                
                 Instantiate(arrowPrefab, transform.position, Quaternion.identity);
-                //spawn arrow
+                
                 arrowPrefab.SetActive(true);
 
 
@@ -42,7 +42,7 @@ public class ArrowTrap : MonoBehaviour
         private IEnumerator DeactivateArrow(float delay)
         {
             yield return new WaitForSeconds(delay);
-            //deactivate arrow
+            
             if (arrowPrefab != null && arrowPrefab.activeSelf)
             {
                 arrowPrefab.SetActive(false);

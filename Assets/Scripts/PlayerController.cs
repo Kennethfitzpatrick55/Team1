@@ -394,7 +394,7 @@ public class PlayerController : MonoBehaviour, IDamage
         //stop shooting 
         isShooting = false;
     }
-    public void setWeaponStates(WeaponStats weapon)
+    public void setWeaponStats(WeaponStats weapon)
     {
         weaponlist.Add(weapon);
         //states

@@ -19,7 +19,7 @@ public class gunPickUp : MonoBehaviour
         if (Input.GetButtonDown("Interact") && playerInTrigger)
         {
             
-            GameManager.instance.playerScript.setWeaponStates(gun);
+            GameManager.instance.playerScript.setWeaponStats(gun);
             Destroy(gameObject);
 
         }

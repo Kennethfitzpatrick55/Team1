@@ -4,62 +4,50 @@ using UnityEngine;
 
 public class ArrowTrap : MonoBehaviour
 {
-    public GameObject arrowPrefab;
-    public Transform spawnPoint;
-    private float arrowSpeed = 10f;
-    private void OnTriggerEnter(Collider other)
+    public class ArrowTrap : MonoBehaviour
     {
-        if(other.CompareTag("Player"))
+        public GameObject arrowPrefab;
+        public Transform spawnPoint;
+        private float arrowSpeed = 10f;
+        private void OnTriggerEnter(Collider other)
         {
-
-            Debug.Log("Incoming!");
-            SpawnArrow();
-
-            //Debug.Log("Incoming!");
-            GameObject arrow = Instantiate(arrowPrefab, spawnPoint.position, spawnPoint.rotation);
-
-            Rigidbody arrowRigidboy = arrow.GetComponent<Rigidbody>();
-
-            if(arrowRigidboy != null ) 
+            if (other.CompareTag("Player"))
             {
-                arrowRigidboy.velocity = arrow.transform.right * -1 * arrowSpeed;
+                //Debug.Log("Incoming!");
+                GameObject arrow = Instantiate(arrowPrefab, spawnPoint.position, spawnPoint.rotation);
+
+                Rigidbody arrowRigidboy = arrow.GetComponent<Rigidbody>();
+
+                if (arrowRigidboy != null)
+                {
+                    arrowRigidboy.velocity = arrow.transform.right * -1 * arrowSpeed;
+                }
+                Destroy(arrow, 3f);
             }
-            Destroy(arrow, 3f);
-
         }
-    }
 
-    private void SpawnArrow()
-    {
-
-        Vector3 direction = (player.position - transform.position).normalized;
-        GameObject arrow = Instantiate(arrowPrefab, transform.position + Vector3.up, Quaternion.identity);
-        ArrowMovement arrowMovement = arrow.GetComponent<arrowMovement>();
-    }
-
-    
-
-        if(arrowPrefab != null)
+        private void SpawnArrow()
         {
-            
-            Instantiate(arrowPrefab, transform.position, Quaternion.identity);
-           
-            arrowPrefab.SetActive(true);
-            
-            
-        }
-    }
-    
-    private IEnumerator DeactivateArrow(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        
-        if(arrowPrefab != null && arrowPrefab.activeSelf)
-        {
-            arrowPrefab.SetActive(false);
-        }
-    }
+            if (arrowPrefab != null)
+            {
+                //create arrow
+                Instantiate(arrowPrefab, transform.position, Quaternion.identity);
+                //spawn arrow
+                arrowPrefab.SetActive(true);
 
-    
-    
+
+            }
+        }
+
+        private IEnumerator DeactivateArrow(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            //deactivate arrow
+            if (arrowPrefab != null && arrowPrefab.activeSelf)
+            {
+                arrowPrefab.SetActive(false);
+            }
+        }
+
+    }
 }

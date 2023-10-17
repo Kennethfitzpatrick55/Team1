@@ -70,7 +70,7 @@ public class PlayerController : MonoBehaviour, IDamage
     WallRun wallRun;
     private void Start()
     {
-        wallRun = GetComponent<WallRun>();
+        //wallRun = GetComponent<WallRun>();
         regenElapsed = 0;
         doStaminaRegen = false;
         Layer_Mask = LayerMask.GetMask("Wall") + LayerMask.GetMask("Ground");
@@ -130,11 +130,11 @@ public class PlayerController : MonoBehaviour, IDamage
         }
 
         //Resets ground velocities for when not wall running (bug fix)
-        if (!wallRun.IsWallRunning())
-        {
-            playerVelocity.x = 0f;
-            playerVelocity.z = 0f;
-        }
+        //if (!wallRun.IsWallRunning())
+        //{
+        //    playerVelocity.x = 0f;
+        //    playerVelocity.z = 0f;
+        //}
 
         //vector 2 that recives are players input and moves it to that  postion 
         move = (Input.GetAxis("Horizontal") * transform.right) +

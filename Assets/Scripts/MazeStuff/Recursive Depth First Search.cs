@@ -106,7 +106,7 @@ public class RecursiveDepthFirstSearch : Maze
     public void SetWalls(MapNodeDFS curr)
     {
         //Set scale for wall lengths and for tile wall positions
-        Vector3 wallLength = new Vector3(scale / 10, wall.transform.localScale.y, wall.transform.localScale.z * .8f);
+        Vector3 wallLength = new Vector3(scale / 10, wall.transform.localScale.y, scale * 0.8f);
         float tileX = curr.x * scale;
         float tileZ = curr.z * scale;
 

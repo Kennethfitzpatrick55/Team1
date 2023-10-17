@@ -18,6 +18,9 @@ public class GameManager : MonoBehaviour
 
     [Header("----- Enemy -----")]
     public GameObject enemySpawn;
+    [SerializeField] int rangedEnemies;
+    [SerializeField] int meleeEnemies;
+    [SerializeField] int phantoms;
 
     [Header("----Menus----")]
     [SerializeField] GameObject activeMenu;

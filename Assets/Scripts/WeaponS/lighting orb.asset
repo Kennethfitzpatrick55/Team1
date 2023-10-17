@@ -18,6 +18,6 @@ MonoBehaviour:
   ammmoCur: 0
   ammmoMax: 0
   model: {fileID: 0}
-  hiteffect: {fileID: 0}
+  hiteffect: {fileID: 2971709145535843293, guid: b029e82250bc9c44dbed36a0415c340e, type: 3}
   shootsound: {fileID: 0}
   shootsoundvol: 0

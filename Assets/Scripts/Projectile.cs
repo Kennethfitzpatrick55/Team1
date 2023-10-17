@@ -24,7 +24,7 @@ public class Projectile : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         //Ignores triggers
-        if(other.isTrigger)
+        if (other.isTrigger)
         {
             return;
         }

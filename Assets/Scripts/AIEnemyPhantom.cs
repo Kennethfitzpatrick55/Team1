@@ -11,10 +11,10 @@ public class AIEnemyPhantom : MonoBehaviour, IDamage
     [SerializeField] Renderer model;
 
     [Header("----- Stats -----")]
-    [Range(1, 25)] [SerializeField] int HP;
+    [Range(1, 25)][SerializeField] int HP;
     [SerializeField] float speed;
     [SerializeField] float turnSpeed;
-    [Range(1, 180)] [SerializeField] int viewAngle;
+    [Range(1, 180)][SerializeField] int viewAngle;
     [SerializeField] float stoppingDist;
 
     bool playerInRange;
@@ -43,9 +43,9 @@ public class AIEnemyPhantom : MonoBehaviour, IDamage
         RespawnReset();
 
         //Tracks to the player if they are in range
-        if(playerInRange && CanSeePlayer())
+        if (playerInRange && CanSeePlayer())
         {
-            
+
         }
     }
 
@@ -87,7 +87,7 @@ public class AIEnemyPhantom : MonoBehaviour, IDamage
         //Visual queue for damage taken
         StartCoroutine(FlashDamage());
 
-        if(HP <= 0)
+        if (HP <= 0)
         {
             //Remove enemy from count on death
             GameManager.instance.UpdateEnemyCount(-1);

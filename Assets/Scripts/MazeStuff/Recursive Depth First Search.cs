@@ -40,7 +40,7 @@ public class RecursiveDepthFirstSearch : Maze
             new MapLocation(0,-1, "Down")
         };
 
-        for (int i  = 0; i < dir.Count; i++)
+        for (int i = 0; i < dir.Count; i++)
         {
             //Shuffle currently selected direction
             if (i != dir.Count - 1)
@@ -55,19 +55,19 @@ public class RecursiveDepthFirstSearch : Maze
             MapNodeDFS next = new MapNodeDFS(curr.x + dir[i].x, curr.z + dir[i].z);
 
             //Bounds check x and z coords
-            if(next.x < 0 || next.x > width || next.z < 0 || next.z > depth)
+            if (next.x < 0 || next.x > width || next.z < 0 || next.z > depth)
             {
                 continue;
             }
             //Check if node has been visited already
-            else if(visited.Contains(next))
+            else if (visited.Contains(next))
             {
                 continue;
             }
             else
             {
                 //Right direction
-                if(dir[i].name == "Right")
+                if (dir[i].name == "Right")
                 {
                     curr.right = false;
                     next.left = false;

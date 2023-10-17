@@ -40,11 +40,11 @@ public class MeleeWeapon : MonoBehaviour
         {
             return;
         }
-        
+
         //Check if attack is on cooldown
         if (!isAttacking)
         {
-            
+
             //Puts delay between triggers of outgoing damage
             StartCoroutine(Attack(other));
         }

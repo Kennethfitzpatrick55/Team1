@@ -13,7 +13,7 @@ using UnityEngine.XR;
 
 public class PlayerController : MonoBehaviour, IDamage
 {
-  
+
     // orgization of materials in inspector 
     [Header("----Components----")]
     [SerializeField] CharacterController controller;
@@ -29,8 +29,8 @@ public class PlayerController : MonoBehaviour, IDamage
     [Range(-10, 40)][SerializeField] private float gravityMod;
     [Range(-10, -40)][SerializeField] private float gravityValue;
     [Range(1, 10)][SerializeField] private float DistanceWall;
-                  [SerializeField] private Vector3 Crouch;
-                  [SerializeField] private Vector3 playerScale;
+    [SerializeField] private Vector3 Crouch;
+    [SerializeField] private Vector3 playerScale;
     [Range(1.0f, 100.0f)][SerializeField] float stamina;
     [Range(1, 20)][SerializeField] float jumpCost;
     [Range(1.0f, 100f)][SerializeField] float staminaDrain;
@@ -39,7 +39,7 @@ public class PlayerController : MonoBehaviour, IDamage
     [Range(1, 100)][SerializeField] float staminaJumpMinimum;
     [Range(1, 10)][SerializeField] float timeUntilRegenHp;
     [Range(1, 10)][SerializeField] float timeUntilRegenStamina;
-    [Range(1,10)] [SerializeField] private float WallT;
+    [Range(1, 10)][SerializeField] private float WallT;
     //[SerializeField] private float slideT;
 
     [Header("----Weapon states----")]
@@ -48,7 +48,7 @@ public class PlayerController : MonoBehaviour, IDamage
     [SerializeField] float shootRate;
     [SerializeField] int shootDamage;
     [SerializeField] int shootDist;
-    
+
     // private variabels 
     public Vector3 playerVelocity;
     private bool groundedPlayer;
@@ -79,13 +79,13 @@ public class PlayerController : MonoBehaviour, IDamage
         spawnPlayer();
         playerScale = transform.localScale;
         Crouch = new Vector3(transform.localScale.x, transform.localScale.y / 2, transform.localScale.z);
-       
+
     }
 
 
     void Update()
     {
-       
+
         //if its not paused do this 
         if (!GameManager.instance.isPaused)
         {
@@ -96,7 +96,7 @@ public class PlayerController : MonoBehaviour, IDamage
 
             movement();
 
-            CountRegenElapsedInSeconds(); 
+            CountRegenElapsedInSeconds();
         }
     }
     //  controls the players movement 
@@ -130,7 +130,7 @@ public class PlayerController : MonoBehaviour, IDamage
         }
 
         //Resets ground velocities for when not wall running (bug fix)
-        if(!wallRun.IsWallRunning())
+        if (!wallRun.IsWallRunning())
         {
             playerVelocity.x = 0f;
             playerVelocity.z = 0f;
@@ -145,8 +145,8 @@ public class PlayerController : MonoBehaviour, IDamage
 
         //will take a button input thats press down 
         if (Input.GetButtonDown("Jump") && jumpedtimes <= jumpMax && staminaJumpMinimum < stamina)
-        {  
-            if (Crouching==true) 
+        {
+            if (Crouching == true)
             {
                 Crouching = false;
 
@@ -225,7 +225,7 @@ public class PlayerController : MonoBehaviour, IDamage
     //    playerSpeed /= sprintMod;
     //    Crouching = true; 
     //    transform.localScale = Crouch;
-      
+
 
     //}
     void Crouched()
@@ -233,12 +233,12 @@ public class PlayerController : MonoBehaviour, IDamage
         //check if grouded check button if false
         if (groundedPlayer && Input.GetButtonDown("Crouch") && Crouching == false)
         {
-                Crouching = true;
+            Crouching = true;
             //change local y
-                //transform.localScale = Crouch;
-                controller.height = 1;
+            //transform.localScale = Crouch;
+            controller.height = 1;
             //decrement speed
-                playerSpeed /= sprintMod;
+            playerSpeed /= sprintMod;
 
         }//check if grouded check button if true
         else if (groundedPlayer && Input.GetButtonDown("Crouch") && Crouching == true)
@@ -257,10 +257,10 @@ public class PlayerController : MonoBehaviour, IDamage
         {
             //if true  increment the player speed by some number 
             stamina -= (staminaDrain * Time.deltaTime);
-            if(stamina < 25 )
-            { 
-                isSprinting=false;
-                playerSpeed/= sprintMod;
+            if (stamina < 25)
+            {
+                isSprinting = false;
+                playerSpeed /= sprintMod;
             }
             if (stamina < 1)
             {
@@ -339,9 +339,9 @@ public class PlayerController : MonoBehaviour, IDamage
     //        //check if ur right wall 
     //        if (hit.collider.tag == "Wall" && !wallRunning)
     //        {
-                
-                
-                
+
+
+
     //            StartCoroutine(WallTime());
     //        }
     //    }
@@ -351,7 +351,7 @@ public class PlayerController : MonoBehaviour, IDamage
     //        //check if ur left wall 
     //        if (hit.collider.tag == "Wall" && !wallRunning)
     //        {
-               
+
     //            StartCoroutine(WallTime());
     //        }
 
@@ -370,7 +370,7 @@ public class PlayerController : MonoBehaviour, IDamage
             GameManager.instance.youLose();
         }
     }
-   
+
 
     IEnumerator Shoot()
     {
@@ -387,7 +387,7 @@ public class PlayerController : MonoBehaviour, IDamage
             {
                 damagable.TakeDamage(shootDamage);
             }
-            
+
         }
         // once fired pause 
         yield return new WaitForSeconds(shootRate);
@@ -406,7 +406,7 @@ public class PlayerController : MonoBehaviour, IDamage
 
         gunmodel.GetComponent<MeshRenderer>().sharedMaterial = weapon.model.GetComponent<MeshRenderer>().sharedMaterial;
         selectedweapon = weaponlist.Count - 1;
-        
+
         //gameManger.instance.updateAmmoUI(gunList[selectedGun].ammmoCur, gunList[selectedGun].ammmoMax);
     }
 

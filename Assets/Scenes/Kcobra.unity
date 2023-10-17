@@ -973,6 +973,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 368406922328078340, guid: 49e460495a8fad041933322edaa1ac72, type: 3}
+      propertyPath: gunmodel
+      value: 
+      objectReference: {fileID: 1720420705900915420, guid: 0367c873bd90b8f4e9f00ba9482dcb97, type: 3}
+    - target: {fileID: 368406922328078340, guid: 49e460495a8fad041933322edaa1ac72, type: 3}
       propertyPath: sprintMod
       value: 1.89
       objectReference: {fileID: 0}

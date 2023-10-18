@@ -374,25 +374,31 @@ public class PlayerController : MonoBehaviour, IDamage
 
     IEnumerator Shoot()
     {
-        isShooting = true;
-
-        RaycastHit hit;
-
-        if (Physics.Raycast(Camera.main.ViewportPointToRay(new Vector2(0.5f, 0.5f)), out hit, shootDist))
+        // check if we have ammo in the currently selected gun
+        if (weaponlist[selectedweapon].ammmoCur > 0)
         {
-            //Does he object have acess to IDamage
-            IDamage damagable = hit.collider.GetComponent<IDamage>();
-            // if that object is damagebel then damge it  
-            if (damagable != null)
-            {
-                damagable.TakeDamage(shootDamage);
-            }
+            isShooting = true;
 
+            RaycastHit hit;
+
+            if (Physics.Raycast(Camera.main.ViewportPointToRay(new Vector2(0.5f, 0.5f)), out hit, shootDist))
+            {
+                //Does he object have acess to IDamage
+                IDamage damagable = hit.collider.GetComponent<IDamage>();
+                // if that object is damagebel then damge it  
+                if (damagable != null)
+                {
+                    damagable.TakeDamage(shootDamage);
+                }
+
+            }
+            weaponlist[selectedweapon].ammmoCur--;
+            GameManager.instance.updateAmmoUI(weaponlist[selectedweapon].ammmoCur, weaponlist[selectedweapon].ammmoMax);
+            // once fired pause 
+            yield return new WaitForSeconds(shootRate);
+            //stop shooting 
+            isShooting = false;
         }
-        // once fired pause 
-        yield return new WaitForSeconds(shootRate);
-        //stop shooting 
-        isShooting = false;
     }
     public void setWeaponStats(WeaponStats weapon)
     {

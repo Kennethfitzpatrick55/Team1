@@ -27,6 +27,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject pauseMenu;
     [SerializeField] GameObject winMenu;
     [SerializeField] GameObject lossMenu;
+    [SerializeField] TextMeshProUGUI AmmoCurrent;
+    [SerializeField] TextMeshProUGUI AmmoMax;
 
 
     public bool isPaused;
@@ -108,8 +110,8 @@ public class GameManager : MonoBehaviour
 
     public void updateAmmoUI(int cur, int max)
     {
-        //AmmoCurrent.text = cur.ToString("F0");
-        //AmmoMax.text = max.ToString("F0");
+        AmmoCurrent.text = cur.ToString("F0");
+        AmmoMax.text = max.ToString("F0");
     }
 
     public int GetMaxRanged()

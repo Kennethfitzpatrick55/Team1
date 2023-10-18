@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class weaponpickup : MonoBehaviour
+public class WeaponPickUp : MonoBehaviour
 {
     
     ////[SerializeField] GameObject button;

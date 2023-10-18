@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65d755b3c9ce53346bc8ff940207881e, type: 3}
   m_Name: lighting orb
   m_EditorClassIdentifier: 
-  shootRate: 0
-  shootDamage: 0
-  shootDist: 0
-  ammmoCur: 0
-  ammmoMax: 0
-  model: {fileID: 0}
+  shootRate: 1
+  shootDamage: 200
+  shootDist: 1
+  ammmoCur: 1
+  ammmoMax: 1
+  model: {fileID: 8386838056939813518, guid: ab39008314a24184f88a577cea9daf51, type: 3}
   hiteffect: {fileID: 2971709145535843293, guid: b029e82250bc9c44dbed36a0415c340e, type: 3}
   shootsound: {fileID: 0}
   shootsoundvol: 0

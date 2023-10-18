@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class weaponpickup : MonoBehaviour
 {
-    [SerializeField] WeaponStats Weapon;
+    
     ////[SerializeField] GameObject button;
 
 

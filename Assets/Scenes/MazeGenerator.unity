@@ -1857,22 +1857,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 459776621033248027, guid: e1a1171f93b6e1340a4b1aee983e8e42, type: 3}
-      propertyPath: viewAngle
-      value: 60
-      objectReference: {fileID: 0}
-    - target: {fileID: 459776621033248027, guid: e1a1171f93b6e1340a4b1aee983e8e42, type: 3}
-      propertyPath: attackDelay
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 4340030978764894839, guid: e1a1171f93b6e1340a4b1aee983e8e42, type: 3}
-      propertyPath: m_Speed
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 4340030978764894839, guid: e1a1171f93b6e1340a4b1aee983e8e42, type: 3}
-      propertyPath: m_StoppingDistance
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 4642540175197904204, guid: e1a1171f93b6e1340a4b1aee983e8e42, type: 3}
       propertyPath: m_Name
       value: Skeleton

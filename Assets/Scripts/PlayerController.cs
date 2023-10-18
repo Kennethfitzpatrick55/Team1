@@ -93,9 +93,9 @@ public class PlayerController : MonoBehaviour, IDamage
             {
                 StartCoroutine(Shoot());
             }
-
+            
             movement();
-
+            selectGun();
             CountRegenElapsedInSeconds();
         }
     }
@@ -407,7 +407,7 @@ public class PlayerController : MonoBehaviour, IDamage
         weapon.GetComponent<MeshRenderer>().sharedMaterial = weapon.model.GetComponent<MeshRenderer>().sharedMaterial;
         selectedweapon = weaponlist.Count - 1;
 
-        //gameManger.instance.updateAmmoUI(gunList[selectedGun].ammmoCur, gunList[selectedGun].ammmoMax);
+        GameManager.instance.updateAmmoUI(weaponlist[selectedweapon].ammmoCur, weaponlist[selectedweapon].ammmoMax);
     }
 
     void selectGun()

@@ -1857,6 +1857,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 459776621033248027, guid: e1a1171f93b6e1340a4b1aee983e8e42, type: 3}
+      propertyPath: roamDist
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 459776621033248027, guid: e1a1171f93b6e1340a4b1aee983e8e42, type: 3}
+      propertyPath: roamTime
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4340030978764894839, guid: e1a1171f93b6e1340a4b1aee983e8e42, type: 3}
+      propertyPath: m_AutoBraking
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4340030978764894839, guid: e1a1171f93b6e1340a4b1aee983e8e42, type: 3}
+      propertyPath: m_Acceleration
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 4340030978764894839, guid: e1a1171f93b6e1340a4b1aee983e8e42, type: 3}
+      propertyPath: m_AngularSpeed
+      value: 600
+      objectReference: {fileID: 0}
     - target: {fileID: 4642540175197904204, guid: e1a1171f93b6e1340a4b1aee983e8e42, type: 3}
       propertyPath: m_Name
       value: Skeleton

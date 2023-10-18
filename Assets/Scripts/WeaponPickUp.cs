@@ -2,24 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class gunPickUp : MonoBehaviour
+public class weaponpickup : MonoBehaviour
 {
-    [SerializeField] WeaponStats gun;
-    [SerializeField] GameObject button;
+    [SerializeField] WeaponStats Weapon;
+    //[SerializeField] GameObject button;
 
 
     bool playerInTrigger;
     void Start()
     {
-        gun.ammmoCur = gun.ammmoMax;
+        Weapon.ammmoCur = Weapon.ammmoMax;
     }
 
     private void Update()
     {
-        if (Input.GetButtonDown("Interact") && playerInTrigger)
+        if (/*Input.GetButtonDown("Interact") && */playerInTrigger)
         {
 
-            GameManager.instance.playerScript.setWeaponStats(gun);
+            GameManager.instance.playerScript.setWeaponStats(Weapon);
             Destroy(gameObject);
 
         }
@@ -31,8 +31,8 @@ public class gunPickUp : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerInTrigger = true;
-            if (button != null)
-                button.SetActive(true);
+            //if (button != null)
+            //    button.SetActive(true);
         }
     }
 
@@ -44,7 +44,7 @@ public class gunPickUp : MonoBehaviour
         {
             //transfwer gun stats to player 
             playerInTrigger = false;
-            button.SetActive(false);
+            //button.SetActive(false);
         }
     }
 }

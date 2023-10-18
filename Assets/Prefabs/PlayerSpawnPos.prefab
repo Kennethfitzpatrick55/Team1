@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3650701537678962107}
   - component: {fileID: 2115334768149408348}
   m_Layer: 0
-  m_Name: PlayerPos
+  m_Name: PlayerSpawnPos
   m_TagString: Respawn
   m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0

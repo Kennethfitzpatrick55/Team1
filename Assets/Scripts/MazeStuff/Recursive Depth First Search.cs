@@ -9,8 +9,18 @@ public class RecursiveDepthFirstSearch : Maze
     //Corner object for filling tiles
     [SerializeField] GameObject corner;
 
+    //Goal reference for placing
+    [SerializeField] GameObject goal;
+
     //List of map tiles visited for recursion
     List<MapNodeDFS> visited = new List<MapNodeDFS>();
+
+    //Boolean for goal being spawned
+    bool goalSpawned = false;
+
+    //Enemy spawn counts
+    int ranged, melee, phantom;
+
 
     public void Start()
     {
@@ -20,9 +30,22 @@ public class RecursiveDepthFirstSearch : Maze
     public override void Generate()
     {
         //Set starting point
-        visited.Add(new MapNodeDFS(width, depth));
+        visited.Add(new MapNodeDFS(width - 1, depth - 1));
         //As neighbors are found, set passage to that neighbor
         Navigate(visited[visited.Count - 1]);
+        //Randomize goal position on north or east edge of map
+        if (!goalSpawned && Random.Range(0, 99) < 50)
+        {
+            Instantiate(goal, new Vector3((Random.Range(0, width) * scale) + (scale / 2), 0, ((depth - 1) * scale) + (scale / 2)), Quaternion.identity);
+            goalSpawned = true;
+        }
+        else if (!goalSpawned)
+        {
+            Instantiate(goal, new Vector3(((width - 1) * scale) + (scale / 2), 0, (Random.Range(0, depth) * scale) + (scale / 2)), Quaternion.identity);
+            goalSpawned = true;
+        }
+        //Randomize enemy spawns
+
     }
 
     //Loops through neighbors of passed in node, recursively grabbing each one
@@ -55,7 +78,7 @@ public class RecursiveDepthFirstSearch : Maze
             MapNodeDFS next = new MapNodeDFS(curr.x + dir[i].x, curr.z + dir[i].z);
 
             //Bounds check x and z coords
-            if (next.x < 0 || next.x > width || next.z < 0 || next.z > depth)
+            if (next.x < 0 || next.x >= width || next.z < 0 || next.z >= depth)
             {
                 continue;
             }
@@ -98,11 +121,9 @@ public class RecursiveDepthFirstSearch : Maze
         }
         //Create map tile based off of node structure
         SetWalls(curr);
-        //Randomize if enemy spawns in this tile
 
         //Randomize if weapon in this tile
 
-        
     }
 
     //Takes in coordinates and sets walls for that tile

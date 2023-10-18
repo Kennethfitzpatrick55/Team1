@@ -18,9 +18,9 @@ public class GameManager : MonoBehaviour
 
     [Header("----- Enemy -----")]
     public GameObject enemySpawn;
-    [SerializeField] int rangedEnemies;
-    [SerializeField] int meleeEnemies;
-    [SerializeField] int phantoms;
+    [SerializeField] int rangedEnemiesMax;
+    [SerializeField] int meleeEnemiesMax;
+    [SerializeField] int phantomsMax;
 
     [Header("----Menus----")]
     [SerializeField] GameObject activeMenu;
@@ -110,5 +110,20 @@ public class GameManager : MonoBehaviour
     {
         //AmmoCurrent.text = cur.ToString("F0");
         //AmmoMax.text = max.ToString("F0");
+    }
+
+    public int GetMaxRanged()
+    {
+        return rangedEnemiesMax;
+    }
+
+    public int GetMaxMelee()
+    {
+        return meleeEnemiesMax;
+    }
+
+    public int GetMaxPhantom()
+    {
+        return phantomsMax;
     }
 }

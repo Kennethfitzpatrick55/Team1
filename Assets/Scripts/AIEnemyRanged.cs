@@ -213,13 +213,8 @@ public class AIEnemyRanged : MonoBehaviour, IDamage
         }
     }
 
-    //Fix for bug of player respawning not exit triggering enemy tracking
-    void RespawnReset()
+    public void Die()
     {
-        //Checks if player respawned, then resets the playerInRange variable
-        //if (GameManager.instance.player.GetComponent<PlayerController>().DidRespawn())
-        //{
-        //    playerInRange = false;
-        //}
+        Destroy(gameObject, 2);
     }
 }

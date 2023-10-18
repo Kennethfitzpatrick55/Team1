@@ -371,6 +371,14 @@ public class PlayerController : MonoBehaviour, IDamage
         }
     }
 
+    public void AddHealth(float amount)
+    {
+        Hp +=(HPOrig * amount);
+        if (Hp >= HPOrig)
+        {
+            Hp = HPOrig;
+        }
+    }
 
     IEnumerator Shoot()
     {

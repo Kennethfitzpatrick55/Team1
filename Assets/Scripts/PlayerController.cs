@@ -44,7 +44,7 @@ public class PlayerController : MonoBehaviour, IDamage
 
     [Header("----Weapon states----")]
     [SerializeField] List<WeaponStats> weaponlist = new List<WeaponStats>();
-    [SerializeField] GameObject weapon;
+    [SerializeField] GameObject weaponModel;
     [SerializeField] float shootRate;
     [SerializeField] int shootDamage;
     [SerializeField] int shootDist;
@@ -402,9 +402,9 @@ public class PlayerController : MonoBehaviour, IDamage
         shootDist = weapon.shootDist;
         shootRate = weapon.shootRate;
         //model
-        weapon.GetComponent<MeshFilter>().sharedMesh = weapon.model.GetComponent<MeshFilter>().sharedMesh;
+        weaponModel.GetComponent<MeshFilter>().sharedMesh = weapon.model.GetComponent<MeshFilter>().sharedMesh;
 
-        weapon.GetComponent<MeshRenderer>().sharedMaterial = weapon.model.GetComponent<MeshRenderer>().sharedMaterial;
+        weaponModel.GetComponent<MeshRenderer>().sharedMaterial = weapon.model.GetComponent<MeshRenderer>().sharedMaterial;
         selectedweapon = weaponlist.Count - 1;
 
         GameManager.instance.updateAmmoUI(weaponlist[selectedweapon].ammmoCur, weaponlist[selectedweapon].ammmoMax);
@@ -430,8 +430,8 @@ public class PlayerController : MonoBehaviour, IDamage
         shootDist = weaponlist[selectedweapon].shootDist;
         shootRate = weaponlist[selectedweapon].shootRate;
         //model
-        weapon.GetComponent<MeshFilter>().sharedMesh = weaponlist[selectedweapon].model.GetComponent<MeshFilter>().sharedMesh;
-        weapon.GetComponent<MeshRenderer>().sharedMaterial = weaponlist[selectedweapon].model.GetComponent<MeshRenderer>().sharedMaterial;
+        weaponModel.GetComponent<MeshFilter>().sharedMesh = weaponlist[selectedweapon].model.GetComponent<MeshFilter>().sharedMesh;
+        weaponModel.GetComponent<MeshRenderer>().sharedMaterial = weaponlist[selectedweapon].model.GetComponent<MeshRenderer>().sharedMaterial;
 
         //gameManger.instance.updateAmmoUI(weaponlist[selectedweapon].ammmoCur, weaponlist[selectedweapon].ammmoMax);
 

@@ -18,6 +18,8 @@ public class AIEnemyMelee : MonoBehaviour, IDamage
     [Range(1, 25)] [SerializeField] int HP;
     [SerializeField] int turnSpeed;
     [Range(1, 180)][SerializeField] int viewAngle;
+    [SerializeField] int roamDist;
+    [SerializeField] int roamTime;
 
     [Header("----- Attack Stats -----")]
     [SerializeField] GameObject weapon;
@@ -26,8 +28,11 @@ public class AIEnemyMelee : MonoBehaviour, IDamage
 
     bool playerInRange;
     float angleToPlayer;
+    float stoppingDistOrig;
+    bool destinationChosen;
     Vector3 playerDir;
     Color colorOrig;
+    Vector3 startingPos;
 
     // Start is called before the first frame update
     void Start()
@@ -40,6 +45,12 @@ public class AIEnemyMelee : MonoBehaviour, IDamage
 
         //Sends attack delay to weapon so damage can be more consistent
         weapon.GetComponent<MeleeWeapon>().SetAttackDelay(attackDelay);
+
+        //Save original stopping distance for manipulation
+        stoppingDistOrig = agent.stoppingDistance;
+
+        //Set starting position for roaming
+        startingPos = transform.position;
     }
 
     // Update is called once per frame
@@ -50,9 +61,13 @@ public class AIEnemyMelee : MonoBehaviour, IDamage
             anim.SetFloat("Speed", agent.velocity.normalized.magnitude);
 
             //Tracks to the player if they are in range
-            if (playerInRange && CanSeePlayer())
+            if (!playerInRange)
             {
-                InAttackRange();
+                StartCoroutine(Roam());
+            }
+            else if(playerInRange && !CanSeePlayer())
+            {
+                StartCoroutine(Roam());
             }
         }
     }
@@ -73,6 +88,8 @@ public class AIEnemyMelee : MonoBehaviour, IDamage
             //See if enemy can "see" player
             if (hit.collider.CompareTag("Player") && angleToPlayer <= viewAngle)
             {
+                agent.stoppingDistance = stoppingDistOrig;
+
                 //Turns towards player when not moving
                 if (agent.remainingDistance < agent.stoppingDistance)
                 {
@@ -81,11 +98,41 @@ public class AIEnemyMelee : MonoBehaviour, IDamage
 
                 agent.SetDestination(GameManager.instance.player.transform.position);
 
+                //Call for attack if player is within view angle
+                if (angleToPlayer <= viewAngle)
+                {
+                    InAttackRange();
+                }
+
                 //Return true if player is found properly
                 output = true;
             }
+            else
+            {
+                agent.stoppingDistance = 0;
+            }
         }
         return output;
+    }
+
+    IEnumerator Roam()
+    {
+        if (agent.remainingDistance < 0.05f && !destinationChosen)
+        {
+            destinationChosen = true;
+            agent.stoppingDistance = 0;
+
+            yield return new WaitForSeconds(roamTime);
+
+            Vector3 randomPos = UnityEngine.Random.insideUnitSphere * roamDist;
+            randomPos += startingPos;
+
+            NavMeshHit hit;
+            NavMesh.SamplePosition(randomPos, out hit, roamDist, 1);
+            agent.SetDestination(hit.position);
+
+            destinationChosen = false;
+        }
     }
 
     public void TakeDamage(int amount)

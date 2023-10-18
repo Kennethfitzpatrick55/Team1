@@ -919,7 +919,8 @@ MonoBehaviour:
   turnSpeed: 4
   viewAngle: 60
   weapon: {fileID: 5422139472106414948}
-  attackDelay: 3
+  attackDelay: 1
+  range: 3
 --- !u!95 &1011717358578209637
 Animator:
   serializedVersion: 5

@@ -44,7 +44,7 @@ public class PlayerController : MonoBehaviour, IDamage
 
     [Header("----Weapon states----")]
     [SerializeField] List<WeaponStats> weaponlist = new List<WeaponStats>();
-    [SerializeField] GameObject gunmodel;
+    [SerializeField] GameObject weapon;
     [SerializeField] float shootRate;
     [SerializeField] int shootDamage;
     [SerializeField] int shootDist;
@@ -402,9 +402,9 @@ public class PlayerController : MonoBehaviour, IDamage
         shootDist = weapon.shootDist;
         shootRate = weapon.shootRate;
         //model
-        gunmodel.GetComponent<MeshFilter>().sharedMesh = weapon.model.GetComponent<MeshFilter>().sharedMesh;
+        weapon.GetComponent<MeshFilter>().sharedMesh = weapon.model.GetComponent<MeshFilter>().sharedMesh;
 
-        gunmodel.GetComponent<MeshRenderer>().sharedMaterial = weapon.model.GetComponent<MeshRenderer>().sharedMaterial;
+        weapon.GetComponent<MeshRenderer>().sharedMaterial = weapon.model.GetComponent<MeshRenderer>().sharedMaterial;
         selectedweapon = weaponlist.Count - 1;
 
         //gameManger.instance.updateAmmoUI(gunList[selectedGun].ammmoCur, gunList[selectedGun].ammmoMax);
@@ -430,8 +430,8 @@ public class PlayerController : MonoBehaviour, IDamage
         shootDist = weaponlist[selectedweapon].shootDist;
         shootRate = weaponlist[selectedweapon].shootRate;
         //model
-        gunmodel.GetComponent<MeshFilter>().sharedMesh = weaponlist[selectedweapon].model.GetComponent<MeshFilter>().sharedMesh;
-        gunmodel.GetComponent<MeshRenderer>().sharedMaterial = weaponlist[selectedweapon].model.GetComponent<MeshRenderer>().sharedMaterial;
+        weapon.GetComponent<MeshFilter>().sharedMesh = weaponlist[selectedweapon].model.GetComponent<MeshFilter>().sharedMesh;
+        weapon.GetComponent<MeshRenderer>().sharedMaterial = weaponlist[selectedweapon].model.GetComponent<MeshRenderer>().sharedMaterial;
 
         //gameManger.instance.updateAmmoUI(weaponlist[selectedweapon].ammmoCur, weaponlist[selectedweapon].ammmoMax);
 

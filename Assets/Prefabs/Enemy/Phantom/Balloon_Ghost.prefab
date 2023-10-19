@@ -76,6 +76,7 @@ GameObject:
   - component: {fileID: 1233692792737348916}
   - component: {fileID: 4432419606063193147}
   - component: {fileID: 5441716704941958619}
+  - component: {fileID: -317843599290000864}
   m_Layer: 0
   m_Name: Balloon_Ghost
   m_TagString: Untagged
@@ -93,7 +94,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 3.0117252, y: 1.0245485, z: 4.002578}
-  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 9099252734583343105}
@@ -165,6 +166,29 @@ SphereCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Radius: 175
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!136 &-317843599290000864
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2866845112557106840}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 2
+  m_Height: 10
+  m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3589404637472137821
 GameObject:
@@ -247,7 +271,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 0}
   damage: 7
-  attackDelay: 3
 --- !u!136 &8364417319304820799
 CapsuleCollider:
   m_ObjectHideFlags: 0

@@ -74,8 +74,9 @@ MonoBehaviour:
   timeUntilRegenHp: 5
   timeUntilRegenStamina: 3
   WallT: 1.5
-  weaponlist: []
-  gunmodel: {fileID: 0}
+  weaponlist:
+  - {fileID: 11400000, guid: b5b2002cebbfc0549b00fd86b1c4c6a9, type: 2}
+  weaponModel: {fileID: 919132149155446097, guid: 7de6d2d9d55159146808110f9afcf62f, type: 3}
   shootRate: 1.5
   shootDamage: 2
   shootDist: 7

@@ -11,6 +11,7 @@ public class RecursiveDepthFirstSearch : Maze
 
     //Goal reference for placing
     [SerializeField] GameObject goal;
+    [SerializeField] GameObject devCheat;
 
     //Enemy references for spawning
     [SerializeField] GameObject rangedEnemy;
@@ -49,12 +50,16 @@ public class RecursiveDepthFirstSearch : Maze
         //Randomize goal position on north or east edge of map
         if (!goalSpawned && Random.Range(0, 99) < 50)
         {
-            Instantiate(goal, new Vector3((Random.Range(0, width) * scale) + (scale / 2), 0, ((depth - 1) * scale) + (scale / 2)), Quaternion.identity);
+            Vector3 pos = new Vector3((Random.Range(0, width) * scale) + (scale / 2), 0, ((depth - 1) * scale) + (scale / 2));
+            Instantiate(goal, pos, Quaternion.identity);
+            Instantiate(devCheat, new Vector3(pos.x, 4, pos.z + 3), Quaternion.identity);
             goalSpawned = true;
         }
         else if (!goalSpawned)
         {
-            Instantiate(goal, new Vector3(((width - 1) * scale) + (scale / 2), 0, (Random.Range(0, depth) * scale) + (scale / 2)), Quaternion.identity);
+            Vector3 pos = new Vector3(((width - 1) * scale) + (scale / 2), 0, (Random.Range(0, depth) * scale) + (scale / 2));
+            Instantiate(goal, pos, Quaternion.identity);
+            Instantiate(devCheat, new Vector3(pos.x + 3, 4, pos.z), Quaternion.identity);
             goalSpawned = true;
         }
 

@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
     public Image playerHPBar;
     public Image playerStaminaBar;
     public PlayerController playerScript;
+    [SerializeField] GameObject devCheat;
 
     [Header("----- Enemy -----")]
     public GameObject enemySpawn;
@@ -51,6 +52,11 @@ public class GameManager : MonoBehaviour
     
     void Update()
     {
+        if(devCheat == null)
+        {
+            devCheat = GameObject.FindWithTag("Dev Only");
+        }
+
         if (Input.GetButtonDown("Cancel") && activeMenu == null)
         {
             pausedState();

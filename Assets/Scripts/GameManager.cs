@@ -112,11 +112,11 @@ public class GameManager : MonoBehaviour
     //    //PlayerDamageFlashScreen.SetActive(false);
     //}
 
-    //public void updateAmmoUI(int cur, int max)
-    //{
-    //    ammoCur.text = cur.ToString("F0");
-    //    ammoMax.text = max.ToString("F0");
-    //}
+    public void updateAmmoUI(int cur, int max)
+    {
+        ammoCur.text = cur.ToString("F0");
+        ammoMax.text = max.ToString("F0");
+    }
 
     public int GetMaxRanged()
     {

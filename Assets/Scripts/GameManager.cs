@@ -30,8 +30,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI ammoCur;
     [SerializeField] TextMeshProUGUI ammoMax;
 
-
-
     public bool isPaused;
     float timeScaleOrig;
     int enemyCount;

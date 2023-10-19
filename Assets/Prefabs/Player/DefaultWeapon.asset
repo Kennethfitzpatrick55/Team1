@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65d755b3c9ce53346bc8ff940207881e, type: 3}
   m_Name: DefaultWeapon
   m_EditorClassIdentifier: 
-  shootRate: 0
-  shootDamage: 0
-  shootDist: 0
-  ammmoCur: 0
-  ammmoMax: 0
+  shootRate: 1
+  shootDamage: 1
+  shootDist: 100
+  ammmoCur: 10
+  ammmoMax: 100
   model: {fileID: 0}
   hiteffect: {fileID: 0}
   shootsound: {fileID: 0}
-  shootsoundvol: 0
+  shootsoundvol: 0.1

@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65d755b3c9ce53346bc8ff940207881e, type: 3}
   m_Name: DefaultCrystal
   m_EditorClassIdentifier: 
-  shootRate: 15
-  shootDamage: 25
+  shootRate: 1
+  shootDamage: 1
   shootDist: 20
-  ammmoCur: 0
+  ammmoCur: 31
   ammmoMax: 120
   model: {fileID: 496306920832801547, guid: 667c4df14f26cae46988e15ed8689468, type: 3}
-  hiteffect: {fileID: 3414750940879788889, guid: 0367c873bd90b8f4e9f00ba9482dcb97, type: 3}
+  hiteffect: {fileID: 6442876707830746687, guid: 10fadec3da5a1f14bb771ce4aa5a402c, type: 3}
   shootsound: {fileID: 8300000, guid: a0fe002af1668a54f8f9ba2b6a54a1ac, type: 3}
   shootsoundvol: 0.157

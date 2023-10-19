@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour, IDamage
     [SerializeField] AudioSource aud;
 
     [Header("----Player States----")]
-    [Range(1, 10)][SerializeField] float Hp;
+    [Range(1, 50)][SerializeField] float Hp;
     [Range(1, 100)][SerializeField] float hpRegen;
     [Range(1, 20)][SerializeField] private float playerSpeed;
     [Range(1, 3)][SerializeField] private float sprintMod;
@@ -76,6 +76,7 @@ public class PlayerController : MonoBehaviour, IDamage
     int selectedweapon;
     private Vector3 slide;
     bool footstepsPlaying;
+    bool reload;
     WallRun wallRun;
     private void Start()
     {
@@ -99,15 +100,23 @@ public class PlayerController : MonoBehaviour, IDamage
         //if its not paused do this 
         if (!GameManager.instance.isPaused)
         {
-            if (Input.GetButtonDown("Shoot") && !isShooting)
+            if (Input.GetButtonDown("Shoot") && !isShooting && !reload)
             {
                 StartCoroutine(Shoot());
+            }
+
+            if(Input.GetButton("Reload")&& !isShooting && !reload)
+            {
+                StartCoroutine(RELOADING());
             }
             
             movement();
             selectGun();
             CountRegenElapsedInSeconds();
+
+
         }
+        
     }
     //  controls the players movement 
     void movement()
@@ -194,6 +203,20 @@ public class PlayerController : MonoBehaviour, IDamage
 
         footstepsPlaying = false;
     }
+    IEnumerator RELOADING()
+    {
+        if (weaponlist.Count > 0)
+        {
+            reload = true;
+
+            weaponlist[selectedweapon].ammmoCur = weaponlist[selectedweapon].ammmoMax;
+            GameManager.instance.updateAmmoUI(weaponlist[selectedweapon].ammmoCur, weaponlist[selectedweapon].ammmoMax);
+            yield return new WaitForSeconds(3F);
+            reload = false;
+        }
+       
+    }
+
     void CountRegenElapsedInSeconds()
     {
         if (regenElapsed < timeUntilRegenStamina)
@@ -247,16 +270,7 @@ public class PlayerController : MonoBehaviour, IDamage
             regenElapsed = 0.0f;
         }
     }
-    //IEnumerator Slide()
-    //{
-    //    playerSpeed = 10;
-    //    yield return new WaitForSeconds(slideT);
-    //    playerSpeed /= sprintMod;
-    //    Crouching = true; 
-    //    transform.localScale = Crouch;
-
-
-    //}
+   
     void Crouched()
     {
         //check if grouded check button if false
@@ -344,50 +358,7 @@ public class PlayerController : MonoBehaviour, IDamage
             GameManager.instance.playerStaminaBar.fillAmount = (stamina / staminaOrig);
         }
     }
-    //IEnumerator WallTime()
-    //{
-    //    //tilt camera 
-    //    wallRunning = true;
-    //    gravityValue += gravityMod;
-    //    playerSpeed *= sprintMod;
-    //    yield return new WaitForSeconds(WallT);
-    //    //tilt back
-    //    wallRunning = false;
-    //    gravityValue -= gravityMod;
-    //    playerSpeed /= sprintMod;
-    //}
-
-    //void WallRun()
-    //{
-    //    RaycastHit hit;
-    //    Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.left * DistanceWall));
-    //    Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.right * DistanceWall));
-    //    //if player is by wall do something 
-    //    if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.right), out hit, DistanceWall, Layer_Mask))
-    //    {
-    //        //check if ur right wall 
-    //        if (hit.collider.tag == "Wall" && !wallRunning)
-    //        {
-
-
-
-    //            StartCoroutine(WallTime());
-    //        }
-    //    }
-    //    else if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.left), out hit, DistanceWall, Layer_Mask))
-    //    {
-
-    //        //check if ur left wall 
-    //        if (hit.collider.tag == "Wall" && !wallRunning)
-    //        {
-
-    //            StartCoroutine(WallTime());
-    //        }
-
-    //    }
-    //    // to excute a function in intervals
-    //}
-
+   
 
     public void TakeDamage(int amount)
     {

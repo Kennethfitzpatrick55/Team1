@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 65d755b3c9ce53346bc8ff940207881e, type: 3}
-  m_Name: Thunderlight
+  m_Name: Molt
   m_EditorClassIdentifier: 
-  shootRate: 10
-  shootDamage: 4
+  shootRate: 15
+  shootDamage: 5
   shootDist: 10
-  ammmoCur: 20
+  ammmoCur: 19
   ammmoMax: 20
-  model: {fileID: 5170483587610107078, guid: f9ef074b6ff057d4aae889bcf6b8b9f2, type: 3}
+  model: {fileID: 624329303408524263, guid: 69cdd2d51dd2a0a4b99742a95eb49b26, type: 3}
   hiteffect: {fileID: 0}
   shootsound: {fileID: 0}
-  shootsoundvol: 0.1
+  shootsoundvol: 0

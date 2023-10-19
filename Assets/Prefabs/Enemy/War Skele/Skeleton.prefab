@@ -915,7 +915,7 @@ MonoBehaviour:
   model: {fileID: 2669486160841959512}
   anim: {fileID: 1011717358578209637}
   hitBox: {fileID: 5584153680367147694}
-  HP: 15
+  HP: 17
   turnSpeed: 4
   viewAngle: 60
   roamDist: 15

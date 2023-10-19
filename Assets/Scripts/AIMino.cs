@@ -11,7 +11,7 @@ public class AIMino : MonoBehaviour
     [SerializeField] Collider hitBox;
 
     [Header("----- Stats -----")]
-    [Range(1, 25)][SerializeField] int HP;
+    [SerializeField] int HP;
     [SerializeField] int turnSpeed;
     [Range(1, 180)][SerializeField] int viewAngle;
 

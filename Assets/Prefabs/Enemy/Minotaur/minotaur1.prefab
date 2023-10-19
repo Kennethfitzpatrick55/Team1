@@ -2041,7 +2041,7 @@ MonoBehaviour:
   agent: {fileID: 6193766868049915720}
   anim: {fileID: 5459511788038759536}
   hitBox: {fileID: 7833412286113242938}
-  HP: 25
+  HP: 10000
   turnSpeed: 15
   viewAngle: 69
   weapon: {fileID: 4931441510700782116}

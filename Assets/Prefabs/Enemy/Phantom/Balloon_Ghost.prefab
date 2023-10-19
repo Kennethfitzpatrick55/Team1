@@ -114,7 +114,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   model: {fileID: 313524971500012603}
-  HP: 10
+  HP: 12
   speed: 2
   turnSpeed: 15
   viewAngle: 180

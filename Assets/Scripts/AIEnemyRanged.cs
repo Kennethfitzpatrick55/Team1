@@ -161,7 +161,6 @@ public class AIEnemyRanged : MonoBehaviour, IDamage
             FaceTarget();
 
             //Visual queue for damage taken
-            StartCoroutine(FlashDamage());
             anim.SetTrigger("Damage");
         }
     }

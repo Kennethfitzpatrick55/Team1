@@ -18,6 +18,11 @@ public class RecursiveDepthFirstSearch : Maze
     [SerializeField] GameObject phantomEnemy;
     [SerializeField] GameObject mino;
 
+    //Weapon pickup references for spawning
+    [SerializeField] GameObject gem;
+    [SerializeField] GameObject lStaff;
+    [SerializeField] GameObject fStaff;
+
     //List of map tiles visited for recursion
     List<MapNodeDFS> visited = new List<MapNodeDFS>();
 
@@ -37,8 +42,10 @@ public class RecursiveDepthFirstSearch : Maze
     {
         //Set starting point
         visited.Add(new MapNodeDFS(width - 1, depth - 1));
+
         //As neighbors are found, set passage to that neighbor
         Navigate(visited[visited.Count - 1]);
+
         //Randomize goal position on north or east edge of map
         if (!goalSpawned && Random.Range(0, 99) < 50)
         {
@@ -50,18 +57,72 @@ public class RecursiveDepthFirstSearch : Maze
             Instantiate(goal, new Vector3(((width - 1) * scale) + (scale / 2), 0, (Random.Range(0, depth) * scale) + (scale / 2)), Quaternion.identity);
             goalSpawned = true;
         }
+
         //Randomize enemy spawns
         for(ranged = 0; ranged < GameManager.instance.GetMaxRanged(); ranged++)
         {
-            Instantiate(rangedEnemy, new Vector3((Random.Range(1, width) * scale) + (scale / 2), 0, (Random.Range(1, depth) * scale) + (scale / 2)), Quaternion.identity);
+            int tileX = Random.Range(1, width);
+            int tileZ = Random.Range(1, depth);
+            MapNodeDFS check = new MapNodeDFS(tileX, tileZ);
+            int index = visited.IndexOf(check);
+            if (!visited[index].hasEnemyorWeap)
+            {
+                Instantiate(rangedEnemy, new Vector3((tileX * scale) + (scale / 2), 0, (tileZ * scale) + (scale / 2)), Quaternion.identity);
+                visited[index].hasEnemyorWeap = true;
+            }
         }
         for(phantom = 0; phantom < GameManager.instance.GetMaxPhantom(); phantom++)
         {
-            Instantiate(phantomEnemy, new Vector3((Random.Range(1, width) * scale) + (scale / 2), 0, (Random.Range(1, depth) * scale) + (scale / 2)), Quaternion.identity);
+            int tileX = Random.Range(1, width);
+            int tileZ = Random.Range(1, depth);
+            MapNodeDFS check = new MapNodeDFS(tileX, tileZ);
+            int index = visited.IndexOf(check);
+            if (!visited[index].hasEnemyorWeap)
+            {
+                Instantiate(phantomEnemy, new Vector3((tileX * scale) + (scale / 2), 0, (tileZ * scale) + (scale / 2)), Quaternion.identity);
+                visited[index].hasEnemyorWeap = true;
+            }
         }
         for(melee = 0; melee < GameManager.instance.GetMaxMelee(); melee++)
         {
-            Instantiate(meleeEnemy, new Vector3((Random.Range(1, width) * scale) + (scale / 2), 0, (Random.Range(1, depth) * scale) + (scale / 2)), Quaternion.identity);
+            int tileX = Random.Range(1, width);
+            int tileZ = Random.Range(1, depth);
+            MapNodeDFS check = new MapNodeDFS(tileX, tileZ);
+            int index = visited.IndexOf(check);
+            if (!visited[index].hasEnemyorWeap)
+            {
+                Instantiate(meleeEnemy, new Vector3((tileX * scale) + (scale / 2), 0, (tileZ * scale) + (scale / 2)), Quaternion.identity);
+                visited[index].hasEnemyorWeap = true;
+            }
+        }
+
+        //Spawn weapons
+        Instantiate(gem, new Vector3(scale * .75f, 1, scale * .75f), Quaternion.identity);
+        bool fWeap = false;
+        while (!fWeap)
+        {
+            int tileX = Random.Range(1, width);
+            int tileZ = Random.Range(1, depth);
+            MapNodeDFS check = new MapNodeDFS(tileX, tileZ);
+            int index = visited.IndexOf(check);
+            if (!visited[index].hasEnemyorWeap)
+            {
+                Instantiate(fStaff, new Vector3((tileX * scale) + (scale / 2), 0, (tileZ * scale) + (scale / 2)), Quaternion.identity);
+                fWeap = true;
+            }
+        }
+        bool lWeap = false;
+        while(!lWeap)
+        {
+            int tileX = Random.Range(1, width);
+            int tileZ = Random.Range(1, depth);
+            MapNodeDFS check = new MapNodeDFS(tileX, tileZ);
+            int index = visited.IndexOf(check);
+            if (!visited[index].hasEnemyorWeap)
+            {
+                Instantiate(lStaff, new Vector3((tileX * scale) + (scale / 2), 0, (tileZ * scale) + (scale / 2)), Quaternion.identity);
+                lWeap = true;
+            }
         }
     }
 

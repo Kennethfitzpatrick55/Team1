@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] int rangedEnemiesMax;
     [SerializeField] int meleeEnemiesMax;
     [SerializeField] int phantomsMax;
+    [SerializeField] GameObject HPPickup;
 
     [Header("----Menus----")]
     [SerializeField] GameObject activeMenu;
@@ -109,11 +110,11 @@ public class GameManager : MonoBehaviour
     //    //PlayerDamageFlashScreen.SetActive(false);
     //}
 
-    public void updateAmmoUI(int cur, int max)
-    {
-        ammoCur.text = cur.ToString("F0");
-        ammoMax.text = max.ToString("F0");
-    }
+    //public void updateAmmoUI(int cur, int max)
+    //{
+    //    ammoCur.text = cur.ToString("F0");
+    //    ammoMax.text = max.ToString("F0");
+    //}
 
     public int GetMaxRanged()
     {
@@ -128,5 +129,10 @@ public class GameManager : MonoBehaviour
     public int GetMaxPhantom()
     {
         return phantomsMax;
+    }
+
+    public void HealthDrop(Transform pos)
+    {
+        Instantiate(HPPickup, pos.position, Quaternion.identity);
     }
 }

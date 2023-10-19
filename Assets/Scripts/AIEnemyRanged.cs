@@ -119,19 +119,22 @@ public class AIEnemyRanged : MonoBehaviour, IDamage
         return output;
     }
 
+    //Allows enemy to have passive actions
     IEnumerator Roam()
     {
         if (agent.remainingDistance < 0.05f && !destinationChosen)
         {
             destinationChosen = true;
+            //Changes stopping distance so enemy will hit the chosen destination
             agent.stoppingDistance = 0;
 
             yield return new WaitForSeconds(roamTime);
-
+            //Picks location within given range
             Vector3 randomPos = UnityEngine.Random.insideUnitSphere * roamDist;
             randomPos += startingPos;
 
             NavMeshHit hit;
+            //Validates location picked
             NavMesh.SamplePosition(randomPos, out hit, roamDist, 1);
             agent.SetDestination(hit.position);
 
@@ -215,6 +218,9 @@ public class AIEnemyRanged : MonoBehaviour, IDamage
 
     public void Die()
     {
+        //Drops health pickup on death
+        GameManager.instance.HealthDrop(transform);
+        //Removes object
         Destroy(gameObject, 2);
     }
 }

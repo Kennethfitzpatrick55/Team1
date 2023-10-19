@@ -12,6 +12,12 @@ public class RecursiveDepthFirstSearch : Maze
     //Goal reference for placing
     [SerializeField] GameObject goal;
 
+    //Enemy references for spawning
+    [SerializeField] GameObject rangedEnemy;
+    [SerializeField] GameObject meleeEnemy;
+    [SerializeField] GameObject phantomEnemy;
+    [SerializeField] GameObject mino;
+
     //List of map tiles visited for recursion
     List<MapNodeDFS> visited = new List<MapNodeDFS>();
 
@@ -45,7 +51,18 @@ public class RecursiveDepthFirstSearch : Maze
             goalSpawned = true;
         }
         //Randomize enemy spawns
-
+        for(ranged = 0; ranged < GameManager.instance.GetMaxRanged(); ranged++)
+        {
+            Instantiate(rangedEnemy, new Vector3((Random.Range(1, width) * scale) + (scale / 2), 0, (Random.Range(1, depth) * scale) + (scale / 2)), Quaternion.identity);
+        }
+        for(phantom = 0; phantom < GameManager.instance.GetMaxPhantom(); phantom++)
+        {
+            Instantiate(phantomEnemy, new Vector3((Random.Range(1, width) * scale) + (scale / 2), 0, (Random.Range(1, depth) * scale) + (scale / 2)), Quaternion.identity);
+        }
+        for(melee = 0; melee < GameManager.instance.GetMaxMelee(); melee++)
+        {
+            Instantiate(meleeEnemy, new Vector3((Random.Range(1, width) * scale) + (scale / 2), 0, (Random.Range(1, depth) * scale) + (scale / 2)), Quaternion.identity);
+        }
     }
 
     //Loops through neighbors of passed in node, recursively grabbing each one

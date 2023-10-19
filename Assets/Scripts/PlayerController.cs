@@ -413,6 +413,8 @@ public class PlayerController : MonoBehaviour, IDamage
     IEnumerator Shoot()
     {
         // check if we have ammo in the currently selected gun
+        if(weaponlist.Count > 0)
+        { 
         if (weaponlist[selectedweapon].ammmoCur > 0)
         {
             isShooting = true;
@@ -436,6 +438,7 @@ public class PlayerController : MonoBehaviour, IDamage
             yield return new WaitForSeconds(shootRate);
             //stop shooting 
             isShooting = false;
+        }
         }
     }
     public void setWeaponStats(WeaponStats weapon)

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Thunderlight
   m_EditorClassIdentifier: 
   shootRate: 10
-  shootDamage: 4
+  shootDamage: 25
   shootDist: 10
   ammmoCur: 7
   ammmoMax: 20

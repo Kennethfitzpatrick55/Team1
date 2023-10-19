@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Molt
   m_EditorClassIdentifier: 
   shootRate: 15
-  shootDamage: 5
+  shootDamage: 15
   shootDist: 10
-  ammmoCur: 0
+  ammmoCur: 9
   ammmoMax: 20
   model: {fileID: 624329303408524263, guid: 69cdd2d51dd2a0a4b99742a95eb49b26, type: 3}
   hiteffect: {fileID: 8841767067418191837, guid: 8ef24a39f40bbb747bb6601f23ee641f, type: 3}

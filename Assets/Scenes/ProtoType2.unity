@@ -246,6 +246,10 @@ MonoBehaviour:
   wall: {fileID: 4482615037480212621, guid: 57ca41d5e5313ca4abf5f573014bdaf3, type: 3}
   corner: {fileID: 4156754089321045294, guid: a2dd9830d3df0334694c0f4a1a280b40, type: 3}
   goal: {fileID: 8142345698396238460, guid: 0bc84997153d64849812823dc55d5c12, type: 3}
+  rangedEnemy: {fileID: 0}
+  meleeEnemy: {fileID: 0}
+  phantomEnemy: {fileID: 0}
+  mino: {fileID: 0}
 --- !u!4 &290069773
 Transform:
   m_ObjectHideFlags: 0
@@ -557,6 +561,10 @@ PrefabInstance:
       propertyPath: AudJump.Array.data[2]
       value: 
       objectReference: {fileID: 8300000, guid: ff859df00d449a043bf8c7244546dc44, type: 3}
+    - target: {fileID: 368406922328078340, guid: 49e460495a8fad041933322edaa1ac72, type: 3}
+      propertyPath: weaponlist.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 368406922328078340, guid: 49e460495a8fad041933322edaa1ac72, type: 3}
       propertyPath: AudDamage.Array.data[0]
       value: 

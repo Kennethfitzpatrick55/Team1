@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour, IDamage
     // orgization of materials in inspector 
     [Header("----Components----")]
     [SerializeField] CharacterController controller;
-
+    [SerializeField] AudioSource aud;
 
     [Header("----Player States----")]
     [Range(1, 10)][SerializeField] float Hp;
@@ -49,6 +49,14 @@ public class PlayerController : MonoBehaviour, IDamage
     [SerializeField] int shootDamage;
     [SerializeField] int shootDist;
 
+    [Header("----Audio----")]
+    [SerializeField] AudioClip[] AudDamage;
+    [Range(0, 1)][SerializeField] float audDamagevol;
+    [SerializeField] AudioClip[] AudJump;
+    [Range(0, 1)][SerializeField] float audJumpvol;
+    [SerializeField] AudioClip[] AudFootSteps;
+    [Range(0, 1)][SerializeField] float audFootStepsvol;
+
     // private variabels 
     public Vector3 playerVelocity;
     private bool groundedPlayer;
@@ -67,6 +75,7 @@ public class PlayerController : MonoBehaviour, IDamage
     bool wallRunning;
     int selectedweapon;
     private Vector3 slide;
+    bool footstepsPlaying;
     WallRun wallRun;
     private void Start()
     {
@@ -79,8 +88,8 @@ public class PlayerController : MonoBehaviour, IDamage
         spawnPlayer();
         playerScale = transform.localScale;
         Crouch = new Vector3(transform.localScale.x, transform.localScale.y / 2, transform.localScale.z);
-        selectedweapon = 0;
-        changeWeapon();
+       
+        
     }
 
 
@@ -116,7 +125,10 @@ public class PlayerController : MonoBehaviour, IDamage
         //checks to make sure player is grounded
         RaycastHit GroundCheck;
         Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.down * 1.1f));
-
+        if (groundedPlayer && move.normalized.magnitude > 0.3f && !footstepsPlaying)
+        {
+            StartCoroutine(playFootSteps());
+        }
         if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), out GroundCheck, 1.1f, Layer_Mask))
         {
             groundedPlayer = true;
@@ -129,7 +141,7 @@ public class PlayerController : MonoBehaviour, IDamage
         {
             groundedPlayer = false;
         }
-
+       
         //Resets ground velocities for when not wall running (bug fix)
         //if (!wallRun.IsWallRunning())
         //{
@@ -166,6 +178,20 @@ public class PlayerController : MonoBehaviour, IDamage
         updatePlayerUi();
     }
 
+    IEnumerator playFootSteps()
+    {
+        footstepsPlaying = true;
+        aud.PlayOneShot(AudFootSteps[Random.Range(0, AudFootSteps.Length)], audFootStepsvol);
+
+        if (!isSprinting)
+        {
+            yield return new WaitForSeconds(0.5f);
+        }
+        else
+            yield return new WaitForSeconds(0.3f);
+
+        footstepsPlaying = false;
+    }
     void CountRegenElapsedInSeconds()
     {
         if (regenElapsed < timeUntilRegenStamina)

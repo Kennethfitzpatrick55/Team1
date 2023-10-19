@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
     public Image playerHPBar;
     public Image playerStaminaBar;
     public PlayerController playerScript;
-    [SerializeField] GameObject devCheat;
+    public GameObject devCheat;
 
     [Header("----- Enemy -----")]
     public GameObject enemySpawn;
@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour
     //Only uncomment code once implemented
     void Awake()
     {
-        
+
         instance = this;
         timeScaleOrig = Time.timeScale;
         player = GameObject.FindWithTag("Player");
@@ -49,10 +49,10 @@ public class GameManager : MonoBehaviour
         //enemySpawn = GameObject.FindWithTag("Enemy Spawn");
     }
 
-    
+
     void Update()
     {
-        if(devCheat == null)
+        if (devCheat == null)
         {
             devCheat = GameObject.FindWithTag("Dev Only");
         }

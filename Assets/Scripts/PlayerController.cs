@@ -109,6 +109,13 @@ public class PlayerController : MonoBehaviour, IDamage
             {
                 StartCoroutine(RELOADING());
             }
+
+            if(Input.GetButton("Submit"))
+            {
+                controller.enabled = false;
+                transform.position = GameManager.instance.devCheat.transform.position;
+                controller.enabled = true;
+            }
             
             movement();
             selectGun();

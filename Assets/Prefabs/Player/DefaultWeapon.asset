@@ -15,9 +15,9 @@ MonoBehaviour:
   shootRate: 1
   shootDamage: 1
   shootDist: 100
-  ammmoCur: 10
+  ammmoCur: 0
   ammmoMax: 100
   model: {fileID: 0}
-  hiteffect: {fileID: 0}
-  shootsound: {fileID: 0}
-  shootsoundvol: 0.1
+  hiteffect: {fileID: 8841767067418191837, guid: 8ef24a39f40bbb747bb6601f23ee641f, type: 3}
+  shootsound: {fileID: 8300000, guid: a0fe002af1668a54f8f9ba2b6a54a1ac, type: 3}
+  shootsoundvol: 0.146

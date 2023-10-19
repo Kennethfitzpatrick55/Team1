@@ -391,6 +391,7 @@ public class PlayerController : MonoBehaviour, IDamage
 
     public void TakeDamage(int amount)
     {
+        StartCoroutine(GameManager.instance.flash());
         Hp -= amount;
         hpRegenElapsed = 0;
         updatePlayerUi();

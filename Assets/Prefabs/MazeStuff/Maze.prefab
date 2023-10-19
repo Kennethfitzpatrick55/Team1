@@ -54,3 +54,6 @@ MonoBehaviour:
   meleeEnemy: {fileID: 4642540175197904204, guid: e1a1171f93b6e1340a4b1aee983e8e42, type: 3}
   phantomEnemy: {fileID: 2866845112557106840, guid: 66d29a2bc3f87284782af12a78a23f68, type: 3}
   mino: {fileID: 4322691076869525167, guid: a2edc7b4563da354f8ef2688822a198f, type: 3}
+  gem: {fileID: 3542153277245591953, guid: a7d23d781e671c94aace2c16b5ecdf58, type: 3}
+  lStaff: {fileID: 2955572133694076428, guid: c936272199cfa89458994de00df2e41a, type: 3}
+  fStaff: {fileID: 5833066701678820672, guid: 886cbdfac9ce3f24ca16183ac6ab5243, type: 3}

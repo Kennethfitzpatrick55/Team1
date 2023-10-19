@@ -2046,7 +2046,7 @@ MonoBehaviour:
   viewAngle: 69
   weapon: {fileID: 4931441510700782116}
   attackDelay: 3
-  range: 5
+  range: 3
 --- !u!95 &5459511788038759536
 Animator:
   serializedVersion: 5
@@ -2082,7 +2082,7 @@ NavMeshAgent:
   m_Acceleration: 16
   avoidancePriority: 50
   m_AngularSpeed: 600
-  m_StoppingDistance: 10
+  m_StoppingDistance: 3
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 0
   m_AutoRepath: 1

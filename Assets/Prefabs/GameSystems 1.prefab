@@ -4166,11 +4166,16 @@ MonoBehaviour:
   playerHPBar: {fileID: 6929207834028768440}
   playerStaminaBar: {fileID: 294556313646321640}
   playerScript: {fileID: 0}
+  devCheat: {fileID: 0}
+  lightningCheat: {fileID: 0}
+  fireCheat: {fileID: 0}
+  treasureCheat: {fileID: 0}
   enemySpawn: {fileID: 0}
-  rangedEnemiesMax: 0
-  meleeEnemiesMax: 0
-  phantomsMax: 0
-  HPPickup: {fileID: 0}
+  rangedEnemiesMax: 8
+  meleeEnemiesMax: 14
+  phantomsMax: 5
+  HPPickup: {fileID: 4715774697744498555, guid: 1388ad8bc865332468008808adc26371, type: 3}
+  maze: {fileID: 0}
   activeMenu: {fileID: 0}
   pauseMenu: {fileID: 3724281473832559590}
   winMenu: {fileID: 4458360440460097734}

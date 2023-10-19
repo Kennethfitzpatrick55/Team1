@@ -9,6 +9,9 @@ TagManager:
   - Projectile
   - Wall
   - Dev Only
+  - Fire Staff
+  - Lightning Staff
+  - Treasure
   layers:
   - Default
   - TransparentFX

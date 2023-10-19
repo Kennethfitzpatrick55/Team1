@@ -18,11 +18,15 @@ public class RecursiveDepthFirstSearch : Maze
     [SerializeField] GameObject meleeEnemy;
     [SerializeField] GameObject phantomEnemy;
     [SerializeField] GameObject mino;
+    [SerializeField] GameObject treasure;
+    [SerializeField] GameObject treasureCheat;
 
     //Weapon pickup references for spawning
     [SerializeField] GameObject gem;
     [SerializeField] GameObject lStaff;
+    [SerializeField] GameObject lCheat;
     [SerializeField] GameObject fStaff;
+    [SerializeField] GameObject fCheat;
 
     //List of map tiles visited for recursion
     List<MapNodeDFS> visited = new List<MapNodeDFS>();
@@ -112,8 +116,11 @@ public class RecursiveDepthFirstSearch : Maze
             int index = visited.IndexOf(check);
             if (!visited[index].hasEnemyorWeap)
             {
-                Instantiate(fStaff, new Vector3((tileX * scale) + (scale / 2), 0, (tileZ * scale) + (scale / 2)), Quaternion.identity);
+                Vector3 pos = new Vector3((tileX * scale) + (scale / 2), 1, (tileZ * scale) + (scale / 2));
+                Instantiate(fStaff, pos, Quaternion.identity);
+                Instantiate(fCheat, new Vector3(pos.x, 4, pos.z), Quaternion.identity);
                 fWeap = true;
+                visited[index].hasEnemyorWeap = true;
             }
         }
         bool lWeap = false;
@@ -125,8 +132,29 @@ public class RecursiveDepthFirstSearch : Maze
             int index = visited.IndexOf(check);
             if (!visited[index].hasEnemyorWeap)
             {
-                Instantiate(lStaff, new Vector3((tileX * scale) + (scale / 2), 0, (tileZ * scale) + (scale / 2)), Quaternion.identity);
+                Vector3 pos = new Vector3((tileX * scale) + (scale / 2), 1, (tileZ * scale) + (scale / 2));
+                Instantiate(lStaff, pos, Quaternion.identity);
+                Instantiate(lCheat, new Vector3(pos.x, 4, pos.z), Quaternion.identity);
                 lWeap = true;
+                visited[index].hasEnemyorWeap = true;
+            }
+        }
+
+        //Mino boss spawn item
+        bool treas = false;
+        while(!treas)
+        {
+            int tileX = Random.Range(1, width);
+            int tileZ = Random.Range(1, depth);
+            MapNodeDFS check = new MapNodeDFS(tileX, tileZ);
+            int index = visited.IndexOf(check);
+            if (!visited[index].hasEnemyorWeap)
+            {
+                Vector3 pos = new Vector3((tileX * scale) + (scale / 2), 0, (tileZ * scale) + (scale / 2));
+                Instantiate(treasure, pos, Quaternion.identity);
+                Instantiate(treasureCheat, new Vector3(pos.x, 4, pos.z), Quaternion.identity);
+                treas = true;
+                visited[index].hasEnemyorWeap = true;
             }
         }
     }
@@ -248,5 +276,10 @@ public class RecursiveDepthFirstSearch : Maze
             GameObject wallE = Instantiate(wall, new Vector3(tileX + (scale * .95f), wall.transform.localScale.y / 2, tileZ + (scale / 2)), Quaternion.identity);
             wallE.transform.localScale = wallLength;
         }
+    }
+
+    public void EnterBoss()
+    {
+        Instantiate(mino, new Vector3((Random.Range(0, width) * scale) + (scale / 2), 4, (Random.Range(0, depth) * scale) + (scale / 2)), Quaternion.identity);
     }
 }

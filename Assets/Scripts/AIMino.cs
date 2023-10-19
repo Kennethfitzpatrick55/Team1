@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class AIMino : MonoBehaviour
+public class AIMino : MonoBehaviour, IDamage
 {
     [Header("----- Components -----")]
     [SerializeField] NavMeshAgent agent;
@@ -111,7 +111,7 @@ public class AIMino : MonoBehaviour
     void Die()
     {
         //Drops health pickup
-        GameManager.instance.HealthDrop(transform);
+        GameManager.instance.youWin();
         //Remove object
         Destroy(gameObject, 2);
     }

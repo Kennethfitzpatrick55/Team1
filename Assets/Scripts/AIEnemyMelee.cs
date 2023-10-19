@@ -146,6 +146,7 @@ public class AIEnemyMelee : MonoBehaviour, IDamage
             //Remove enemy from count on death
             GameManager.instance.UpdateEnemyCount(-1);
             anim.SetBool("Dead", true);
+            anim.SetBool("In Attack Range", false);
             agent.enabled = false;
             hitBox.enabled = false;
             StopAllCoroutines();

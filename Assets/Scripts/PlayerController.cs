@@ -110,12 +110,7 @@ public class PlayerController : MonoBehaviour, IDamage
                 StartCoroutine(RELOADING());
             }
 
-            if(Input.GetButton("Submit"))
-            {
-                controller.enabled = false;
-                transform.position = GameManager.instance.devCheat.transform.position;
-                controller.enabled = true;
-            }
+            CheatsyDoodle();
             
             movement();
             selectGun();
@@ -307,7 +302,7 @@ public class PlayerController : MonoBehaviour, IDamage
         {
             //if true  increment the player speed by some number 
             stamina -= (staminaDrain * Time.deltaTime);
-            if (stamina < 25)
+            if (stamina < staminaSprintMinimum)
             {
                 isSprinting = false;
                 playerSpeed /= sprintMod;
@@ -483,7 +478,34 @@ public class PlayerController : MonoBehaviour, IDamage
         return isSprinting;
     }
 
-
+    //Cheats for devs to play around with
+    void CheatsyDoodle()
+    {
+        if (Input.GetButton("Submit"))
+        {
+            controller.enabled = false;
+            transform.position = GameManager.instance.devCheat.transform.position;
+            controller.enabled = true;
+        }
+        if(Input.GetButton("L"))
+        {
+            controller.enabled = false;
+            transform.position = GameManager.instance.lightningCheat.transform.position;
+            controller.enabled = true;
+        }
+        if(Input.GetButton("F"))
+        {
+            controller.enabled = false;
+            transform.position = GameManager.instance.fireCheat.transform.position;
+            controller.enabled = true;
+        }
+        if(Input.GetButton("T"))
+        {
+            controller.enabled = false;
+            transform.position = GameManager.instance.treasureCheat.transform.position;
+            controller.enabled = true;
+        }
+    }
 
 
 }

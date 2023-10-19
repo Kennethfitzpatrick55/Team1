@@ -16,6 +16,9 @@ public class GameManager : MonoBehaviour
     public Image playerStaminaBar;
     public PlayerController playerScript;
     public GameObject devCheat;
+    public GameObject lightningCheat;
+    public GameObject fireCheat;
+    public GameObject treasureCheat;
 
     [Header("----- Enemy -----")]
     public GameObject enemySpawn;
@@ -23,6 +26,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] int meleeEnemiesMax;
     [SerializeField] int phantomsMax;
     [SerializeField] GameObject HPPickup;
+    public GameObject maze;
 
     [Header("----Menus----")]
     [SerializeField] GameObject activeMenu;
@@ -52,10 +56,7 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if (devCheat == null)
-        {
-            devCheat = GameObject.FindWithTag("Dev Only");
-        }
+        SetCheats();
 
         if (Input.GetButtonDown("Cancel") && activeMenu == null)
         {
@@ -141,5 +142,25 @@ public class GameManager : MonoBehaviour
     public void HealthDrop(Transform pos)
     {
         Instantiate(HPPickup, pos.position, Quaternion.identity);
+    }
+
+    void SetCheats()
+    {
+        if (devCheat == null)
+        {
+            devCheat = GameObject.FindWithTag("Dev Only");
+        }
+        if(lightningCheat == null)
+        {
+            lightningCheat = GameObject.FindWithTag("Lightning Staff");
+        }
+        if(fireCheat == null)
+        {
+            fireCheat = GameObject.FindWithTag("Fire Staff");
+        }
+        if(treasureCheat == null)
+        {
+            treasureCheat = GameObject.FindWithTag("Treasure");
+        }
     }
 }

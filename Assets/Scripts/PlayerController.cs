@@ -88,7 +88,7 @@ public class PlayerController : MonoBehaviour, IDamage
         spawnPlayer();
         playerScale = transform.localScale;
         Crouch = new Vector3(transform.localScale.x, transform.localScale.y / 2, transform.localScale.z);
-        selectedweapon = 0;
+       
         
     }
 
@@ -168,6 +168,8 @@ public class PlayerController : MonoBehaviour, IDamage
             }
             //will assighn are y to some height 
             playerVelocity.y = jumpHeight;
+            //play sound
+            aud.PlayOneShot(AudJump[Random.Range(0, AudJump.Length)], audJumpvol);
             //and increment jump
             jumpedtimes++;
             regenElapsed = 0.0f;
@@ -389,6 +391,7 @@ public class PlayerController : MonoBehaviour, IDamage
 
     public void TakeDamage(int amount)
     {
+        StartCoroutine(GameManager.instance.flash());
         Hp -= amount;
         hpRegenElapsed = 0;
         updatePlayerUi();
@@ -413,7 +416,7 @@ public class PlayerController : MonoBehaviour, IDamage
         if (weaponlist[selectedweapon].ammmoCur > 0)
         {
             isShooting = true;
-
+            aud.PlayOneShot(weaponlist[selectedweapon].shootsound, weaponlist[selectedweapon].shootsoundvol);
             RaycastHit hit;
 
             if (Physics.Raycast(Camera.main.ViewportPointToRay(new Vector2(0.5f, 0.5f)), out hit, shootDist))
@@ -425,7 +428,7 @@ public class PlayerController : MonoBehaviour, IDamage
                 {
                     damagable.TakeDamage(shootDamage);
                 }
-
+                Instantiate(weaponlist[selectedweapon].hiteffect, hit.point, Quaternion.identity);
             }
             weaponlist[selectedweapon].ammmoCur--;
             GameManager.instance.updateAmmoUI(weaponlist[selectedweapon].ammmoCur, weaponlist[selectedweapon].ammmoMax);

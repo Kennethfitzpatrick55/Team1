@@ -88,7 +88,7 @@ public class PlayerController : MonoBehaviour, IDamage
         spawnPlayer();
         playerScale = transform.localScale;
         Crouch = new Vector3(transform.localScale.x, transform.localScale.y / 2, transform.localScale.z);
-        selectedweapon = 0;
+       
         
     }
 

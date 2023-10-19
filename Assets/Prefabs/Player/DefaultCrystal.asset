@@ -19,5 +19,5 @@ MonoBehaviour:
   ammmoMax: 120
   model: {fileID: 496306920832801547, guid: 667c4df14f26cae46988e15ed8689468, type: 3}
   hiteffect: {fileID: 3414750940879788889, guid: 0367c873bd90b8f4e9f00ba9482dcb97, type: 3}
-  shootsound: {fileID: 0}
-  shootsoundvol: 0
+  shootsound: {fileID: 8300000, guid: a0fe002af1668a54f8f9ba2b6a54a1ac, type: 3}
+  shootsoundvol: 0.157

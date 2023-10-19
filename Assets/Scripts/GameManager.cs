@@ -30,6 +30,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject lossMenu;
     [SerializeField] TextMeshProUGUI ammoCur;
     [SerializeField] TextMeshProUGUI ammoMax;
+    [SerializeField] GameObject PlayerDamageFlashScreen;
 
     public bool isPaused;
     float timeScaleOrig;
@@ -103,12 +104,12 @@ public class GameManager : MonoBehaviour
         pausedState();
     }
 
-    //public IEnumerator flash()
-    //{
-    //    //PlayerDamageFlashScreen.SetActive(true);
-    //    //yield return new WaitForSeconds(0.1f);
-    //    //PlayerDamageFlashScreen.SetActive(false);
-    //}
+    public IEnumerator flash()
+    {
+        PlayerDamageFlashScreen.SetActive(true);
+        yield return new WaitForSeconds(0.1f);
+        PlayerDamageFlashScreen.SetActive(false);
+    }
 
     public void updateAmmoUI(int cur, int max)
     {

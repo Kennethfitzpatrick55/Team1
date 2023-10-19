@@ -158,9 +158,9 @@ MonoBehaviour:
   wall: {fileID: 4482615037480212621, guid: 57ca41d5e5313ca4abf5f573014bdaf3, type: 3}
   corner: {fileID: 4156754089321045294, guid: a2dd9830d3df0334694c0f4a1a280b40, type: 3}
   goal: {fileID: 8142345698396238460, guid: 0bc84997153d64849812823dc55d5c12, type: 3}
-  rangedEnemy: {fileID: 0}
-  meleeEnemy: {fileID: 0}
-  phantomEnemy: {fileID: 0}
+  rangedEnemy: {fileID: 2723296144885676862, guid: 7c8f77702d70dd84f9d75a0176defda4, type: 3}
+  meleeEnemy: {fileID: 4642540175197904204, guid: e1a1171f93b6e1340a4b1aee983e8e42, type: 3}
+  phantomEnemy: {fileID: 2866845112557106840, guid: 66d29a2bc3f87284782af12a78a23f68, type: 3}
   mino: {fileID: 0}
 --- !u!4 &290069773
 Transform:
@@ -492,6 +492,22 @@ PrefabInstance:
       propertyPath: ammoMax
       value: 
       objectReference: {fileID: 1970097765}
+    - target: {fileID: 4236011453246071526, guid: ed3cc8df71fc5a34386869672c587c90, type: 3}
+      propertyPath: HPPickup
+      value: 
+      objectReference: {fileID: 4715774697744498555, guid: 1388ad8bc865332468008808adc26371, type: 3}
+    - target: {fileID: 4236011453246071526, guid: ed3cc8df71fc5a34386869672c587c90, type: 3}
+      propertyPath: phantomsMax
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4236011453246071526, guid: ed3cc8df71fc5a34386869672c587c90, type: 3}
+      propertyPath: meleeEnemiesMax
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4236011453246071526, guid: ed3cc8df71fc5a34386869672c587c90, type: 3}
+      propertyPath: rangedEnemiesMax
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 7700603900130565005, guid: ed3cc8df71fc5a34386869672c587c90, type: 3}
       propertyPath: m_Name
       value: GameSystems

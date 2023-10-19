@@ -45,32 +45,45 @@ public class AIMino : MonoBehaviour
         playerDir = GameManager.instance.player.transform.position - transform.position;
         angleToPlayer = Vector3.Angle(playerDir, transform.forward);
 
-        //Raycast to see if enemy can see player
-        RaycastHit hit;
-        Debug.DrawRay(transform.position, playerDir);
-        if (Physics.Raycast(transform.position, playerDir, out hit))
+        //Turns towards player when not moving
+        if (agent.remainingDistance < agent.stoppingDistance)
         {
-            //See if enemy can "see" player
-            if (hit.collider.CompareTag("Player") && angleToPlayer <= viewAngle)
-            {
-                //Turns towards player when not moving
-                if (agent.remainingDistance < agent.stoppingDistance)
-                {
-                    FaceTarget();
-                }
+            FaceTarget();
+        }
 
-                agent.SetDestination(GameManager.instance.player.transform.position);
+        agent.SetDestination(GameManager.instance.player.transform.position);
 
-                //Call for attack if player is within view angle
-                if (angleToPlayer <= viewAngle)
-                {
-                    InAttackRange();
-                }
-            }
-            else
-            {
-                agent.stoppingDistance = 0;
-            }
+        //Call for attack if player is within view angle
+        if (angleToPlayer <= viewAngle)
+        {
+            InAttackRange();
+        }
+        else
+        {
+            anim.SetBool("In Attack Range", false);
+        }
+    }
+
+    public void TakeDamage(int amount)
+    {
+        HP -= amount;
+        if (HP <= 0)
+        {
+            //Remove enemy from count on death
+            GameManager.instance.UpdateEnemyCount(-1);
+            anim.SetBool("Dead", true);
+            agent.enabled = false;
+            hitBox.enabled = false;
+            StopAllCoroutines();
+        }
+        else
+        {
+            //Have enemy respond to taking damage from player
+            agent.SetDestination(GameManager.instance.player.transform.position);
+            FaceTarget();
+
+            //Visual queue for damage taken
+            anim.SetTrigger("Damage");
         }
     }
 

@@ -157,7 +157,6 @@ public class AIEnemyMelee : MonoBehaviour, IDamage
             FaceTarget();
 
             //Visual queue for damage taken
-            StartCoroutine(FlashDamage());
             anim.SetTrigger("Damage");
         }
     }

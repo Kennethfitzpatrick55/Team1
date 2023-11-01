@@ -43,6 +43,11 @@ public class WeaponPickUp : MonoBehaviour
     {
         //transfer gunstates to player
         GameManager.instance.playerScript.setWeaponStats(WEAPON);
+
+        //Set weapon to no longer respawn when scene is reloaded
+        int index = MazeState.instance.FindItem(gameObject);
+        MazeState.instance.DisableItem(index);
+
         Destroy(gameObject);
     }
 }

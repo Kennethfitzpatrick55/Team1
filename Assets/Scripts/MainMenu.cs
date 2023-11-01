@@ -8,7 +8,7 @@ public class MainMenu : MonoBehaviour
 //loads main game scene for play
    public void play()
     {
-        SceneManager.LoadScene("ProtoType2");
+        SceneManager.LoadScene(1);
     }
 //closes the game
     public void exitgame()

@@ -49,6 +49,7 @@ MonoBehaviour:
   scale: 10
   wall: {fileID: 4482615037480212621, guid: 57ca41d5e5313ca4abf5f573014bdaf3, type: 3}
   corner: {fileID: 4156754089321045294, guid: a2dd9830d3df0334694c0f4a1a280b40, type: 3}
+  floor: {fileID: 4921137060199854254, guid: 7977ec094c76c1c4388952519dc2ca55, type: 3}
   goal: {fileID: 8142345698396238460, guid: 0bc84997153d64849812823dc55d5c12, type: 3}
   devCheat: {fileID: 3409459218997731072, guid: b2414d4f8b5686c4da3c281fa0f2a495, type: 3}
   rangedEnemy: {fileID: 2723296144885676862, guid: 7c8f77702d70dd84f9d75a0176defda4, type: 3}

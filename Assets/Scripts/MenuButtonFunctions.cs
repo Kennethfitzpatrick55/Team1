@@ -26,6 +26,9 @@ public class MenuButtonFunctions : MonoBehaviour
 
     public void goToMainMenu()
     {
-        SceneManager.LoadScene("MainMenu");
+        GameManager.instance.unpausedState();
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        SceneManager.LoadScene(0);
     }
 }

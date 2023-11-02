@@ -55,12 +55,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controller: {fileID: 1653064986366378708}
   aud: {fileID: 4868964737328733175}
-  Hp: 10
+  Hp: 20
   hpRegen: 10
   playerSpeed: 8
-  sprintMod: 1.5
+  sprintMod: 3
   jumpMax: 2
-  jumpHeight: 25
+  jumpHeight: 17
   gravityMod: 1
   gravityValue: -40
   DistanceWall: 1
@@ -70,7 +70,7 @@ MonoBehaviour:
   jumpCost: 20
   staminaDrain: 30
   staminaRegen: 20
-  staminaSprintMinimum: 25
+  staminaSprintMinimum: 1
   staminaJumpMinimum: 25
   timeUntilRegenHp: 5
   timeUntilRegenStamina: 3
@@ -87,12 +87,12 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 90253fdbea703d94b987ed40fadbce8e, type: 3}
   - {fileID: 8300000, guid: 87f4e6f01f0cd224aa70c55d36b7c969, type: 3}
   - {fileID: 8300000, guid: 8415cf61e4d11d84a8c7db0ad7f1bc1d, type: 3}
-  audDamagevol: 0
+  audDamagevol: 0.5
   AudJump:
   - {fileID: 8300000, guid: e893c6295f430db4f88a06661f1b315e, type: 3}
   - {fileID: 8300000, guid: ede3a2b8144054f4ab888577bd9f41f5, type: 3}
   - {fileID: 8300000, guid: ff859df00d449a043bf8c7244546dc44, type: 3}
-  audJumpvol: 0
+  audJumpvol: 0.5
   AudFootSteps:
   - {fileID: 8300000, guid: 9487f95f2b349a04c89fd1f64cbd596b, type: 3}
   - {fileID: 8300000, guid: 1285cfd1a8a5a5b4a842ba3c48d54b01, type: 3}
@@ -103,7 +103,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 53c15384ee6dd3e4697dac91d875041d, type: 3}
   - {fileID: 8300000, guid: eafb3d602bb84ef4caa0fd965c751081, type: 3}
   - {fileID: 8300000, guid: 311f66948ac62ce489502672dfa151f4, type: 3}
-  audFootStepsvol: 0
+  audFootStepsvol: 0.1
   playerVelocity: {x: 0, y: 0, z: 0}
 --- !u!33 &3607773146104892616
 MeshFilter:
@@ -449,8 +449,8 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
-  orthographic: 0
-  orthographic size: 5
+  orthographic: 1
+  orthographic size: 15
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -459,8 +459,8 @@ Camera:
   m_TargetTexture: {fileID: 8400000, guid: e721ea06f62b1994ca13f29b9b4c0bd9, type: 2}
   m_TargetDisplay: 0
   m_TargetEye: 3
-  m_HDR: 1
-  m_AllowMSAA: 1
+  m_HDR: 0
+  m_AllowMSAA: 0
   m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
@@ -540,7 +540,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 895
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0

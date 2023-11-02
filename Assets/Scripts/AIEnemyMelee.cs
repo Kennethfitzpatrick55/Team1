@@ -124,6 +124,9 @@ public class AIEnemyMelee : MonoBehaviour, IDamage
             //Changes stopping distance so enemy will hit the chosen destination
             agent.stoppingDistance = 0;
 
+            //Now that enemey is roaming, turn off attack
+            anim.SetBool("In Attack Range", false);
+
             yield return new WaitForSeconds(roamTime);
             //Picks location within given range
             Vector3 randomPos = UnityEngine.Random.insideUnitSphere * roamDist;

@@ -122,7 +122,7 @@ NavMeshSettings:
     preserveTilesOutsideBounds: 0
     debug:
       m_Flags: 0
-  m_NavMeshData: {fileID: 23800000, guid: 23d4970140a87c64c9858679fc2b36f7, type: 2}
+  m_NavMeshData: {fileID: 0}
 --- !u!1001 &216358771
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -209,7 +209,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
-  m_Intensity: 1
+  m_Intensity: 0.3
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -308,7 +308,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 368406922328078340, guid: 49e460495a8fad041933322edaa1ac72, type: 3}
       propertyPath: audFootStepsvol
-      value: 0.5
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 368406922328078340, guid: 49e460495a8fad041933322edaa1ac72, type: 3}
       propertyPath: staminaSprintMinimum
@@ -329,6 +329,10 @@ PrefabInstance:
     - target: {fileID: 5808360451207308426, guid: 49e460495a8fad041933322edaa1ac72, type: 3}
       propertyPath: orthographic size
       value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5811052330976403266, guid: 49e460495a8fad041933322edaa1ac72, type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 895
       objectReference: {fileID: 0}
     - target: {fileID: 7012421411596961371, guid: 49e460495a8fad041933322edaa1ac72, type: 3}
       propertyPath: m_LocalPosition.x
@@ -485,15 +489,15 @@ PrefabInstance:
       objectReference: {fileID: 4715774697744498555, guid: 1388ad8bc865332468008808adc26371, type: 3}
     - target: {fileID: 4236011453246071526, guid: ed3cc8df71fc5a34386869672c587c90, type: 3}
       propertyPath: phantomsMax
-      value: 15
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4236011453246071526, guid: ed3cc8df71fc5a34386869672c587c90, type: 3}
       propertyPath: meleeEnemiesMax
-      value: 35
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 4236011453246071526, guid: ed3cc8df71fc5a34386869672c587c90, type: 3}
       propertyPath: rangedEnemiesMax
-      value: 25
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7700603900130565005, guid: ed3cc8df71fc5a34386869672c587c90, type: 3}
       propertyPath: m_Name

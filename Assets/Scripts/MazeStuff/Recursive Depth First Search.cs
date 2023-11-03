@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.AI.Navigation;
 using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEngine.ParticleSystem;
@@ -9,6 +10,9 @@ public class RecursiveDepthFirstSearch : Maze
     //Corner and floor objects for filling tiles
     [SerializeField] GameObject corner;
     [SerializeField] GameObject floor;
+
+    //Used to bake navmesh once objects are spawned
+    [SerializeField] NavMeshSurface surface;
 
     //Goal reference for placing
     [SerializeField] GameObject goal;
@@ -61,6 +65,9 @@ public class RecursiveDepthFirstSearch : Maze
             //Save maze in MazeState
             MazeState.instance.maze1 = visited;
 
+            //Build navmesh so enemies can instantiate without issue
+            surface.BuildNavMesh();
+
             //Populate maze with game objects and save
             SpawnObjects();
             MazeState.instance.items1 = items;
@@ -77,20 +84,23 @@ public class RecursiveDepthFirstSearch : Maze
                 SetTile(MazeState.instance.maze1[i]);
             }
 
+            //Build navmesh so enemies can instantiate without issue
+            surface.BuildNavMesh();
+
             //Load objects from saved state
-            for(int i = 0; i < MazeState.instance.items1.Count; i++)
+            for (int i = 0; i < MazeState.instance.items1.Count; i++)
             {
                 //Check to avoid respawning already aquired gear
                 if (MazeState.instance.items1[i].shouldSpawn)
                 {
-                    Instantiate(MazeState.instance.items1[i].item, new Vector3((MazeState.instance.items1[i].tile.x * scale) + (scale / 2), 2, (MazeState.instance.items1[i].tile.z * scale) + (scale * 2)), Quaternion.identity);
+                    Instantiate(MazeState.instance.items1[i].item, new Vector3((MazeState.instance.items1[i].tile.x * scale) + (scale / 2), 2, (MazeState.instance.items1[i].tile.z * scale) + (scale / 2)), Quaternion.identity);
                 }
             }
 
             //Load enemies from saved state
             for(int i = 0; i < MazeState.instance.enemies1.Count; i++)
             {
-                Instantiate(MazeState.instance.enemies1[i].item, new Vector3((MazeState.instance.enemies1[i].tile.x * scale) + (scale / 2), 2, (MazeState.instance.enemies1[i].tile.z * scale) + (scale * 2)), Quaternion.identity);
+                Instantiate(MazeState.instance.enemies1[i].item, new Vector3((MazeState.instance.enemies1[i].tile.x * scale) + (scale / 2), 2, (MazeState.instance.enemies1[i].tile.z * scale) + (scale / 2)), Quaternion.identity);
             }
         }
     }
@@ -174,7 +184,7 @@ public class RecursiveDepthFirstSearch : Maze
             int index = visited.IndexOf(check);
             if (!visited[index].hasEnemyorWeap)
             {
-                Vector3 pos = new Vector3((tileX * scale) + (scale / 2), 3, (tileZ * scale) + (scale / 2));
+                Vector3 pos = new Vector3((tileX * scale) + (scale / 2), 2, (tileZ * scale) + (scale / 2));
                 Instantiate(treasure, pos, Quaternion.identity);
                 Instantiate(treasureCheat, new Vector3(pos.x, 6, pos.z), Quaternion.identity);
                 treas = true;
@@ -373,5 +383,29 @@ public class RecursiveDepthFirstSearch : Maze
     public void EnterBoss()
     {
         Instantiate(mino, new Vector3((Random.Range(0, width) * scale) + (scale / 2), 4, (Random.Range(0, depth) * scale) + (scale / 2)), Quaternion.identity);
+    }
+
+    //Function for others to place their work into the maze
+    public void SetItem(GameObject item)
+    {
+        //Loop to spawn item
+        int index;
+        do
+        {
+            int tileX = Random.Range(1, width);
+            int tileZ = Random.Range(1, depth);
+            MapNodeDFS check = new MapNodeDFS(tileX, tileZ);
+            index = visited.IndexOf(check);
+            //Spawn passed in item only if tile is empty
+            if (!visited[index].hasEnemyorWeap)
+            {
+                Instantiate(item, new Vector3((tileX * scale) + (scale / 2), 0, (tileZ * scale) + (scale / 2)), Quaternion.identity);
+                visited[index].hasEnemyorWeap = true;
+                //Add item to list
+                MazeState.instance.items1.Add(new TileItem(true, new MapLocation(tileX, tileZ), item));
+                //items.Add(new TileItem(true, new MapLocation(tileX, tileZ), item));
+                break;
+            }
+        }while (visited[index].hasEnemyorWeap);
     }
 }

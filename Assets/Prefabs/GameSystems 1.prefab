@@ -4171,8 +4171,8 @@ MonoBehaviour:
   fireCheat: {fileID: 0}
   treasureCheat: {fileID: 0}
   enemySpawn: {fileID: 0}
-  rangedEnemiesMax: 8
-  meleeEnemiesMax: 14
+  rangedEnemiesMax: 10
+  meleeEnemiesMax: 15
   phantomsMax: 5
   HPPickup: {fileID: 4715774697744498555, guid: 1388ad8bc865332468008808adc26371, type: 3}
   maze: {fileID: 0}

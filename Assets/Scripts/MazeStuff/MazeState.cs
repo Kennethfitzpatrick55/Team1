@@ -55,7 +55,7 @@ public class MazeState : MonoBehaviour
         //Find index of item
         for (int i = 0; i < items1.Count; i++)
         {
-            if (items1[i].item == obj)
+            if (items1[i].item.CompareTag(obj.tag))
             {
                 output = i;
                 break;

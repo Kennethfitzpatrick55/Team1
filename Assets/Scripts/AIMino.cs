@@ -69,8 +69,6 @@ public class AIMino : MonoBehaviour, IDamage
         HP -= amount;
         if (HP <= 0)
         {
-            //Remove enemy from count on death
-            GameManager.instance.UpdateEnemyCount(-1);
             anim.SetBool("Dead", true);
             agent.enabled = false;
             hitBox.enabled = false;

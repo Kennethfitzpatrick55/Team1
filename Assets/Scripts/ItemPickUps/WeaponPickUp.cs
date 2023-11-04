@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class WeaponPickUp : MonoBehaviour
 {
-    [SerializeField] WeaponStats WEAPON;
+    [SerializeField] WeaponStats weapon;
     [SerializeField] GameObject pickupText;
 
     bool playerInTrigger;
@@ -42,7 +42,7 @@ public class WeaponPickUp : MonoBehaviour
     public void PickUpObject()
     {
         //transfer gunstates to player
-        GameManager.instance.playerScript.setWeaponStats(WEAPON);
+        GameManager.instance.player.GetComponent<PlayerWeapons>().SetWeaponStats(weapon);
 
         //Set weapon to no longer respawn when scene is reloaded
         int index = MazeState.instance.FindItem(gameObject);

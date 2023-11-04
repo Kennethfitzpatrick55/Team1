@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7012421411596961371}
   - component: {fileID: 368406922328078340}
+  - component: {fileID: 6855787732374934253}
+  - component: {fileID: 7166801396116980800}
   - component: {fileID: 3607773146104892616}
   - component: {fileID: 2339815084857857471}
   - component: {fileID: 302178282234110217}
@@ -56,30 +58,13 @@ MonoBehaviour:
   controller: {fileID: 1653064986366378708}
   aud: {fileID: 4868964737328733175}
   Hp: 20
-  hpRegen: 10
   playerSpeed: 8
   sprintMod: 3
   jumpMax: 2
   jumpHeight: 17
-  gravityMod: 1
   gravityValue: -40
-  DistanceWall: 1
   Crouch: {x: 0, y: 0, z: 0}
   playerScale: {x: 0, y: 0, z: 0}
-  stamina: 100
-  jumpCost: 20
-  staminaDrain: 30
-  staminaRegen: 20
-  staminaSprintMinimum: 1
-  staminaJumpMinimum: 25
-  timeUntilRegenHp: 5
-  timeUntilRegenStamina: 3
-  WallT: 1.5
-  weaponlist: []
-  weaponModel: {fileID: 1063020504634763783}
-  shootRate: 1.5
-  shootDamage: 2
-  shootDist: 7
   AudDamage:
   - {fileID: 8300000, guid: 708e90bde4aa7b4409829afccb7a0e47, type: 3}
   - {fileID: 8300000, guid: 7cc3732705f02b247abd7660e19a9039, type: 3}
@@ -87,12 +72,12 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 90253fdbea703d94b987ed40fadbce8e, type: 3}
   - {fileID: 8300000, guid: 87f4e6f01f0cd224aa70c55d36b7c969, type: 3}
   - {fileID: 8300000, guid: 8415cf61e4d11d84a8c7db0ad7f1bc1d, type: 3}
-  audDamagevol: 0.5
+  audDamagevol: 0.3
   AudJump:
   - {fileID: 8300000, guid: e893c6295f430db4f88a06661f1b315e, type: 3}
   - {fileID: 8300000, guid: ede3a2b8144054f4ab888577bd9f41f5, type: 3}
   - {fileID: 8300000, guid: ff859df00d449a043bf8c7244546dc44, type: 3}
-  audJumpvol: 0.5
+  audJumpvol: 0.2
   AudFootSteps:
   - {fileID: 8300000, guid: 9487f95f2b349a04c89fd1f64cbd596b, type: 3}
   - {fileID: 8300000, guid: 1285cfd1a8a5a5b4a842ba3c48d54b01, type: 3}
@@ -105,6 +90,44 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 311f66948ac62ce489502672dfa151f4, type: 3}
   audFootStepsvol: 0.1
   playerVelocity: {x: 0, y: 0, z: 0}
+--- !u!114 &6855787732374934253
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 34362289372371928}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f620358027f988d49b57268803c56741, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  aud: {fileID: 4868964737328733175}
+  weaponlist:
+  - {fileID: 11400000, guid: a8664cc632affe04f80fac2e5c99db26, type: 2}
+  weaponModel: {fileID: 1063020504634763783}
+  shootRate: 0
+  shootDamage: 0
+  shootDist: 0
+--- !u!114 &7166801396116980800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 34362289372371928}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3ddda503b1b74c458d6657f2bd9f270, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stamina: 100
+  jumpCost: 5
+  staminaDrain: 30
+  staminaRegen: 20
+  staminaSprintMinimum: 0
+  staminaJumpMinimum: 0
+  timeUntilRegenStamina: 3
 --- !u!33 &3607773146104892616
 MeshFilter:
   m_ObjectHideFlags: 0

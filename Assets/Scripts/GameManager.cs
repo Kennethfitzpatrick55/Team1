@@ -39,7 +39,6 @@ public class GameManager : MonoBehaviour
 
     public bool isPaused;
     float timeScaleOrig;
-    int enemyCount;
 
     //Only uncomment code once implemented
     void Awake()
@@ -64,12 +63,6 @@ public class GameManager : MonoBehaviour
             activeMenu = pauseMenu;
             activeMenu.SetActive(isPaused);
         }
-    }
-
-    //Updates enemy count
-    public void UpdateEnemyCount(int amount)
-    {
-        enemyCount += amount;
     }
 
     // Pauses the game

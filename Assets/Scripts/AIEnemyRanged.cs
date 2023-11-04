@@ -45,9 +45,6 @@ public class AIEnemyRanged : MonoBehaviour, IDamage
         //Set range of attack based on weapon equipped
         range = weapon.GetComponent<Projectile>().GetRange();
 
-        //Update enemy count with each spawn
-        GameManager.instance.UpdateEnemyCount(1);
-
         //Save starting position for roaming
         startingPos = transform.position;
 
@@ -147,8 +144,6 @@ public class AIEnemyRanged : MonoBehaviour, IDamage
         HP -= amount;
         if (HP <= 0)
         {
-            //Remove enemy from count on death
-            GameManager.instance.UpdateEnemyCount(-1);
             anim.SetBool("Dead", true);
             agent.enabled = false;
             hitBox.enabled = false;

@@ -40,9 +40,6 @@ public class AIEnemyMelee : MonoBehaviour, IDamage
         //Fetches original color to not mess up color/model after damage flash
         colorOrig = model.material.color;
 
-        //Update enemy count with each spawn
-        GameManager.instance.UpdateEnemyCount(1);
-
         //Sends attack delay to weapon so damage can be more consistent
         weapon.GetComponent<MeleeWeapon>().SetAttackDelay(attackDelay);
 
@@ -146,8 +143,6 @@ public class AIEnemyMelee : MonoBehaviour, IDamage
         HP -= amount;
         if (HP <= 0)
         {
-            //Remove enemy from count on death
-            GameManager.instance.UpdateEnemyCount(-1);
             anim.SetBool("Dead", true);
             anim.SetBool("In Attack Range", false);
             agent.enabled = false;

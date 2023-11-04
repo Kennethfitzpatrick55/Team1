@@ -387,30 +387,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: minotaur1
       objectReference: {fileID: 0}
-    - target: {fileID: 5878360196122195871, guid: a2edc7b4563da354f8ef2688822a198f, type: 3}
-      propertyPath: enemyPrefab
-      value: 
-      objectReference: {fileID: 4642540175197904204, guid: e1a1171f93b6e1340a4b1aee983e8e42, type: 3}
-    - target: {fileID: 5878360196122195871, guid: a2edc7b4563da354f8ef2688822a198f, type: 3}
-      propertyPath: summonCooldown
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 5878360196122195871, guid: a2edc7b4563da354f8ef2688822a198f, type: 3}
-      propertyPath: enemySpawners.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 5878360196122195871, guid: a2edc7b4563da354f8ef2688822a198f, type: 3}
-      propertyPath: enemySpawners.Array.data[0]
-      value: 
-      objectReference: {fileID: 2111277378}
-    - target: {fileID: 5878360196122195871, guid: a2edc7b4563da354f8ef2688822a198f, type: 3}
-      propertyPath: enemySpawners.Array.data[1]
-      value: 
-      objectReference: {fileID: 1389237161}
-    - target: {fileID: 5878360196122195871, guid: a2edc7b4563da354f8ef2688822a198f, type: 3}
-      propertyPath: enemySpawners.Array.data[2]
-      value: 
-      objectReference: {fileID: 2112644660}
     - target: {fileID: 7275311146423146890, guid: a2edc7b4563da354f8ef2688822a198f, type: 3}
       propertyPath: m_LocalPosition.x
       value: -5.067184
@@ -940,11 +916,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1818f6654f0c45942a0fa8162eb53e61, type: 3}
---- !u!1 &1389237161 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8138427242929546379, guid: a2edc7b4563da354f8ef2688822a198f, type: 3}
-  m_PrefabInstance: {fileID: 395502238}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1445688241 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5747019612820089849, guid: db93b45d6f6dbe64a869ecabbfbd51cc, type: 3}
@@ -1133,16 +1104,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 57ca41d5e5313ca4abf5f573014bdaf3, type: 3}
---- !u!1 &2111277378 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6675203686336975851, guid: a2edc7b4563da354f8ef2688822a198f, type: 3}
-  m_PrefabInstance: {fileID: 395502238}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &2112644660 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4696382096627981104, guid: a2edc7b4563da354f8ef2688822a198f, type: 3}
-  m_PrefabInstance: {fileID: 395502238}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1258204795120223031
 PrefabInstance:
   m_ObjectHideFlags: 0

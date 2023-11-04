@@ -2144,7 +2144,12 @@ MonoBehaviour:
   anim: {fileID: 5459511788038759536}
   hitBox: {fileID: 7833412286113242938}
   wallDetectionDistance: 5
-  timeSpentCharging: 0
+  timeSpentCharging: 2
+  enemySpawners:
+  - {fileID: 6675203686336975851}
+  - {fileID: 8138427242929546379}
+  - {fileID: 4696382096627981104}
+  enemyPrefab: {fileID: 4642540175197904204, guid: e1a1171f93b6e1340a4b1aee983e8e42, type: 3}
   HP: 10000
   turnSpeed: 15
   viewAngle: 69
@@ -2154,7 +2159,7 @@ MonoBehaviour:
   range: 3
   rushRange: 10
   chargeAttackCooldown: 30
-  summonCooldown: 0
+  summonCooldown: 30
 --- !u!95 &5459511788038759536
 Animator:
   serializedVersion: 5

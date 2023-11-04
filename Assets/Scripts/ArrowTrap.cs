@@ -1,52 +1,31 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+//using System.Collections;
+//using System.Collections.Generic;
+//using UnityEngine;
 
-public class ArrowTrap : MonoBehaviour
-{
+//public class ArrowTrap : MonoBehaviour
+//{
+//    private GameObject arrowPrefab;
+//    private Transform player;
+//    float arrowSpeed = 2;
 
-    public GameObject arrowPrefab;
-    public Transform spawnPoint;
-    private float arrowSpeed = 10f;
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            //Debug.Log("Incoming!");
-            GameObject arrow = Instantiate(arrowPrefab, spawnPoint.position, spawnPoint.rotation);
+//    private bool isPressed = false;
 
-            Rigidbody arrowRigidboy = arrow.GetComponent<Rigidbody>();
+//    private void OnTriggerEnter(Collider other)
+//    {
+//        if(other.CompareTag("Player") && !isPressed)
+//        {
+//            isPressed = true;
+//            SpawnArrow();
+//        }
+//    }
 
-            if (arrowRigidboy != null)
-            {
-                arrowRigidboy.velocity = arrow.transform.right * -1 * arrowSpeed;
-            }
-            Destroy(arrow, 3f);
-        }
-    }
+//    private void SpawnArrow()
+//    {
+//        Vector3 direction = (player.position - transform.position).normalized;
+//        GameObject arrow = Instantiate(arrowPrefab, transform.position + Vector3.up, Quaternion.identity);
+//        ArrowMovement arrowMovement = arrow.GetComponent<ArrowMovement>();
+//    }
 
-    private void SpawnArrow()
-    {
-        if (arrowPrefab != null)
-        {
-
-            Instantiate(arrowPrefab, transform.position, Quaternion.identity);
-
-            arrowPrefab.SetActive(true);
-
-
-        }
-    }
-
-    private IEnumerator DeactivateArrow(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-
-        if (arrowPrefab != null && arrowPrefab.activeSelf)
-        {
-            arrowPrefab.SetActive(false);
-        }
-    }
-
-
-}
+    
+    
+//}

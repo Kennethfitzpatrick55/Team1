@@ -373,7 +373,7 @@ GameObject:
   - component: {fileID: 208402098}
   - component: {fileID: 208402097}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Ceiling
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1063,6 +1063,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1627079185}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &581184145 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6917442629206589166, guid: 49e460495a8fad041933322edaa1ac72, type: 3}
+  m_PrefabInstance: {fileID: 734519885}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &584652986
 GameObject:
   m_ObjectHideFlags: 0
@@ -1451,7 +1456,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 34362289372371928, guid: 49e460495a8fad041933322edaa1ac72, type: 3}
+      insertIndex: 4
+      addedObject: {fileID: 901215483}
   m_SourcePrefab: {fileID: 100100000, guid: 49e460495a8fad041933322edaa1ac72, type: 3}
 --- !u!1001 &778480710
 PrefabInstance:
@@ -2468,6 +2476,28 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 34362289372371928, guid: 49e460495a8fad041933322edaa1ac72, type: 3}
   m_PrefabInstance: {fileID: 734519885}
   m_PrefabAsset: {fileID: 0}
+--- !u!143 &901215475 stripped
+CharacterController:
+  m_CorrespondingSourceObject: {fileID: 1653064986366378708, guid: 49e460495a8fad041933322edaa1ac72, type: 3}
+  m_PrefabInstance: {fileID: 734519885}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &901215483
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 901215473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fab5e8eded2c6314e8c63e317810912b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controller: {fileID: 901215475}
+  slideDuration: 0.8
+  slideHeight: 0.5
+  cameraTransform: {fileID: 581184145}
+  cameraLoweredPositionY: 0.5
 --- !u!1001 &905236626
 PrefabInstance:
   m_ObjectHideFlags: 0

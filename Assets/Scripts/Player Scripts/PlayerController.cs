@@ -46,6 +46,8 @@ public class PlayerController : MonoBehaviour, IDamage
     int Layer_Mask;
     bool Crouching;
     bool footstepsPlaying;
+    //slide
+    private PlayerSlide playerSlide;
 
     private void Start()
     {
@@ -53,8 +55,6 @@ public class PlayerController : MonoBehaviour, IDamage
         Layer_Mask = LayerMask.GetMask("Wall") + LayerMask.GetMask("Ground");
         HPOrig = Hp;
         spawnPlayer();
-        //playerScale = transform.localScale;
-        //Crouch = new Vector3(transform.localScale.x, transform.localScale.y / 2, transform.localScale.z);
     }
 
 
@@ -67,6 +67,7 @@ public class PlayerController : MonoBehaviour, IDamage
             CheatsyDoodle();
             
             movement();
+            Sprint();
         }
         
     }
@@ -162,6 +163,18 @@ public class PlayerController : MonoBehaviour, IDamage
             playerSpeed /= sprintMod;
             isSprinting = false;
             GameManager.instance.player.GetComponent<PlayerStamina>().ResetRegen();
+        }
+        //slide check
+        if(isSprinting && Input.GetButtonDown("Slide") && groundedPlayer)
+        {
+            //start slide
+            PlayerSlide playerSlideComponent = GetComponent<PlayerSlide>();
+            Vector3 slideDirection = transform.forward;
+
+            if(playerSlideComponent != null && !playerSlideComponent.IsSliding())
+            {
+                playerSlideComponent.StartSlide(playerSpeed, transform.forward);
+            }
         }
     }
 

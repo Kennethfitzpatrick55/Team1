@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UIElements;
@@ -27,15 +28,23 @@ public class AIMino : MonoBehaviour, IDamage
 
     [Header("----- Attack Stats -----")]
     [SerializeField] GameObject weapon;
+    [SerializeField] GameObject chargeColliderObject;
     [SerializeField] int attackDelay;
     [SerializeField] float range;
+    [SerializeField] float rushRange;
+    [SerializeField] float chargeAttackCooldown;
 
     float currSpeed;
     float scalar;
     float stageTwoSpeed;
     bool isGrowing;
+    bool isChargeAttacking;
+    float chargeAttackCooldownTracker;
+
     float angleToPlayer;
     Vector3 playerDir;
+    Vector3 chargeDir;
+    Vector3 chargedestination;
     bossStages currentStage;
 
 
@@ -45,6 +54,8 @@ public class AIMino : MonoBehaviour, IDamage
     {
         currentStage = bossStages.FIRST_STAGE;
         isGrowing = false;
+        isChargeAttacking = false;
+        chargeAttackCooldownTracker = 0;
     }
 
     // Update is called once per frame
@@ -67,6 +78,7 @@ public class AIMino : MonoBehaviour, IDamage
         }
         if (isGrowing)
         {
+            //Scales boss size via Parametric growth curve noramlized for adjustments
             scalar += Time.deltaTime;
             agent.speed = 0;
             transform.localScale = new Vector3(Mathf.Lerp(1.5f, 3f, ParametricGrowthCurve(scalar)), Mathf.Lerp(1.5f, 3f, ParametricGrowthCurve(scalar)), Mathf.Lerp(1.5f, 3f, ParametricGrowthCurve(scalar)));
@@ -76,11 +88,32 @@ public class AIMino : MonoBehaviour, IDamage
                 agent.speed = stageTwoSpeed;
             }
         }
+        if(currentStage == bossStages.SECOND_STAGE)
+        {
+            chargeAttackCooldownTracker = Mathf.Max(chargeAttackCooldownTracker - Time.deltaTime, 0);
+        }
     }
 
     //Runs movement for mino
     void Movement()
     {
+        Debug.Log("Movement()");
+        if(isChargeAttacking)
+        {
+            Debug.Log("AHAHAHAHAHAHA RUSHING IN!!!");
+            RaycastHit hit;            
+            if (Physics.Raycast(transform.position, chargeDir, out hit, 2, 6))
+            {
+                onHitWall();
+                return;
+            }
+            if(agent.pathStatus == NavMeshPathStatus.PathComplete)
+            {
+                onEndCharge();
+            }
+            return;
+        }
+
         playerDir = GameManager.instance.player.transform.position - transform.position;
         angleToPlayer = Vector3.Angle(playerDir, transform.forward);
 
@@ -140,12 +173,22 @@ public class AIMino : MonoBehaviour, IDamage
         if ((GameManager.instance.player.transform.position - transform.position).magnitude <= range)
         {
             int animNumber = Random.Range(1, 4);
-            Debug.Log(animNumber);
             anim.SetInteger("In Attack Range", animNumber);
+            return;
+            // we want to return here so that we escape the rush attack when within range for regular attacks
         }
         else
         {
             anim.SetInteger("In Attack Range", 0);
+        }
+
+        if(currentStage == bossStages.SECOND_STAGE && chargeAttackCooldownTracker <= 0)
+        {
+            Debug.Log("Okay we made it. Now next, range test");
+            if ((GameManager.instance.player.transform.position - transform.position).magnitude <= rushRange)
+            {
+                ChargeAttack();
+            }
         }
     }
 
@@ -184,9 +227,10 @@ public class AIMino : MonoBehaviour, IDamage
         weapon.GetComponent<Collider>().enabled = false;
         agent.speed = currSpeed;
     }
-
+    //Establishes size/speed gain for stage 2, adjusts in range distacne to compensate
     void StartStageTwo()
     {
+        currentStage = bossStages.SECOND_STAGE;
         agent.speed *= 1.5f;
         stageTwoSpeed = agent.speed;
         isGrowing = true;
@@ -194,16 +238,70 @@ public class AIMino : MonoBehaviour, IDamage
         anim.SetTrigger("Roar Trigger");
         agent.stoppingDistance = 6;
         range *= 2;
+        rushRange *= 2;
+        chargeAttackCooldownTracker = 10;
     }
     void StartStageThree()
     {
-
+        currentStage = bossStages.THIRD_STAGE;
     }
 
     void ChargeAttack()
     {
+        // save player's direction here to charge
+        chargeAttackCooldownTracker = chargeAttackCooldown;
 
+        anim.SetTrigger("Charge Attack Trigger");
+        Debug.Log("Roar!!!! Start charge!");
     }
+
+    void TriggerStartRush()
+    {
+        Debug.Log("RUSH TIME!!!");
+        chargeDir = GameManager.instance.player.transform.position - transform.position;
+        Quaternion rot = Quaternion.LookRotation(chargeDir);
+        transform.rotation = Quaternion.Lerp(transform.rotation, rot, Time.deltaTime * turnSpeed);
+        isChargeAttacking = true;
+        agent.speed = 12;
+        chargeColliderObject.GetComponent<Collider>().enabled = true;
+
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, rot.ToEulerAngles(), out hit, 35, 6))
+        {
+            chargedestination = hit.point;
+            agent.SetDestination(hit.point);
+        }
+        else
+        {
+            chargedestination = transform.position + (chargeDir.normalized * (35));
+            agent.SetDestination(chargedestination);
+        }
+    }
+
+    void onHitWall()
+    {
+        Debug.Log("Ouch I hit a wall");
+        // call this when the minotaur collides with a wall
+        agent.speed = 0;
+        anim.SetTrigger("Charge Hit Wall Trigger");
+        isChargeAttacking = false;
+        chargeColliderObject.GetComponent<Collider>().enabled = false;
+    }
+
+    void onEndCharge()
+    {
+        anim.SetTrigger("Charge End No Hit");
+        isChargeAttacking = false;
+        chargeColliderObject.GetComponent<Collider>().enabled = false;
+        EndChargeAttack();
+    }
+
+    void EndChargeAttack()
+    {
+        Debug.Log("back to normal now");
+        agent.speed = stageTwoSpeed;
+    }
+
     float ParametricGrowthCurve(float t)
     {
         t /= 2;

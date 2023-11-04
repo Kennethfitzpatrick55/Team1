@@ -22,6 +22,8 @@ public class AIMino : MonoBehaviour, IDamage
     [SerializeField] Collider hitBox;
     [Range(1, 100)][SerializeField] float wallDetectionDistance;
     [Range(1, 100)][SerializeField] float timeSpentCharging;
+    [SerializeField] List<GameObject> enemySpawners;
+    [SerializeField] GameObject enemyPrefab;
 
 
     [Header("----- Stats -----")]
@@ -63,6 +65,7 @@ public class AIMino : MonoBehaviour, IDamage
         isGrowing = false;
         isChargeAttacking = false;
         chargeAttackCooldownTracker = 0;
+        summonCooldownTracker = 0;
     }
 
     // Update is called once per frame
@@ -109,25 +112,15 @@ public class AIMino : MonoBehaviour, IDamage
         }
         if (currentStage == bossStages.SECOND_STAGE)
         {
+            //compares time passed to cooldown time
             chargeAttackCooldownTracker = Mathf.Max(chargeAttackCooldownTracker - Time.deltaTime, 0);
         }
+        else if (currentStage == bossStages.THIRD_STAGE)
+        {
+            summonCooldownTracker = Mathf.Max(summonCooldownTracker - Time.deltaTime, 0);
+            SummonAllies();
+        }
     }
-
-
-    //playerDir = gameManager.instance.player.transform.position - headPos.position;
-    //    angleToPlayer = Vector3.Angle(new Vector3(playerDir.x, 0, playerDir.z), transform.forward);
-
-    //    Debug.DrawRay(headPos.position, playerDir);
-
-    //    RaycastHit hit;
-
-    //    if ((Physics.Raycast(headPos.position, playerDir, out hit)))
-    //    {
-    //        agent.stoppingDistance = stoppingDistOrig;
-    //        if (hit.collider.CompareTag("Player") && angleToPlayer <= viewAngle)
-    //        {
-
-    //Runs movement for mino
     void Movement()
     {
         
@@ -288,6 +281,7 @@ public class AIMino : MonoBehaviour, IDamage
     void StartStageThree()
     {
         currentStage = bossStages.THIRD_STAGE;
+        summonCooldownTracker = 5;
         isShrinking = true;
         scalar = 0;
         agent.stoppingDistance = 3;
@@ -372,7 +366,16 @@ public class AIMino : MonoBehaviour, IDamage
 
     void SummonAllies()
     {
-        
+        agent.speed = 0;
+        if (summonCooldownTracker <= 0)
+        {
+            for (int i = 0; i < enemySpawners.Count; i++)
+            {
+                Instantiate(enemyPrefab, enemySpawners[i].transform.position, enemySpawners[i].transform.rotation);
+            }
+            summonCooldownTracker = summonCooldown;
+        }
+        agent.speed = stageTwoSpeed;
     }
 
     float ParametricGrowthCurve(float t)

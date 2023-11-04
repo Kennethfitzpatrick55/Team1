@@ -68,10 +68,6 @@ public class RecursiveDepthFirstSearch : Maze
             //Build navmesh so enemies can instantiate without issue
             surface.BuildNavMesh();
 
-            //Populate maze with game objects and save
-            SpawnObjects();
-            MazeState.instance.items1 = items;
-
             //Populate maze with enemies and save
             SpawnEnemies();
             MazeState.instance.enemies1 = enemies;
@@ -85,8 +81,23 @@ public class RecursiveDepthFirstSearch : Maze
             }
 
             //Build navmesh so enemies can instantiate without issue
-            surface.BuildNavMesh();
+            surface.BuildNavMesh();            
 
+            //Load enemies from saved state
+            for(int i = 0; i < MazeState.instance.enemies1.Count; i++)
+            {
+                Instantiate(MazeState.instance.enemies1[i].item, new Vector3((MazeState.instance.enemies1[i].tile.x * scale) + (scale / 2), 2, (MazeState.instance.enemies1[i].tile.z * scale) + (scale / 2)), Quaternion.identity);
+            }
+        }
+
+        if(MazeState.instance.items1 == null)
+        {
+            //Populate maze with game objects and save
+            SpawnObjects();
+            MazeState.instance.items1 = items;            
+        }
+        else
+        {
             //Load objects from saved state
             for (int i = 0; i < MazeState.instance.items1.Count; i++)
             {
@@ -95,12 +106,6 @@ public class RecursiveDepthFirstSearch : Maze
                 {
                     Instantiate(MazeState.instance.items1[i].item, new Vector3((MazeState.instance.items1[i].tile.x * scale) + (scale / 2), 2, (MazeState.instance.items1[i].tile.z * scale) + (scale / 2)), Quaternion.identity);
                 }
-            }
-
-            //Load enemies from saved state
-            for(int i = 0; i < MazeState.instance.enemies1.Count; i++)
-            {
-                Instantiate(MazeState.instance.enemies1[i].item, new Vector3((MazeState.instance.enemies1[i].tile.x * scale) + (scale / 2), 2, (MazeState.instance.enemies1[i].tile.z * scale) + (scale / 2)), Quaternion.identity);
             }
         }
     }
@@ -134,7 +139,6 @@ public class RecursiveDepthFirstSearch : Maze
         }
 
         //Spawn weapons
-        Instantiate(gem, new Vector3(scale * .75f, 1, scale * .75f), Quaternion.identity);
         bool fWeap = false;
         while (!fWeap)
         {

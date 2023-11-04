@@ -68,7 +68,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 566148402d850d7408104a1115950b4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WEAPON: {fileID: 11400000, guid: 0d9dea014eec7384b9e9c47da81da6dd, type: 2}
+  weapon: {fileID: 11400000, guid: 0d9dea014eec7384b9e9c47da81da6dd, type: 2}
   pickupText: {fileID: 5786280738970107712}
 --- !u!1 &5448184055121099232
 GameObject:

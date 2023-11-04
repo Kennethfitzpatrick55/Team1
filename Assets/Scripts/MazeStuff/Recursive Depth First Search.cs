@@ -10,6 +10,7 @@ public class RecursiveDepthFirstSearch : Maze
     //Corner and floor objects for filling tiles
     [SerializeField] GameObject corner;
     [SerializeField] GameObject floor;
+    [SerializeField] GameObject crawlPass;
 
     //Used to bake navmesh once objects are spawned
     [SerializeField] NavMeshSurface surface;
@@ -45,6 +46,9 @@ public class RecursiveDepthFirstSearch : Maze
 
     //Enemy spawn counts
     int ranged, melee, phantom;
+
+    //Array for passage types
+    static int[] pass = { 0, 2, 3 };
 
 
     public void Start()
@@ -303,29 +307,31 @@ public class RecursiveDepthFirstSearch : Maze
             }
             else
             {
+                int index = Random.Range(0, 2);
+
                 //Right direction
                 if (dir[i].name == "Right")
                 {
-                    curr.right = false;
-                    next.left = false;
+                    curr.right = pass[index];
+                    next.left = pass[index];
                 }
                 //Up direction
                 else if (dir[i].name == "Up")
                 {
-                    curr.up = false;
-                    next.down = false;
+                    curr.up = pass[index];
+                    next.down = pass[index];
                 }
                 //Left direction
                 else if (dir[i].name == "Left")
                 {
-                    curr.left = false;
-                    next.right = false;
+                    curr.left = pass[index];
+                    next.right = pass[index];
                 }
                 //Down direction
                 else if (dir[i].name == "Down")
                 {
-                    curr.down = false;
-                    next.up = false;
+                    curr.down = pass[index];
+                    next.up = pass[index];
                 }
                 //Since valid passage, add to visited list
                 visited.Add(next);
@@ -343,8 +349,15 @@ public class RecursiveDepthFirstSearch : Maze
     //Takes in coordinates and sets walls for that tile
     public void SetTile(MapNodeDFS curr)
     {
-        //Set scale for wall lengths and for tile wall positions
+        //Set scale for wall dimensions for tile wall positions
         Vector3 wallLength = new Vector3(scale / 10, wall.transform.localScale.y, scale * 0.8f);
+
+        //Set scale for crawl space dimensions for tile positions
+        Vector3 crawlLength = new Vector3(scale / 10, crawlPass.transform.localScale.y, scale * 0.8f);
+
+        //Get height for crawl passages
+        float crawlHeight = (crawlPass.transform.localScale.y / 2) + (wall.transform.localScale.y - crawlPass.transform.localScale.y);
+
         float tileX = curr.x * scale;
         float tileZ = curr.z * scale;
 
@@ -359,28 +372,51 @@ public class RecursiveDepthFirstSearch : Maze
         Instantiate(floor, new Vector3(tileX + (scale / 2), 0, tileZ + (scale / 2)), Quaternion.identity);
 
         //Lower wall
-        if (curr.down)
+        if (curr.down == 1)
         {
             GameObject wallS = Instantiate(wall, new Vector3(tileX + (scale / 2), wall.transform.localScale.y / 2, tileZ + (scale * .05f)), Quaternion.Euler(0, 90, 0));
             wallS.transform.localScale = wallLength;
         }
+        else if (curr.down == 2)
+        {
+            GameObject crawlS = Instantiate(crawlPass, new Vector3(tileX + (scale / 2), crawlHeight, tileZ + (scale * .05f)), Quaternion.Euler(0, 90, 0));
+            crawlS.transform.localScale = crawlLength;
+        }
+
         //Upper wall
-        if (curr.up)
+        if (curr.up == 1)
         {
             GameObject wallN = Instantiate(wall, new Vector3(tileX + (scale / 2), wall.transform.localScale.y / 2, tileZ + (scale * .95f)), Quaternion.Euler(0, 90, 0));
             wallN.transform.localScale = wallLength;
         }
+        else if (curr.up == 2)
+        {
+            GameObject crawlN = Instantiate(crawlPass, new Vector3(tileX + (scale / 2), crawlHeight, tileZ + (scale * .95f)), Quaternion.Euler(0, 90, 0));
+            crawlN.transform.localScale = crawlLength;
+        }
+
         //Left wall
-        if (curr.left)
+        if (curr.left == 1)
         {
             GameObject wallW = Instantiate(wall, new Vector3(tileX + (scale * .05f), wall.transform.localScale.y / 2, tileZ + (scale / 2)), Quaternion.identity);
             wallW.transform.localScale = wallLength;
         }
+        else if (curr.left == 2)
+        {
+            GameObject crawlW = Instantiate(crawlPass, new Vector3(tileX + (scale * .05f), crawlHeight, tileZ + (scale / 2)), Quaternion.identity);
+            crawlW.transform.localScale = crawlLength;
+        }
+
         //Right wall
-        if (curr.right)
+        if (curr.right ==1)
         {
             GameObject wallE = Instantiate(wall, new Vector3(tileX + (scale * .95f), wall.transform.localScale.y / 2, tileZ + (scale / 2)), Quaternion.identity);
             wallE.transform.localScale = wallLength;
+        }
+        else if (curr.right == 2)
+        {
+            GameObject crawlE = Instantiate(crawlPass, new Vector3(tileX + (scale * .95f), crawlHeight, tileZ + (scale / 2)), Quaternion.identity);
+            crawlE.transform.localScale = crawlLength;
         }
     }
 

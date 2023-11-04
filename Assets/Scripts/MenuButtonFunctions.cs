@@ -30,5 +30,6 @@ public class MenuButtonFunctions : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         SceneManager.LoadScene(0);
+        Destroy(MazeState.instance);
     }
 }

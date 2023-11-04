@@ -84,8 +84,11 @@ public class GameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
-        activeMenu.SetActive(false);
-        activeMenu = null;
+        if(activeMenu != null)
+        {
+            activeMenu.SetActive(false);
+            activeMenu = null;
+        }
         playerHPBar.gameObject.SetActive(true);
         playerStaminaBar.gameObject.SetActive(true);
     }

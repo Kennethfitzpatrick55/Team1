@@ -13,11 +13,11 @@ using UnityEngine.XR;
 
 public class PlayerController : MonoBehaviour, IDamage
 {
-
     // orgization of materials in inspector 
     [Header("----Components----")]
     [SerializeField] CharacterController controller;
     [SerializeField] AudioSource aud;
+    [SerializeField] Transform groundRaySource;
 
     [Header("----Player Stats----")]
     [Range(1, 50)][SerializeField] float Hp;
@@ -27,8 +27,6 @@ public class PlayerController : MonoBehaviour, IDamage
     [Range(8, 30)][SerializeField] private float jumpHeight;
     //[Range(-10, 40)][SerializeField] private float gravityMod;
     [Range(-10, -40)][SerializeField] private float gravityValue;
-    [SerializeField] private Vector3 Crouch;
-    [SerializeField] private Vector3 playerScale;    
 
     [Header("----Audio----")]
     [SerializeField] AudioClip[] AudDamage;
@@ -44,8 +42,6 @@ public class PlayerController : MonoBehaviour, IDamage
     private Vector3 move;
     private int jumpedtimes;
     bool isSprinting;
-    float hpRegenElapsed;
-    bool doHelthRegen;
     float HPOrig;
     int Layer_Mask;
     bool Crouching;
@@ -57,8 +53,8 @@ public class PlayerController : MonoBehaviour, IDamage
         Layer_Mask = LayerMask.GetMask("Wall") + LayerMask.GetMask("Ground");
         HPOrig = Hp;
         spawnPlayer();
-        playerScale = transform.localScale;
-        Crouch = new Vector3(transform.localScale.x, transform.localScale.y / 2, transform.localScale.z);
+        //playerScale = transform.localScale;
+        //Crouch = new Vector3(transform.localScale.x, transform.localScale.y / 2, transform.localScale.z);
     }
 
 
@@ -85,7 +81,7 @@ public class PlayerController : MonoBehaviour, IDamage
         Crouched();
         //checks to make sure player is grounded
         RaycastHit GroundCheck;
-        Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.down * 1.1f));
+        Debug.DrawRay(groundRaySource.position, transform.TransformDirection(Vector3.down * 0.1f));
         if (groundedPlayer && move.normalized.magnitude > 0.3f && !footstepsPlaying)
         {
             StartCoroutine(PlayFootSteps());
@@ -102,13 +98,6 @@ public class PlayerController : MonoBehaviour, IDamage
         {
             groundedPlayer = false;
         }
-       
-        //Resets ground velocities for when not wall running (bug fix)
-        //if (!wallRun.IsWallRunning())
-        //{
-        //    playerVelocity.x = 0f;
-        //    playerVelocity.z = 0f;
-        //}
 
         //vector 2 that recives are players input and moves it to that  postion 
         move = (Input.GetAxis("Horizontal") * transform.right) +
@@ -124,6 +113,7 @@ public class PlayerController : MonoBehaviour, IDamage
             {
                 Crouching = false;
                 playerSpeed *= sprintMod;
+                controller.height *= 2;
             }
             //will assighn are y to some height 
             playerVelocity.y = jumpHeight;
@@ -220,7 +210,6 @@ public class PlayerController : MonoBehaviour, IDamage
     {
         StartCoroutine(GameManager.instance.flash());
         Hp -= amount;
-        hpRegenElapsed = 0;
         UpdatePlayerUi();
         if (Hp <= 0)
         {

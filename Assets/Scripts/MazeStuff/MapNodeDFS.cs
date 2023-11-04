@@ -9,7 +9,7 @@ public class MapNodeDFS : IEquatable<MapNodeDFS>
     //Coords for tile
     public int x, z;
     //Border Wall booleans
-    public bool up, down, left, right;
+    public int up, down, left, right;
     //If enemy or weapon here
     public bool hasEnemyorWeap;
 
@@ -17,7 +17,7 @@ public class MapNodeDFS : IEquatable<MapNodeDFS>
     {
         x = hori;
         z = vert;
-        up = down = left = right = true;
+        up = down = left = right = 1;
     }
 
     public bool Equals(MapNodeDFS other)

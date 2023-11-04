@@ -21,6 +21,7 @@ public class MapLocation
         name = _name;
     }
 }
+
 public class Maze : MonoBehaviour
 {
     /*
@@ -106,11 +107,12 @@ public class Maze : MonoBehaviour
     ...................................................................
     */
 
-    public int width=30;// x width
-      public int depth=30;// z length 
-      public byte[,] map;  // postion of wall or passageway 
+    public int width = 30;// x width
+    public int depth = 30;// z length 
+    public byte[,] map;  // postion of wall or passageway 
     public int scale = 6;
 
+    //Wall reference for placing
     public GameObject wall;
 
     // Start is called before the first frame update
@@ -118,9 +120,10 @@ public class Maze : MonoBehaviour
     {
         InitialisMap();
         Generate();
-        DrawMap();    
+        DrawMap();
 
     }
+
     void InitialisMap()
     {
 
@@ -129,13 +132,13 @@ public class Maze : MonoBehaviour
         for (int z = 0; z < depth; z++)
         {
             // setting width  on the x
-            for (int x = 0; x < width; x++) 
+            for (int x = 0; x < width; x++)
             {
-                 //This is all 1
-                
-                    //0,1//
-                 map[x, z] = 1;  //1= wal  0 = passage
-                
+                //This is all 1
+
+                //0,1//
+                map[x, z] = 1;  //1= wal  0 = passage
+
             }
 
         }
@@ -160,61 +163,29 @@ public class Maze : MonoBehaviour
         }
     }
 
-       void DrawMap()
-       {
-            for (int z = 0; z < depth; z++)
+    void DrawMap()
+    {
+        for (int z = 0; z < depth; z++)
+        {
+            //setting lenght  on the z
+            for (int x = 0; x < width; x++)
             {
-                //setting lenght  on the z
-                for (int x = 0; x < width; x++)
+                if (map[x, z] == 1)
                 {
-                    if (map[x, z] == 1)
-                    {
-                        //x,z postion
-                        //multiply the potion by scale 
-                        Vector3 pos = new Vector3(x * scale, 0, z*scale);
-                        //Instantiate(cube, pos, Quaternion.identity);
-                        //make object
-                        GameObject wall = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                        // move wall to postion 
-                        wall.transform.localScale = new Vector3(scale, scale, scale);
-                        wall.transform.position = pos;
-                    }
-
+                    //x,z postion
+                    //multiply the potion by scale 
+                    Vector3 pos = new Vector3(x * scale, 0, z * scale);
+                    //Instantiate(cube, pos, Quaternion.identity);
+                    //make object
+                    GameObject wall = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                    // move wall to postion 
+                    wall.transform.localScale = new Vector3(scale, scale, scale);
+                    wall.transform.position = pos;
                 }
+
             }
-       }
-       
-      public int  CountSquareNeighbours(int x, int z)
-      {    
-        int count = 0;
-        if (x <= 0 || x >= width -1 || z <= 0 || z >= depth -1) return 5;// value to check if by edge of map 
-        if (map[x - 1, z] == 0) count++;//left 
-        if (map[x + 1, z] == 0) count++;//right
-        if (map[x ,z + 1] == 0) count++;//up 
-        if (map[x ,z - 1] == 0) count++;//down
-
-        return count;
-      }
-
-    public int CountDiagonalNeighbours(int x,int z) 
-    {
-        int count = 0;
-        if (x <= 0 || x >= width - 1 || z <= 0 || z >= depth - 1) return 5; // value to check if by edge of map 
-        if (map[x - 1, z - 1] == 0) count++; //over one down one -(left) 
-        if (map[x + 1, z + 1] == 0) count++; //over one down one -(right)
-        if (map[x - 1, z + 1] == 0) count++; //over one  up one  - (up)        
-        if (map[x + 1, z - 1] == 0) count++; //over one down oen -(down)    
-                                                     
-        return count;                                 
+        }
     }
 
-    public int CountAllNeighbours(int x,int z)
-    {
-        return CountSquareNeighbours(x,z)+CountDiagonalNeighbours(x,z);
-    }
-
-
-    
-    
-
+  
 }

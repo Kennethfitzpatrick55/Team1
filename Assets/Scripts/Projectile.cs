@@ -15,8 +15,8 @@ public class Projectile : MonoBehaviour
 
     void Start()
     {
-        //Sets velocity of projectile
-        rb.velocity = transform.forward * speed;
+        //Sets velocity of projectile to shoot at player
+        rb.velocity = (GameManager.instance.player.transform.position - transform.position).normalized * speed;
         //Projectile destroyed after specified time to reduce total resource load
         Destroy(gameObject, lifeTime);
     }
@@ -24,7 +24,7 @@ public class Projectile : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         //Ignores triggers
-        if(other.isTrigger)
+        if (other.isTrigger)
         {
             return;
         }

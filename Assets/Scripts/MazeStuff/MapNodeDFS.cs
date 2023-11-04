@@ -3,12 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class MapNodeDFS : IEquatable<MapNodeDFS>
 {
     //Coords for tile
     public int x, z;
     //Border Wall booleans
     public bool up, down, left, right;
+    //If enemy or weapon here
+    public bool hasEnemyorWeap;
 
     public MapNodeDFS(int hori, int vert)
     {

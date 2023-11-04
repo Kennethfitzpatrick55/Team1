@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65d755b3c9ce53346bc8ff940207881e, type: 3}
+  m_Name: DefaultCrystal
+  m_EditorClassIdentifier: 
+  shootRate: 1
+  shootDamage: 1
+  shootDist: 50
+  ammmoCur: 73
+  ammmoMax: 120
+  model: {fileID: 496306920832801547, guid: 667c4df14f26cae46988e15ed8689468, type: 3}
+  hiteffect: {fileID: 6442876707830746687, guid: 10fadec3da5a1f14bb771ce4aa5a402c, type: 3}
+  shootsound: {fileID: 8300000, guid: a0fe002af1668a54f8f9ba2b6a54a1ac, type: 3}
+  shootsoundvol: 0.05

@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -9,55 +11,61 @@ public class AIEnemyMelee : MonoBehaviour, IDamage
     [Header("----- Components -----")]
     [SerializeField] NavMeshAgent agent;
     [SerializeField] Renderer model;
+    [SerializeField] Animator anim;
+    [SerializeField] Collider hitBox;
 
     [Header("----- Stats -----")]
     [Range(1, 25)] [SerializeField] int HP;
     [SerializeField] int turnSpeed;
     [Range(1, 180)][SerializeField] int viewAngle;
+    [SerializeField] int roamDist;
+    [SerializeField] int roamTime;
 
     [Header("----- Attack Stats -----")]
-    //Sets weapon to use
     [SerializeField] GameObject weapon;
-    [SerializeField] Transform weaponPos;
-    float attackDelay;
-    float range;
+    [SerializeField] int attackDelay;
+    [SerializeField] float range;
 
-    bool isAttacking;
     bool playerInRange;
     float angleToPlayer;
-    float deathAnimTime;
+    float stoppingDistOrig;
+    bool destinationChosen;
     Vector3 playerDir;
     Color colorOrig;
+    Vector3 startingPos;
 
     // Start is called before the first frame update
     void Start()
     {
-        //FOR FUTURE USE, sets timer to destroy an enemy to allow for death animations to play
-        deathAnimTime = 0;
-
-        //Grabs attack delay from weapon
-        attackDelay = weapon.GetComponent<MeleeWeapon>().GetAttackDelay();
-
         //Fetches original color to not mess up color/model after damage flash
         colorOrig = model.material.color;
 
-        //Set range of attack based on weapon equipped (weapon position is center of weapon, plus half of the y scale for a downward swing)
-        range = Vector3.Distance(weaponPos.position, gameObject.transform.position) + (weapon.transform.localScale.y / 2);
+        //Sends attack delay to weapon so damage can be more consistent
+        weapon.GetComponent<MeleeWeapon>().SetAttackDelay(attackDelay);
 
-        //Update enemy count with each spawn
-        GameManager.instance.UpdateEnemyCount(1);
+        //Save original stopping distance for manipulation
+        stoppingDistOrig = agent.stoppingDistance;
+
+        //Set starting position for roaming
+        startingPos = transform.position;
     }
 
     // Update is called once per frame
     void Update()
     {
-        //Resets enemy tracking if the player has respawned (fixes respawn not triggering exit)
-        RespawnReset();
-
-        //Tracks to the player if they are in range
-        if (playerInRange && CanSeePlayer())
+        if (agent.isActiveAndEnabled)
         {
-            
+            anim.SetFloat("Speed", agent.velocity.normalized.magnitude);
+
+            //Tracks to the player if they are in range
+            if (!playerInRange)
+            {
+                StartCoroutine(Roam());
+            }
+            else if(playerInRange && !CanSeePlayer())
+            {
+                StartCoroutine(Roam());
+            }
         }
     }
 
@@ -71,11 +79,14 @@ public class AIEnemyMelee : MonoBehaviour, IDamage
 
         //Raycast to see if enemy can see player
         RaycastHit hit;
+        Debug.DrawRay(transform.position, playerDir);
         if (Physics.Raycast(transform.position, playerDir, out hit))
         {
             //See if enemy can "see" player
             if (hit.collider.CompareTag("Player") && angleToPlayer <= viewAngle)
             {
+                agent.stoppingDistance = stoppingDistOrig;
+
                 //Turns towards player when not moving
                 if (agent.remainingDistance < agent.stoppingDistance)
                 {
@@ -84,30 +95,68 @@ public class AIEnemyMelee : MonoBehaviour, IDamage
 
                 agent.SetDestination(GameManager.instance.player.transform.position);
 
+                //Call for attack if player is within view angle
+                if (angleToPlayer <= viewAngle)
+                {
+                    InAttackRange();
+                }
+
                 //Return true if player is found properly
                 output = true;
+            }
+            else
+            {
+                agent.stoppingDistance = 0;
             }
         }
         return output;
     }
 
+    //Allows enemy to have passive actions
+    IEnumerator Roam()
+    {
+        if (agent.remainingDistance < 0.05f && !destinationChosen)
+        {
+            destinationChosen = true;
+            //Changes stopping distance so enemy will hit the chosen destination
+            agent.stoppingDistance = 0;
+
+            //Now that enemey is roaming, turn off attack
+            anim.SetBool("In Attack Range", false);
+
+            yield return new WaitForSeconds(roamTime);
+            //Picks location within given range
+            Vector3 randomPos = UnityEngine.Random.insideUnitSphere * roamDist;
+            randomPos += startingPos;
+
+            NavMeshHit hit;
+            //Validates location picked
+            NavMesh.SamplePosition(randomPos, out hit, roamDist, 1);
+            agent.SetDestination(hit.position);
+
+            destinationChosen = false;
+        }
+    }
+
     public void TakeDamage(int amount)
     {
         HP -= amount;
-
-        //Have enemy respond to taking damage from player
-        agent.SetDestination(GameManager.instance.player.transform.position);
-        FaceTarget();
-
-        //Visual queue for damage taken
-        StartCoroutine(FlashDamage());
-        if(HP <= 0)
+        if (HP <= 0)
         {
-            //Remove enemy from count on death
-            GameManager.instance.UpdateEnemyCount(-1);
+            anim.SetBool("Dead", true);
+            anim.SetBool("In Attack Range", false);
+            agent.enabled = false;
+            hitBox.enabled = false;
+            StopAllCoroutines();
+        }
+        else
+        {
+            //Have enemy respond to taking damage from player
+            agent.SetDestination(GameManager.instance.player.transform.position);
+            FaceTarget();
 
-            //Set time for future death animations
-            Destroy(gameObject, deathAnimTime);
+            //Visual queue for damage taken
+            anim.SetTrigger("Damage");
         }
     }
 
@@ -117,16 +166,6 @@ public class AIEnemyMelee : MonoBehaviour, IDamage
         model.material.color = Color.red;
         yield return new WaitForSeconds(0.1f);
         model.material.color = colorOrig;
-    }
-
-    //Runs attacking functionality
-    IEnumerator Attack()
-    {
-        isAttacking = true;
-
-        yield return new WaitForSeconds(attackDelay);
-
-        isAttacking = false;
     }
 
     //Provides rotation funcionality to track the player
@@ -154,33 +193,37 @@ public class AIEnemyMelee : MonoBehaviour, IDamage
         }
     }
 
-    //Fix for bug of player respawning not exit triggering enemy tracking
-    void RespawnReset()
+    //Finds if player is within attack range so enemies are not always attacking
+    void InAttackRange()
     {
-        //Checks if player respawned, then resets the playerInRange variable
-        //if (GameManager.instance.player.GetComponent<PlayerController>().DidRespawn())
-        //{
-        //    playerInRange = false;
-        //}
-    }
-
-    //Finds if player is within attack range so enemies are not always attacking (for future animations)
-    bool InAttackRange()
-    {
-        //Defaults to not in range
-        bool inRange = false;
-
         //If player is in range, sets to true
-        if(Vector3.Distance(GameManager.instance.player.transform.position, weaponPos.transform.position) <= range)
+        if((GameManager.instance.player.transform.position - transform.position).magnitude <= range)
         {
-            inRange = true;
+            anim.SetBool("In Attack Range", true);
         }
-
-        return inRange;
+        else
+        {
+            anim.SetBool("In Attack Range", false);
+        }
     }
 
-    public float GetAttackDelay()
+    void Die()
     {
-        return attackDelay;
+        //Drops health pickup
+        GameManager.instance.HealthDrop(transform);
+        //Remove object
+        Destroy(gameObject, 2);
+    }
+
+    void AttackStart()
+    {
+        //Turns collider on for weapon
+        weapon.GetComponent<Collider>().enabled = true;
+    }
+
+    void AttackStop()
+    {
+        //Turns collider off for weapon
+        weapon.GetComponent<Collider>().enabled = false;
     }
 }

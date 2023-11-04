@@ -11,10 +11,10 @@ public class AIEnemyPhantom : MonoBehaviour, IDamage
     [SerializeField] Renderer model;
 
     [Header("----- Stats -----")]
-    [Range(1, 25)] [SerializeField] int HP;
+    [Range(1, 25)][SerializeField] int HP;
     [SerializeField] float speed;
     [SerializeField] float turnSpeed;
-    [Range(1, 180)] [SerializeField] int viewAngle;
+    [Range(1, 180)][SerializeField] int viewAngle;
     [SerializeField] float stoppingDist;
 
     bool playerInRange;
@@ -31,21 +31,15 @@ public class AIEnemyPhantom : MonoBehaviour, IDamage
 
         //Fetches original color to not mess up color/model after damage flash
         colorOrig = model.material.color;
-
-        //Update enemy count with each spawn
-        GameManager.instance.UpdateEnemyCount(1);
     }
 
     // Update is called once per frame
     void Update()
     {
-        //Resets enemy tracking if the player has respawned (fixes respawn not triggering exit)
-        RespawnReset();
-
         //Tracks to the player if they are in range
-        if(playerInRange && CanSeePlayer())
+        if (playerInRange && CanSeePlayer())
         {
-            
+
         }
     }
 
@@ -87,11 +81,8 @@ public class AIEnemyPhantom : MonoBehaviour, IDamage
         //Visual queue for damage taken
         StartCoroutine(FlashDamage());
 
-        if(HP <= 0)
+        if (HP <= 0)
         {
-            //Remove enemy from count on death
-            GameManager.instance.UpdateEnemyCount(-1);
-
             //Set time for future death animations
             Destroy(gameObject, deathAnimTime);
         }
@@ -127,15 +118,5 @@ public class AIEnemyPhantom : MonoBehaviour, IDamage
         {
             playerInRange = false;
         }
-    }
-
-    //Fix for bug of player respawning not exit triggering enemy tracking
-    void RespawnReset()
-    {
-        //Checks if player respawned, then resets the playerInRange variable
-        //if(GameManager.instance.player.GetComponent<PlayerController>().DidRespawn())
-        //{
-        //    playerInRange = false;
-        //}
     }
 }

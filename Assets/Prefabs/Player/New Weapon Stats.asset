@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65d755b3c9ce53346bc8ff940207881e, type: 3}
+  m_Name: New Weapon Stats
+  m_EditorClassIdentifier: 
+  shootRate: 15
+  shootDamage: 25
+  shootDist: 20
+  ammmoCur: 0
+  ammmoMax: 120
+  model: {fileID: 139011626642297511, guid: 608caff71a6b37341a4b925115154544, type: 3}
+  hiteffect: {fileID: 3414750940879788889, guid: 0367c873bd90b8f4e9f00ba9482dcb97, type: 3}
+  shootsound: {fileID: 8300000, guid: 1fae3d9ee463f7b4693a885b89f8fa1d, type: 3}
+  shootsoundvol: 0

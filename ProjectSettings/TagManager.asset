@@ -8,6 +8,10 @@ TagManager:
   - Melee
   - Projectile
   - Wall
+  - Dev Only
+  - Fire Staff
+  - Lightning Staff
+  - Treasure
   layers:
   - Default
   - TransparentFX
@@ -19,7 +23,7 @@ TagManager:
   - Player
   - Enemy
   - Weapon
-  - 
+  - MiniMap
   - 
   - 
   - 

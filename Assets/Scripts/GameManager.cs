@@ -14,46 +14,55 @@ public class GameManager : MonoBehaviour
     public GameObject playerSpawn;
     public Image playerHPBar;
     public Image playerStaminaBar;
+    public PlayerController playerScript;
+    public GameObject devCheat;
+    public GameObject lightningCheat;
+    public GameObject fireCheat;
+    public GameObject treasureCheat;
 
     [Header("----- Enemy -----")]
     public GameObject enemySpawn;
+    [SerializeField] int rangedEnemiesMax;
+    [SerializeField] int meleeEnemiesMax;
+    [SerializeField] int phantomsMax;
+    [SerializeField] GameObject HPPickup;
+    public GameObject maze;
 
     [Header("----Menus----")]
     [SerializeField] GameObject activeMenu;
     [SerializeField] GameObject pauseMenu;
     [SerializeField] GameObject winMenu;
     [SerializeField] GameObject lossMenu;
-
+    [SerializeField] TextMeshProUGUI ammoCur;
+    [SerializeField] TextMeshProUGUI ammoMax;
+    [SerializeField] GameObject PlayerDamageFlashScreen;
 
     public bool isPaused;
     float timeScaleOrig;
-    int enemyCount;
 
     //Only uncomment code once implemented
     void Awake()
     {
+
         instance = this;
         timeScaleOrig = Time.timeScale;
         player = GameObject.FindWithTag("Player");
+        playerScript = player.GetComponent<PlayerController>();
         playerSpawn = GameObject.FindWithTag("Respawn");
         //enemySpawn = GameObject.FindWithTag("Enemy Spawn");
     }
 
-    
+
     void Update()
     {
+        SetCheats();
+
         if (Input.GetButtonDown("Cancel") && activeMenu == null)
         {
             pausedState();
             activeMenu = pauseMenu;
             activeMenu.SetActive(isPaused);
         }
-    }
-
-    //Updates enemy count
-    public void UpdateEnemyCount(int amount)
-    {
-        enemyCount += amount;
     }
 
     // Pauses the game
@@ -95,16 +104,56 @@ public class GameManager : MonoBehaviour
         pausedState();
     }
 
-    //public IEnumerator flash()
-    //{
-    //    //PlayerDamageFlashScreen.SetActive(true);
-    //    //yield return new WaitForSeconds(0.1f);
-    //    //PlayerDamageFlashScreen.SetActive(false);
-    //}
+    public IEnumerator flash()
+    {
+        PlayerDamageFlashScreen.SetActive(true);
+        yield return new WaitForSeconds(0.1f);
+        PlayerDamageFlashScreen.SetActive(false);
+    }
 
     public void updateAmmoUI(int cur, int max)
     {
-        //AmmoCurrent.text = cur.ToString("F0");
-        //AmmoMax.text = max.ToString("F0");
+        ammoCur.text = cur.ToString("F0");
+        ammoMax.text = max.ToString("F0");
+    }
+
+    public int GetMaxRanged()
+    {
+        return rangedEnemiesMax;
+    }
+
+    public int GetMaxMelee()
+    {
+        return meleeEnemiesMax;
+    }
+
+    public int GetMaxPhantom()
+    {
+        return phantomsMax;
+    }
+
+    public void HealthDrop(Transform pos)
+    {
+        Instantiate(HPPickup, pos.position, Quaternion.identity);
+    }
+
+    void SetCheats()
+    {
+        if (devCheat == null)
+        {
+            devCheat = GameObject.FindWithTag("Dev Only");
+        }
+        if(lightningCheat == null)
+        {
+            lightningCheat = GameObject.FindWithTag("Lightning Staff");
+        }
+        if(fireCheat == null)
+        {
+            fireCheat = GameObject.FindWithTag("Fire Staff");
+        }
+        if(treasureCheat == null)
+        {
+            treasureCheat = GameObject.FindWithTag("Treasure");
+        }
     }
 }

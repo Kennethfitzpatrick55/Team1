@@ -1,0 +1,130 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3748269534969715319
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2330092662765677190}
+  - component: {fileID: 7010588624235559177}
+  m_Layer: 0
+  m_Name: Maze
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 2147483647
+  m_IsActive: 1
+--- !u!4 &2330092662765677190
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3748269534969715319}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3387818762853095085}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7010588624235559177
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3748269534969715319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22a44c828e0a7b441881dff55c4dcd3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  width: 15
+  depth: 15
+  scale: 10
+  wall: {fileID: 4482615037480212621, guid: 57ca41d5e5313ca4abf5f573014bdaf3, type: 3}
+  corner: {fileID: 4156754089321045294, guid: a2dd9830d3df0334694c0f4a1a280b40, type: 3}
+  floor: {fileID: 4921137060199854254, guid: 7977ec094c76c1c4388952519dc2ca55, type: 3}
+  surface: {fileID: 6879741212444157228}
+  goal: {fileID: 8142345698396238460, guid: 0bc84997153d64849812823dc55d5c12, type: 3}
+  devCheat: {fileID: 3409459218997731072, guid: b2414d4f8b5686c4da3c281fa0f2a495, type: 3}
+  rangedEnemy: {fileID: 2723296144885676862, guid: 7c8f77702d70dd84f9d75a0176defda4, type: 3}
+  meleeEnemy: {fileID: 4642540175197904204, guid: e1a1171f93b6e1340a4b1aee983e8e42, type: 3}
+  phantomEnemy: {fileID: 2866845112557106840, guid: 66d29a2bc3f87284782af12a78a23f68, type: 3}
+  mino: {fileID: 4322691076869525167, guid: a2edc7b4563da354f8ef2688822a198f, type: 3}
+  treasure: {fileID: 7480630126863258833, guid: 6cb498dd69a811a45b86c020f51ee404, type: 3}
+  treasureCheat: {fileID: 3409459218997731072, guid: 64deffb5b5b1d9f4ebf0f617e185d193, type: 3}
+  gem: {fileID: 3542153277245591953, guid: a7d23d781e671c94aace2c16b5ecdf58, type: 3}
+  lStaff: {fileID: 2955572133694076428, guid: c936272199cfa89458994de00df2e41a, type: 3}
+  lCheat: {fileID: 3409459218997731072, guid: dfb30654201bd4149882f90a031e57a2, type: 3}
+  fStaff: {fileID: 5833066701678820672, guid: 886cbdfac9ce3f24ca16183ac6ab5243, type: 3}
+  fCheat: {fileID: 3409459218997731072, guid: 3cf1a02bf986c3b41b44774b117121b9, type: 3}
+--- !u!1 &6279544551301041046
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3387818762853095085}
+  - component: {fileID: 6879741212444157228}
+  m_Layer: 0
+  m_Name: NavMesh Surface
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3387818762853095085
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6279544551301041046}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 42.278755, y: -15.294952, z: 135.9772}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2330092662765677190}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6879741212444157228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6279544551301041046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AgentTypeID: 0
+  m_CollectObjects: 3
+  m_Size: {x: 10, y: 10, z: 10}
+  m_Center: {x: 0, y: 2, z: 0}
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 77
+  m_UseGeometry: 0
+  m_DefaultArea: 0
+  m_GenerateLinks: 0
+  m_IgnoreNavMeshAgent: 1
+  m_IgnoreNavMeshObstacle: 1
+  m_OverrideTileSize: 0
+  m_TileSize: 256
+  m_OverrideVoxelSize: 0
+  m_VoxelSize: 0.16666667
+  m_MinRegionArea: 2
+  m_NavMeshData: {fileID: 23800000, guid: d7bf70737ff3eb34d9cc2ba70052c094, type: 2}
+  m_BuildHeightMesh: 0

@@ -20,6 +20,9 @@ public class AIMino : MonoBehaviour, IDamage
     [SerializeField] NavMeshAgent agent;
     [SerializeField] Animator anim;
     [SerializeField] Collider hitBox;
+    [Range(1, 100)][SerializeField] float wallDetectionDistance;
+    [Range(1, 100)][SerializeField] float timeSpentCharging;
+
 
     [Header("----- Stats -----")]
     [SerializeField] int HP;
@@ -32,14 +35,18 @@ public class AIMino : MonoBehaviour, IDamage
     [SerializeField] int attackDelay;
     [SerializeField] float range;
     [SerializeField] float rushRange;
-    [SerializeField] float chargeAttackCooldown;
+    //represents in seconds
+    [Range(1, 30)][SerializeField] float chargeAttackCooldown;
+    [Range(1, 30)][SerializeField] float summonCooldown;
 
     float currSpeed;
     float scalar;
     float stageTwoSpeed;
     bool isGrowing;
+    bool isShrinking;
     bool isChargeAttacking;
     float chargeAttackCooldownTracker;
+    float summonCooldownTracker;
 
     float angleToPlayer;
     Vector3 playerDir;
@@ -88,27 +95,66 @@ public class AIMino : MonoBehaviour, IDamage
                 agent.speed = stageTwoSpeed;
             }
         }
-        if(currentStage == bossStages.SECOND_STAGE)
+        if (isShrinking)
+        {
+            //Scales boss size via Parametric growth curve noramlized for adjustments
+            scalar += Time.deltaTime;
+            agent.speed = 0;
+            transform.localScale = new Vector3(Mathf.Lerp(3f, 1.5f, ParametricGrowthCurve(scalar)), Mathf.Lerp(3f, 1.5f, ParametricGrowthCurve(scalar)), Mathf.Lerp(3f, 1.5f, ParametricGrowthCurve(scalar)));
+            if (scalar >= 2)
+            {
+                isShrinking = false;
+                agent.speed = stageTwoSpeed;
+            }
+        }
+        if (currentStage == bossStages.SECOND_STAGE)
         {
             chargeAttackCooldownTracker = Mathf.Max(chargeAttackCooldownTracker - Time.deltaTime, 0);
         }
     }
 
+
+    //playerDir = gameManager.instance.player.transform.position - headPos.position;
+    //    angleToPlayer = Vector3.Angle(new Vector3(playerDir.x, 0, playerDir.z), transform.forward);
+
+    //    Debug.DrawRay(headPos.position, playerDir);
+
+    //    RaycastHit hit;
+
+    //    if ((Physics.Raycast(headPos.position, playerDir, out hit)))
+    //    {
+    //        agent.stoppingDistance = stoppingDistOrig;
+    //        if (hit.collider.CompareTag("Player") && angleToPlayer <= viewAngle)
+    //        {
+
     //Runs movement for mino
     void Movement()
     {
-        Debug.Log("Movement()");
+        
         if(isChargeAttacking)
         {
-            Debug.Log("AHAHAHAHAHAHA RUSHING IN!!!");
-            RaycastHit hit;            
-            if (Physics.Raycast(transform.position, chargeDir, out hit, 2, 6))
+            timeSpentCharging -= Time.deltaTime;
+            if (timeSpentCharging <= 0)
             {
-                onHitWall();
+                onEndCharge();
                 return;
             }
-            if(agent.pathStatus == NavMeshPathStatus.PathComplete)
+            Debug.Log("AHAHAHAHAHAHA RUSHING IN!!!");
+            agent.SetDestination(chargedestination);
+            RaycastHit hit;
+            Debug.DrawLine(hitBox.transform.position, transform.forward);
+            if (Physics.Raycast(hitBox.transform.position, transform.forward, out hit))
             {
+                if (hit.collider.CompareTag("Wall") && hit.distance <= wallDetectionDistance)
+                {
+                    Debug.Log("Hit wall at: " + transform.position);
+                    onHitWall();
+                    return;
+                }
+            }
+            if(agent.remainingDistance == 0)
+            {
+                Debug.Log("End charge at: " + transform.position);
                 onEndCharge();
             }
             return;
@@ -239,11 +285,15 @@ public class AIMino : MonoBehaviour, IDamage
         agent.stoppingDistance = 6;
         range *= 2;
         rushRange *= 2;
-        chargeAttackCooldownTracker = 10;
+        chargeAttackCooldownTracker = 5;
     }
     void StartStageThree()
     {
         currentStage = bossStages.THIRD_STAGE;
+        isShrinking = true;
+        scalar = 0;
+        agent.stoppingDistance = 3;
+        range /= 2;
     }
 
     void ChargeAttack()
@@ -259,21 +309,38 @@ public class AIMino : MonoBehaviour, IDamage
     {
         Debug.Log("RUSH TIME!!!");
         chargeDir = GameManager.instance.player.transform.position - transform.position;
+
+        // flatten direction to one world axis
+        if (Mathf.Abs(chargeDir.x) > Mathf.Abs(chargeDir.z))
+            chargeDir.z = 0;
+        else
+            chargeDir.x = 0;
+        chargeDir.y = 0;
+
+        chargeDir = chargeDir.normalized;
+
         Quaternion rot = Quaternion.LookRotation(chargeDir);
         transform.rotation = Quaternion.Lerp(transform.rotation, rot, Time.deltaTime * turnSpeed);
+        timeSpentCharging = 5;
+
         isChargeAttacking = true;
-        agent.speed = 12;
+        agent.speed = 25;
         chargeColliderObject.GetComponent<Collider>().enabled = true;
 
+        Ray ray = new Ray();
+        ray.origin = transform.position;
+        ray.direction = chargeDir;
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, rot.ToEulerAngles(), out hit, 35, 6))
+        if (Physics.Raycast(ray, out hit, 1500, 6))
         {
+            Debug.Log("Hit something, charge point: " + hit.point);
             chargedestination = hit.point;
             agent.SetDestination(hit.point);
         }
         else
         {
-            chargedestination = transform.position + (chargeDir.normalized * (35));
+            chargedestination = transform.position + (chargeDir * (1500));
+            Debug.Log("From: " +transform.position + " Charge Point: " + chargedestination);
             agent.SetDestination(chargedestination);
         }
     }
@@ -299,7 +366,15 @@ public class AIMino : MonoBehaviour, IDamage
     void EndChargeAttack()
     {
         Debug.Log("back to normal now");
+        isChargeAttacking = false;
+        chargeAttackCooldownTracker = chargeAttackCooldown;
         agent.speed = stageTwoSpeed;
+        agent.SetDestination(GameManager.instance.player.transform.position);
+    }
+
+    void SummonAllies()
+    {
+        
     }
 
     float ParametricGrowthCurve(float t)

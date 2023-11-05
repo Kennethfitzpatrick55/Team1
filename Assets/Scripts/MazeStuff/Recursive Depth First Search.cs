@@ -79,6 +79,7 @@ public class RecursiveDepthFirstSearch : Maze
         else
         {
             //Load tiles from saved state
+            visited = MazeState.instance.maze1;
             for(int i = 0; i < MazeState.instance.maze1.Count; i++)
             {
                 SetTile(MazeState.instance.maze1[i]);
